@@ -1,0 +1,24 @@
+{
+  "short_name": "Melucra",
+  "name": "Melucra — Financial Trust for the Machine Economy",
+  "icons": [
+    {
+      "src": "/assets/melucra-favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/assets/melucra-logo.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#00E5BE",
+  "background_color": "#111827",
+  "description": "Melucra is the AI-native audit core powering the machine economy — turning every machine transaction into verifiable financial truth.",
+  "lang": "en"
+}
+
