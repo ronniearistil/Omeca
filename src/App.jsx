@@ -3,28 +3,39 @@ import { CssBaseline } from "@mui/material";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ThemeWrapper from "./layouts/theme/ThemeContext.jsx";
 
-import MelucraLanding from "./components/MelucraLanding";
-import MelucraInvestorBrief from "./components/pages/MelucraInvestorBrief";
-import MelucraDashboardPage from "./components/pages/MelucraDashboardPage";
-import MelucraDashboardPreview from "./components/pages/MelucraDashboardPreview";
-import MelucraDashboardConnectedPage from "./components/pages/MelucraDashboardConnectedPage";
+import OmecaLanding from "./OmecaLanding.jsx";
+import OmecaGovernanceInvestorBrief from "./omeca-governance/components/pages/OmecaGovernanceInvestorBrief.jsx";
+import OmecaGovernanceDashboardPreview from "./omeca-governance/components/pages/OmecaGovernanceDashboardPreview.jsx";
+import OmecaGovernanceDashboardPage from "./omeca-governance/components/pages/OmecaGovernanceDashboardPage.jsx";
+import OmecaBrief from "./components/pages/OmecaBrief.jsx";
+
+
 export default function App() {
   return (
     <BrowserRouter>
       <ThemeWrapper>
         <CssBaseline />
-        <div className="melucra-wrapper">
+        <div className="omeca-wrapper">
           <Routes>
-            <Route path="/mellanding" element={<MelucraLanding />} />
-            <Route path="/melbrief" element={<MelucraInvestorBrief />} />
-            <Route path="/melcoredashboard" element={<MelucraDashboardConnectedPage />} />
-            <Route path="/melpreview" element={<MelucraDashboardPreview />} />
-            <Route path="/" element={<Navigate to="/mellanding" replace />} />
-            <Route path="*" element={<Navigate to="/mellanding" replace />} />
+
+            {/* ✅ Primary Landing Page */}
+            <Route path="/" element={<OmecaLanding />} />
+            {/* ✅ Investor Pitch */}
+            <Route path="/brief" element={<OmecaBrief />} />
+
+            {/* Governance pages (still WIP) */}
+            <Route path="/brief" element={<OmecaGovernanceInvestorBrief />} />
+            <Route path="/coredashboard" element={<OmecaGovernanceDashboardPage />} />
+            <Route path="/preview" element={<OmecaGovernanceDashboardPreview />} />
+
+            {/* Catch-all → redirect to landing */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+
           </Routes>
         </div>
       </ThemeWrapper>
     </BrowserRouter>
   );
 }
+
 

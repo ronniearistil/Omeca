@@ -32,7 +32,8 @@ import PieChartIcon from '@mui/icons-material/PieChart';
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
 import SlideshowIcon from "@mui/icons-material/Slideshow";
 // import { exportDeckAsPDF } from "utils/exportDeck";
-import { exportDeckAsPDF } from "../../utils/exportDeck";
+import { exportDeckAsPDF } from "../../../utils/exportDeck.js";
+
 
 
 
@@ -303,7 +304,7 @@ const TAMWedgeChart = () => {
             textAnchor="middle"
             fontWeight="bold"
           >
-            Melucra
+            Omeca
           </text>
 
           {/* Footer label */}

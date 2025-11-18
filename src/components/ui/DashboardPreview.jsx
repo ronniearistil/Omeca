@@ -1,11 +1,28 @@
 // src/Melucra/components/ui/DashboardPreview.jsx
+// 
+// import React, { useContext } from 'react';
+// import { Box, Paper, Typography, Grid, Button } from '@mui/material';
+// import { motion } from 'framer-motion';
+// import TrendingUp from '@mui/icons-material/TrendingUp';
+// import { ColorModeContext } from '../theme/ThemeContext';
+// import { colors } from '../theme/theme';
+// 
+// // Helper component nested inside DashboardPreview.jsx
+// const SimpleGraphLine = ({ color, points }) => (
+//   <svg viewBox="0 0 100 20" style={{ width: '100%', height: '50px' }}>
+//     <polyline fill="none" stroke={color} strokeWidth="2" points={points} />
+//   </svg>
+// );
+// src/components/ui/DashboardPreview.jsx
 
 import React, { useContext } from 'react';
 import { Box, Paper, Typography, Grid, Button } from '@mui/material';
 import { motion } from 'framer-motion';
 import TrendingUp from '@mui/icons-material/TrendingUp';
-import { ColorModeContext } from '../theme/ThemeContext';
-import { colors } from '../theme/theme';
+
+// --- FIXED THEME IMPORTS ---
+import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
+import { colors } from '../../layouts/theme/theme.js';
 
 // Helper component nested inside DashboardPreview.jsx
 const SimpleGraphLine = ({ color, points }) => (
@@ -13,6 +30,7 @@ const SimpleGraphLine = ({ color, points }) => (
     <polyline fill="none" stroke={color} strokeWidth="2" points={points} />
   </svg>
 );
+
 
 const DashboardPreview = () => {
     const { mode } = useContext(ColorModeContext);

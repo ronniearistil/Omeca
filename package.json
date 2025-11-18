@@ -1,9 +1,9 @@
 {
-  "name": "melucra",
+  "name": "Omeca",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Melucra — The Explainability Core powering the $1.3 Trillion Machine Economy.",
+  "description": "Omeca — The Explainability Core powering the $1.3 Trillion Machine Economy.",
   "author": "Rony Aristil",
   "license": "MIT",
   "scripts": {

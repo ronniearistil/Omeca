@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-const MelucraLogo = ({ size = 36 }) => (
+const OmecaLogo = ({ size = 36 }) => (
     <img
-        src="/assets/Melucra/melucra-logo.png"
-        alt="Melucra Logo"
+        src="/assets/Omeca/omeca-logo.png"
+        alt="Omeca Logo"
         width={size}
         height={size}
         style={{ display: 'block' }}
     />
 );
 
-export default MelucraLogo;
+export default OmecaLogo;

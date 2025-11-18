@@ -1,14 +1,14 @@
 {
-  "short_name": "Melucra",
-  "name": "Melucra — Financial Trust for the Machine Economy",
+  "short_name": "Omeca",
+  "name": "Omeca — The Trust-First Cognitive ERP",
   "icons": [
     {
-      "src": "/assets/melucra-favicon.ico",
+      "src": "/assets/omeca-favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "/assets/melucra-logo.png",
+      "src": "/assets/omeca-logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -18,7 +18,6 @@
   "orientation": "portrait",
   "theme_color": "#00E5BE",
   "background_color": "#111827",
-  "description": "Melucra is the AI-native audit core powering the machine economy — turning every machine transaction into verifiable financial truth.",
+  "description": "Omeca is the trust-first cognitive ERP that unifies real-time finance, audit-grade governance, and continuous operational truth.",
   "lang": "en"
 }
-

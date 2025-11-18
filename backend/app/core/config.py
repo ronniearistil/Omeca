@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    APP_NAME: str = "Melucra API"
+    APP_NAME: str = "Omeca API"
     API_V1_PREFIX: str = "/api/v1"
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str = "HS256"
