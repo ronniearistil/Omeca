@@ -1283,10 +1283,10 @@ const AllocationBar = ({ name, percentage, color, value, handleDrillDown }) => {
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
                         <Typography variant="body1" fontWeight={700} sx={{ color: colors[mode].textPrimary }}>
                             {name}
-                            <Typography variant="body1" fontWeight={700} sx={{ color: barColor }}>
-                                {numericPercentage.toFixed(1)}%{value !== undefined ? ` ($${value}M)` : ''}
-                            </Typography>
-                        </Box>
+                        </Typography>
+                        <Typography variant="body1" fontWeight={700} sx={{ color: barColor }}>
+                            {numericPercentage.toFixed(1)}%{value !== undefined ? ` ($${value}M)` : ''}
+                        </Typography>
                     </Box>
                     <Box sx={{ height: 10, bgcolor: colors[mode].textDim + '22', borderRadius: 1 }}>
                         <motion.div

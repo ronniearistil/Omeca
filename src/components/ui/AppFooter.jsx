@@ -336,17 +336,19 @@ import {
 // --- FIXED IMPORTS ---
 import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
 import { colors } from '../../layouts/theme/theme.js';
+import OmecaLogo from "../ui/OmecaLogo.jsx";
+
 
 // --- RESTORED LOGO COMPONENT (works exactly like original) ---
-const OmecaLogoComponent = ({ size = 36 }) => (
-    <img
-        src="/assets/omeca-logo.png"
-        alt="OMECA Logo"
-        width={size}
-        height={size}
-        style={{ display: 'block' }}
-    />
-);
+// const OmecaLogoComponent = ({ size = 36 }) => (
+//     <img
+//         src="/assets/omeca-logo.png"
+//         alt="OMECA Logo"
+//         width={size}
+//         height={size}
+//         style={{ display: 'block' }}
+//     />
+// );
 
 /**
  * Footer component for Omeca Landing
@@ -444,9 +446,11 @@ const AppFooter = ({ setPage }) => {
                     {/* LOGO + DESCRIPTION */}
                     <Grid item xs={12} md={4}>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5, gap: 1 }}>
-                            <OmecaLogoComponent size={32} />
+                            {/* <OmecaLogoComponent size={32} /> */}
+                            <OmecaLogo size={90} />
+
                             <Typography variant="h6" fontWeight={800} color={currentColors.textPrimary}>
-                                MELUCRA
+                                {/* MELUCRA */}
                             </Typography>
                         </Box>
 

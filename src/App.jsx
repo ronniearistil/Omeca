@@ -5,8 +5,8 @@ import ThemeWrapper from "./layouts/theme/ThemeContext.jsx";
 
 import OmecaLanding from "./OmecaLanding.jsx";
 import OmecaGovernanceInvestorBrief from "./omeca-governance/components/pages/OmecaGovernanceInvestorBrief.jsx";
-import OmecaGovernanceDashboardPreview from "./omeca-governance/components/pages/OmecaGovernanceDashboardPreview.jsx";
-import OmecaGovernanceDashboardPage from "./omeca-governance/components/pages/OmecaGovernanceDashboardPage.jsx";
+import OmecaGovernanceDashboardPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
+import OmecaGovernanceDashboardPage from "./omeca-governance/components/pages/OmecaGovernancePage.jsx";
 import OmecaBrief from "./components/pages/OmecaBrief.jsx";
 
 
