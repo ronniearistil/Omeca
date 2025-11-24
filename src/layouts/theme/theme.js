@@ -4,9 +4,9 @@ import { createTheme } from '@mui/material/styles'; // Although createTheme isn'
 // --- Color Palette and Configuration ---
 export const colors = {
   // Shared colors
-  accent: '#00d2e5ff',
+  accent: '#00ace5ff',
   accentHover: '#00caa8',
-  lucraGold: '#D4AF37',
+  lucraGold: '#37c4d4ff',
   errorRed: '#FF4136',
   successGreen: '#2ECC40',
   logoDark: '#1A334A',

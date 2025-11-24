@@ -158,166 +158,286 @@
 // export default OmecaProblemSolutionComparison;
 
 
-import React, { useContext } from "react";
-import { Container, Typography, Grid, Paper, Box } from "@mui/material";
-import { motion } from "framer-motion";
-import AccessTimeFilledRounded from "@mui/icons-material/AccessTimeFilledRounded";
-import AutorenewRounded from "@mui/icons-material/AutorenewRounded";
-import CheckCircleOutlineRounded from "@mui/icons-material/CheckCircleOutlineRounded";
+import React, { useState, useEffect, useContext } from "react";
+import {
+  Container,
+  Typography,
+  Grid,
+  Paper,
+  Box,
+  ButtonBase,
+} from "@mui/material";
+import { motion, AnimatePresence } from "framer-motion";
 
-// --- FIXED THEME IMPORTS ---
+// Icons
+import WarningAmberRounded from "@mui/icons-material/WarningAmberRounded";
+import TimerOffRounded from "@mui/icons-material/TimerOffRounded";
+import BrokenImageRounded from "@mui/icons-material/BrokenImageRounded";
+import GppGoodRounded from "@mui/icons-material/GppGoodRounded";
+import AutoModeRounded from "@mui/icons-material/AutoModeRounded";
+import SyncRounded from "@mui/icons-material/SyncRounded";
+
+// Theme imports
 import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
 import { colors } from "../../../layouts/theme/theme.js";
 
-// --- STABLE MOTION VARIANTS (Issue 2 Fix) ---
-const fadeInUp = { 
-    hidden: { y: 30, opacity: 0 }, 
-    show: { 
-        y: 0, 
-        opacity: 1, 
-        transition: { type: "spring", stiffness: 100, damping: 20, duration: 0.6 } 
-    } 
-};
-
-const CrisisComparisonCard = ({ icon, title, body, isCrisis }) => {
-    const { mode } = useContext(ColorModeContext);
-    const currentColors = colors[mode];
-    const color = isCrisis ? colors.errorRed : colors.accent;
-
-    return (
-        <Paper
-            component={motion.div}
-            variants={fadeInUp}
-            sx={{
-                p: 3,
-                height: "100%",
-                borderRadius: 3,
-                textAlign: "left",
-                bgcolor: currentColors.card,
-                // Remove fixed heights (Issue 5 Fix)
-                border: `1px solid ${color}33`,
-            }}
-        >
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1.5 }}>
-                {/* Clone the icon to apply color and size consistently */}
-                {React.cloneElement(icon, { sx: { color: color, fontSize: 30 } })}
-                <Typography
-                    variant="h6"
-                    fontWeight={800}
-                    ml={1}
-                    sx={{ 
-                        color: color,
-                        fontSize: '1.1rem' 
-                    }}
-                >
-                    {title}
-                </Typography>
-            </Box>
-          
-            <Typography variant="body2" sx={{ color: currentColors.textDim, lineHeight: 1.6 }}>
-                {body}
-            </Typography>
-        </Paper>
-    );
-};
-
-
-const OmecaControlCrisisComparison = () => { 
-  const { mode } = useContext(ColorModeContext);
-  const currentColors = colors[mode];
-
-  // Content mapped directly from the pitch deck (Page 2)
-  const crisisPoints = [
-    { 
-      icon: <AccessTimeFilledRounded />, 
-      title: "Lagging Data: Weeks Behind", 
-      body: "Finance leaders steer on outdated numbers, creating a massive gap in financial control. Decisions are always reactive."
+// =========================================
+// DATA
+// =========================================
+const carouselData = [
+  {
+    id: 0,
+    label: "L1 · OPERATIONS",
+    crisis: {
+      title: "Lagging Data",
+      subtitle: "Weeks Behind",
+      body:
+        "Execution moves daily, but finance sees it weeks later. Leaders steer on outdated numbers.",
+      icon: <TimerOffRounded />,
+      accent: colors.errorRed,
     },
-    { 
-      icon: <AutorenewRounded />, 
-      title: "Manual Drag: 40% Plus Lost Time", 
-      body: "Close cycles waste days chasing reconciliation. Moving data faster did not fix the lack of real time accuracy and proof."
+    solution: {
+      title: "Omeca Core",
+      subtitle: "Real-Time Operational Truth",
+      body:
+        "A unified live stream of cash, spend, and revenue — giving leaders an accurate picture of what is happening now.",
+      icon: <SyncRounded />,
+      accent: colors.accent,
     },
-  ];
+  },
+  {
+    id: 1,
+    label: "L2 · THE CLOSE",
+    crisis: {
+      title: "Manual Drag",
+      subtitle: "40%+ Lost Time",
+      body:
+        "Close cycles stall on reconciliation and hand-offs. Time wasted chasing the last 5%.",
+      icon: <WarningAmberRounded />,
+      accent: colors.errorRed,
+    },
+    solution: {
+      title: "Omeca Ledger",
+      subtitle: "Continuous Close",
+      body:
+        "A system where books stay aligned. The close runs in the background — not in a month-end scramble.",
+      icon: <AutoModeRounded />,
+      accent: colors.accent,
+    },
+  },
+  {
+    id: 2,
+    label: "L3 · GOVERNANCE",
+    crisis: {
+      title: "The Integration Fallacy",
+      subtitle: "Flow ≠ Control",
+      body:
+        "Moving data faster didn’t prove accuracy. ERPs still can’t explain why numbers can be trusted.",
+      icon: <BrokenImageRounded />,
+      accent: colors.errorRed,
+    },
+    solution: {
+      title: "Omeca Governance",
+      subtitle: "Verifiable Trust",
+      body:
+        "Every transaction carries its own explanation and evidence. Audit, AI, and regulators share one consistent truth.",
+      icon: <GppGoodRounded />,
+      accent: colors.accent,
+    },
+  },
+];
 
-  const omecaSolution = [
-    { 
-      icon: <CheckCircleOutlineRounded />, 
-      title: "Continuous Financial Truth", 
-      body: "Omeca transforms passive record keeping into a verifiable system of autonomous control. Finance is always current, always correct."
-    },
-    { 
-      icon: <CheckCircleOutlineRounded />, 
-      title: "AI Native Audit Core", 
-      body: "Every operational event is translated into immutable financial proof, providing explainable compliance across all machine activity."
-    },
-  ];
-
-  return (
-    <Container
-      maxWidth="lg"
-      // Apply consistent padding (Issue 5 Fix)
-      sx={{ py: { xs: 10, md: 14 }, textAlign: "center" }}
-    >
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        variants={fadeInUp}
-        viewport={{ once: true, amount: 0.3 }}
+// =========================================
+// SHARED CARD SHELL
+// =========================================
+const SharedCard = ({ data, currentColors }) => (
+  <Paper
+    component={motion.div}
+    whileHover={{ y: -4 }}
+    elevation={0}
+    sx={{
+      p: { xs: 2.5, md: 4 },
+      height: "100%",
+      width: "100%",
+      borderRadius: 3,
+      border: `1px solid ${currentColors.textDim}22`,
+      backgroundColor: currentColors.card,
+      display: "flex",
+      flexDirection: "column",
+      gap: 2,
+      transition: "all 0.25s ease",
+      borderLeft: `4px solid ${data.accent}`,
+    }}
+  >
+    <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+      <Box
+        sx={{
+          p: 1,
+          borderRadius: 2,
+          backgroundColor: `${data.accent}1A`,
+          color: data.accent,
+          display: "flex",
+        }}
       >
+        {React.cloneElement(data.icon, { fontSize: "medium" })}
+      </Box>
+
+      <Box>
         <Typography
-          variant="h4"
-          fontWeight={900}
-          color={currentColors.textPrimary}
-          sx={{ mb: 1 }}
+          variant="h6"
+          fontWeight={800}
+          sx={{ color: currentColors.textPrimary, lineHeight: 1.1 }}
         >
-          The <span style={{ color: colors.errorRed }}>Control Crisis</span> vs. Continuous Financial Truth
+          {data.title}
         </Typography>
 
         <Typography
+          variant="caption"
+          fontWeight={700}
           sx={{
-            color: currentColors.textDim,
-            mb: 8,
-            maxWidth: 800,
-            mx: "auto",
-            lineHeight: 1.6,
+            color: data.accent,
+            textTransform: "uppercase",
+            letterSpacing: "0.06em",
           }}
         >
-          Traditional ERPs cannot deliver the speed or auditability required by modern operations. Omeca provides the continuous control foundation.
+          {data.subtitle}
         </Typography>
-      </motion.div>
+      </Box>
+    </Box>
 
-      <Grid container spacing={4} alignItems="stretch">
-        {/* CRISIS COLUMN (Responsive Grid Fix: xs=12, md=6) */}
-        <Grid item xs={12} md={6}>
-            <motion.div initial="hidden" whileInView="show" transition={{ staggerChildren: 0.1 }}>
-                <Typography variant="h5" fontWeight={800} sx={{ mb: 3, color: colors.errorRed, textAlign: 'left' }}>
-                    The Crisis of Lagging Data
-                </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    {crisisPoints.map((item, index) => (
-                        <CrisisComparisonCard key={index} {...item} isCrisis={true} />
-                    ))}
-                </Box>
-            </motion.div>
-        </Grid>
+    <Typography
+      variant="body1"
+      sx={{
+        color: currentColors.textDim,
+        lineHeight: 1.6,
+        fontSize: "0.95rem",
+      }}
+    >
+      {data.body}
+    </Typography>
+  </Paper>
+);
 
-        {/* SOLUTION COLUMN (Responsive Grid Fix: xs=12, md=6) */}
-        <Grid item xs={12} md={6}>
-            <motion.div initial="hidden" whileInView="show" transition={{ staggerChildren: 0.1 }}>
-                <Typography variant="h5" fontWeight={800} sx={{ mb: 3, color: colors.accent, textAlign: 'left' }}>
-                    Omeca's Continuous Control
+// =========================================
+// MAIN COMPONENT (FINAL FIXED VERSION)
+// =========================================
+const OmecaMarketingCarousel = () => {
+  const { mode } = useContext(ColorModeContext);
+  const currentColors = colors[mode];
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-cycle
+  useEffect(() => {
+    const interval = setInterval(
+      () => setCurrentIndex((prev) => (prev + 1) % carouselData.length),
+      5500
+    );
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentData = carouselData[currentIndex];
+
+  return (
+    <Box sx={{ py: { xs: 8, md: 12 }, width: "100%" }}>
+      <Container maxWidth="xl">
+        {/* Tabs */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            mb: 5,
+            gap: 2,
+            flexWrap: "wrap",
+          }}
+        >
+          {carouselData.map((item, idx) => {
+            const active = idx === currentIndex;
+            return (
+              <ButtonBase
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                sx={{
+                  px: 3,
+                  py: 1,
+                  borderRadius: 50,
+                  border: `1px solid ${
+                    active ? colors.accent : "transparent"
+                  }`,
+                  backgroundColor: active
+                    ? `${colors.accent}15`
+                    : "transparent",
+                  transition: "all 0.25s ease",
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  sx={{
+                    letterSpacing: "0.08em",
+                    fontWeight: active ? 800 : 600,
+                    color: active ? colors.accent : currentColors.textDim,
+                  }}
+                >
+                  {item.label}
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-                    {omecaSolution.map((item, index) => (
-                        <CrisisComparisonCard key={index} {...item} isCrisis={false} />
-                    ))}
-                </Box>
-            </motion.div>
-        </Grid>
-      </Grid>
-    </Container>
+              </ButtonBase>
+            );
+          })}
+        </Box>
+
+        {/* Side-by-side cards */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.45 }}
+          >
+            <Grid
+              container
+              spacing={{ xs: 2, md: 3 }}
+              justifyContent="center"
+              alignItems="stretch"
+              sx={{
+                maxWidth: "1400px",
+                margin: "0 auto",
+              }}
+            >
+              {/* Crisis Card */}
+              <Grid
+                item
+                xs={12}
+                md={6}
+                sx={{
+                  display: "flex",
+                }}
+              >
+                <SharedCard
+                  data={currentData.crisis}
+                  currentColors={currentColors}
+                />
+              </Grid>
+
+              {/* Solution Card */}
+              <Grid
+                item
+                xs={12}
+                md={6}
+                sx={{
+                  display: "flex",
+                }}
+              >
+                <SharedCard
+                  data={currentData.solution}
+                  currentColors={currentColors}
+                />
+              </Grid>
+            </Grid>
+          </motion.div>
+        </AnimatePresence>
+      </Container>
+    </Box>
   );
 };
 
-export default OmecaControlCrisisComparison;
+export default OmecaMarketingCarousel;

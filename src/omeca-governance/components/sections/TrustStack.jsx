@@ -125,156 +125,222 @@
 // };
 // 
 // export default OmecaProfitFlow;
-import React, { useContext } from "react";
-import { Container, Typography, Grid, Paper, Box } from "@mui/material";
-import { motion } from "framer-motion";
-// FIX: Replaced ShieldCheck with the safer VerifiedRounded
-import { Flare, AutorenewRounded, VerifiedRounded } from '@mui/icons-material';
 
-// --- FIXED THEME IMPORTS ---
+import React, { useContext } from "react";
+import { Container, Typography, Grid, Paper, Box, useTheme, useMediaQuery } from "@mui/material";
+import { motion } from "framer-motion";
+import { Flare, AutorenewRounded, VerifiedRounded } from "@mui/icons-material";
 import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
 import { colors } from "../../../layouts/theme/theme.js";
 
-// --- STABLE MOTION VARIANTS (Issue 2 Fix) ---
-const fadeInUp = { 
-    hidden: { y: 30, opacity: 0 }, 
-    show: { 
-        y: 0, 
-        opacity: 1, 
-        transition: { type: "spring", stiffness: 100, damping: 20, duration: 0.6 } 
-    } 
+// --- MOTION CONFIG ---
+const containerVar = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.15 }
+  }
 };
 
-const TrustStackCard = ({ layer, title, body, icon, color }) => {
-    const { mode } = useContext(ColorModeContext);
-    const currentColors = colors[mode];
+const itemVar = {
+  hidden: { y: 30, opacity: 0 },
+  show: { 
+    y: 0, 
+    opacity: 1, 
+    transition: { type: "spring", stiffness: 60, damping: 20 } 
+  }
+};
 
-    return (
-        <Paper
-            component={motion.div}
-            variants={fadeInUp}
-            sx={{
-                p: 3,
-                height: "100%",
-                borderRadius: 3,
-                textAlign: "left",
-                bgcolor: currentColors.card,
-                border: `1px solid ${color}33`,
-                transition: 'border-color 0.3s',
-                '&:hover': {
-                    borderColor: `${color}88`,
-                }
-            }}
-        >
-            <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                mb: 1.5,
-                p: 1,
-                borderRadius: 1,
-                bgcolor: `${color}10`,
-                width: 'fit-content'
-            }}>
-                {/* Clone the icon to apply color and size consistently */}
-                {React.cloneElement(icon, { sx: { color: color, fontSize: 32 } })}
-                <Typography
-                    variant="h6"
-                    fontWeight={800}
-                    ml={1.5}
-                    sx={{ 
-                        color: currentColors.textPrimary,
-                        fontSize: '1.2rem' 
-                    }}
-                >
+// --- SUB-COMPONENT: The Stack Card ---
+const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
+  const { mode } = useContext(ColorModeContext);
+  const isDark = mode === 'dark';
+  const palette = colors[mode];
+
+  return (
+    // CRITICAL FIX: 'height: 100%' ensures the motion div fills the grid cell
+    <motion.div variants={itemVar} style={{ height: "100%", width: "100%" }}>
+      <Paper
+        elevation={0}
+        sx={{
+          // FLEXBOX LOCK: This ensures the card stretches to fill the height of the tallest neighbor
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+          
+          // FLUID VISUALS
+          p: { xs: 4, lg: 5 },
+          borderRadius: 6,
+          background: isDark 
+            ? "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)" 
+            : "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+          border: `1px solid ${palette.textDim}15`,
+          backdropFilter: "blur(12px)",
+          transition: "all 0.4s ease-out",
+          
+          "&:hover": {
+            transform: "translateY(-6px)",
+            borderColor: `${color}40`,
+            boxShadow: isDark 
+                ? `0 20px 60px -10px ${color}10`
+                : `0 20px 60px -10px ${color}20`,
+          }
+        }}
+      >
+        {/* Content Top Section */}
+        <Box>
+            {/* Header Row */}
+            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 4 }}>
+                <Box sx={{ 
+                    p: 1.5, borderRadius: 3, 
+                    bgcolor: `${color}10`, color: color,
+                    display: "flex", alignItems: "center", justifyContent: "center" 
+                }}>
+                    {React.cloneElement(icon, { sx: { fontSize: 32 } })}
+                </Box>
+                
+                <Typography variant="caption" sx={{ 
+                    fontFamily: "monospace", 
+                    fontWeight: 700, 
+                    color: palette.textDim, 
+                    opacity: 0.5, 
+                    letterSpacing: 2,
+                    fontSize: "0.7rem",
+                    pt: 1
+                }}>
                     {layer}
                 </Typography>
             </Box>
-          
-            <Typography variant="h6" fontWeight={900} sx={{ color: color, mb: 1 }}>
+
+            <Typography variant="h4" fontWeight={800} sx={{ 
+                color: palette.textPrimary, 
+                mb: 1, 
+                letterSpacing: "-0.02em",
+                fontSize: { xs: "1.5rem", lg: "1.75rem" } 
+            }}>
                 {title}
             </Typography>
             
-            <Typography variant="body2" sx={{ color: currentColors.textDim, lineHeight: 1.6, flexGrow: 1 }}>
+            <Typography variant="subtitle2" fontWeight={700} sx={{ 
+                color: color, 
+                mb: 3, 
+                textTransform: "uppercase", 
+                fontSize: "0.75rem", 
+                letterSpacing: 1 
+            }}>
+                {subtitle}
+            </Typography>
+        </Box>
+
+        {/* Description Section - MARKETING SAFE COPY */}
+        <Box sx={{ mt: "auto" }}> {/* Pushes text to bottom to align baselines if needed */}
+            <Typography variant="body1" sx={{ 
+                color: palette.textDim, 
+                lineHeight: 1.7, 
+                fontSize: { xs: "0.95rem", lg: "1.05rem" },
+                maxWidth: "100%" 
+            }}>
                 {body}
             </Typography>
-        </Paper>
-    );
+        </Box>
+      </Paper>
+    </motion.div>
+  );
 };
 
-const OmecaTrustStack = () => { 
+// --- MAIN COMPONENT ---
+const OmecaTrustStack = () => {
   const { mode } = useContext(ColorModeContext);
-  const currentColors = colors[mode];
-
-  // Content directly mapped from the pitch deck (L1, L2, L3)
-  const stackLayers = [
-    { 
-      layer: 'L1: Omeca Core', 
-      title: "Operational Control", 
-      body: "Owns the verified data stream across cash, spend, and operations. Provides real time control of financial forecasts for immediate ROI.",
+  const palette = colors[mode];
+  
+  // MARKETING STRATEGY: 
+  // Focus on the "Moat" (The Advantage) rather than the "Machine" (The How).
+  // This tells investors/customers WHY they win, without telling competitors HOW we build it.
+  
+  const stackData = [
+    {
+      layer: "L1 CORE",
+      title: "Operational Control",
+      subtitle: "The Data Moat",
+      body: "Unified financial visibility that legacy ERPs cannot deliver. Omeca becomes the single source of truth for cash and spend, ensuring you steer the business on live data, not last month’s spreadsheets.",
       icon: <Flare />,
-      color: colors.lucraGold // Accent color for L1
+      color: colors.successGreen,
     },
-    { 
-      layer: 'L2: Omeca Ledger', 
-      title: "Continuous Close", 
-      body: "A continuous subledger that automates journal entries and reconciliation. It transforms the month end scramble into a system that closes itself.",
+    {
+      layer: "L2 LEDGER",
+      title: "Continuous Close",
+      subtitle: "The Logic Moat",
+      body: "The books that close themselves. We replace manual reconciliation with an autonomous engine that keeps your subledgers aligned in real-time, eliminating the month-end fire drill forever.",
       icon: <AutorenewRounded />,
-      color: colors.accent // Main accent color for L2
+      color: colors.accent,
     },
-    { 
-      layer: 'L3: Omeca Governance', 
-      title: "Verifiable Trust", 
-      body: "Immutable attestation and explainable compliance for every transaction. Provides the auditable trust layer for all AI driven finance.",
-      // FIX: Using VerifiedRounded icon
+    {
+      layer: "L3 GOVERNANCE",
+      title: "Verifiable Trust",
+      subtitle: "The Credibility Moat",
+      body: "Turn compliance into a competitive asset. Every transaction is automatically verified and audit-ready upon creation, creating a level of institutional trust that defines the modern enterprise.",
       icon: <VerifiedRounded />,
-      color: colors.successGreen // Trust/Compliance color for L3
+      color: colors.lucraGold,
     },
   ];
 
   return (
-    <Container
-      maxWidth="lg"
-      // Apply consistent padding (Issue 5 Fix)
-      sx={{ py: { xs: 10, md: 14 }, textAlign: "center" }}
-    >
-      <motion.div
-        initial="hidden"
-        whileInView="show"
-        variants={fadeInUp}
-        viewport={{ once: true, amount: 0.3 }}
-      >
-        <Typography
-          variant="h4"
-          fontWeight={900}
-          color={currentColors.textPrimary}
-          sx={{ mb: 1 }}
-        >
-          Omeca's Architectural Moat: The Trust Stack
-        </Typography>
+    <Box sx={{ 
+        py: { xs: 12, md: 16 }, 
+        overflow: "hidden" 
+    }}>
+        <Container maxWidth="xl" sx={{ px: { xs: 3, md: 6, xl: 12 } }}>
+            <motion.div
+                variants={containerVar}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true, margin: "-50px" }}
+            >
+                {/* Header Section */}
+                <Box sx={{ 
+                    textAlign: "center", 
+                    mb: { xs: 8, md: 12 }, 
+                    maxWidth: 900, 
+                    mx: "auto" 
+                }}>
+                    <Typography variant="h2" fontWeight={900} sx={{ 
+                        color: palette.textPrimary, 
+                        mb: 3, 
+                        fontSize: { xs: "2.5rem", md: "3.5rem" },
+                        letterSpacing: "-0.03em"
+                    }}>
+                        The <span style={{ 
+                            background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
+                            WebkitBackgroundClip: "text",
+                            WebkitTextFillColor: "transparent"
+                        }}>Trust Stack</span>
+                    </Typography>
+                    
+                    <Typography variant="h5" sx={{ 
+                        color: palette.textDim, 
+                        fontWeight: 400, 
+                        lineHeight: 1.6,
+                        maxWidth: 700,
+                        mx: "auto",
+                        fontSize: { xs: "1.1rem", md: "1.3rem" }
+                    }}>
+                        Omeca creates a defensive moat by unifying data ownership, accounting logic, and regulatory proof.
+                    </Typography>
+                </Box>
 
-        <Typography
-          sx={{
-            color: currentColors.textDim,
-            mb: 8,
-            maxWidth: 800,
-            mx: "auto",
-            lineHeight: 1.6,
-          }}
-        >
-          The Trust Stack is a new foundation for finance. It provides real time operational truth and auditable compliance for the machine economy.
-        </Typography>
-      </motion.div>
-
-      <Grid container spacing={4} alignItems="stretch">
-        {/* Responsive Grid Fix (Issue 5 Fix: xs=12, md=4 for 3 columns) */}
-        {stackLayers.map((item, index) => (
-            <Grid item xs={12} md={4} key={index}>
-                <TrustStackCard {...item} />
-            </Grid>
-        ))}
-      </Grid>
-    </Container>
+                {/* The Grid - 'alignItems: stretch' forces equal height */}
+                <Grid container spacing={4} alignItems="stretch">
+                    {stackData.map((item, index) => (
+                        <Grid item xs={12} md={4} key={index} sx={{ display: "flex" }}>
+                            <StackCard {...item} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </motion.div>
+        </Container>
+    </Box>
   );
 };
 
-export default OmecaTrustStack; // Exporting the clean, new name
+export default OmecaTrustStack;

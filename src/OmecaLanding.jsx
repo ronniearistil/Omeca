@@ -2077,103 +2077,576 @@
 // 
 // export default AppThemeWrapper;
 
-import React, { useState, useMemo, useContext, useRef } from 'react';
-import {
-    AppBar, Toolbar, Container, Box,
-    Typography, TextField, Button, IconButton, Link,
-} from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { motion } from 'framer-motion';
-import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 
-// --- THEME & CONTEXT ---
+
+// import React, { useState, useMemo, useContext, useRef } from 'react';
+// import {
+//     AppBar, Toolbar, Container, Box,
+//     Typography, TextField, Button, IconButton, Link,
+// } from '@mui/material';
+// import { createTheme, ThemeProvider } from '@mui/material/styles';
+// import { motion } from 'framer-motion';
+// import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
+// 
+// // --- THEME & CONTEXT ---
+// import { colors, getDesignTokens } from "./layouts/theme/theme.js";
+// import { ColorModeContext } from "./layouts/theme/ThemeContext.jsx";
+// import ThemeToggleButton from "./layouts/ThemeToggleButton.jsx";
+// 
+// // --- UI COMPONENTS ---
+// import OmecaAppFooter from "./components/ui/AppFooter.jsx";
+// import OmecaDashboardPreview from "./components/ui/OmecaDashboardPreview.jsx"; // NEW: Import the lightweight preview
+// 
+// // --- PAGE COMPONENTS ---
+// import OmecaCareersPage from "./components/pages/CareersPage.jsx";
+// import OmecaCompanyInfoPage from "./components/pages/CompanyInfoPage.jsx";
+// import OmecaContactPage from "./components/pages/ContactPage.jsx";
+// import OmecaLedgerAPIPage from "./components/pages/LedgerAPIPage.jsx";
+// import OmecaLegalPage from "./components/pages/LegalPage.jsx";
+// import OmecaMarginAlertsPage from "./components/pages/MarginAlertsPage.jsx";
+// import OmecaPricingPage from "./components/pages/PricingPage.jsx";
+// import OmecaReconciliationPage from "./components/pages/ReconciliationPage.jsx";
+// import OmecaBrief from "./components/pages/OmecaBrief.jsx";
+// import OmecaLogo from "./components/ui/OmecaLogo.jsx";
+// 
+// 
+// // --- SECTION COMPONENTS (located in omeca-governance/components/sections/) ---
+// 
+// // 1. Control Crisis component (File: ProblemSolutionComparison.jsx)
+// import OmecaProblemSolutionComparison 
+//   from "./omeca-governance/components/sections/ProblemSolutionComparison.jsx"; 
+// 
+// // 2. The Trust Stack component (File: TrustStack.jsx)
+// import OmecaTrustStack 
+//   from "./omeca-governance/components/sections/TrustStack.jsx"; 
+// 
+// // 3. Pilot/Enterprise GTM component (File: DeveloperIntegration.jsx)
+// import OmecaDeveloperIntegration 
+//   from "./omeca-governance/components/sections/DeveloperIntegration.jsx"; 
+// 
+// // 4. Ecosystem Connect component (File: SupportedIntegrations.jsx)
+// import OmecaSupportedIntegrations 
+//   from "./omeca-governance/components/sections/SupportedIntegrations.jsx"; 
+// 
+// // --- GOVERNANCE COMPONENTS ---
+// // REMOVED: OmecaGovernanceDashboardPage import since it's no longer used as a preview
+// import OmecaGovernanceWaitlistDialog 
+//   from "./omeca-governance/components/OmecaGovernanceWaitlistDialog.jsx";
+// 
+//   import OmecaTrustStackPreview 
+//   from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
+//   
+//   
+// 
+// // --- MOTION VARIANTS ---
+// const fadeInUp = { 
+//   hidden: { y: 20, opacity: 0 }, 
+//   show: { 
+//     y: 0, 
+//     opacity: 1, 
+//     transition: { type: "spring", stiffness: 100, damping: 20 } 
+//   } 
+// };
+// 
+// 
+// // =================================================================
+// // 1. MAIN APPLICATION ROUTER (OmecaLanding)
+// // =================================================================
+// 
+// const OmecaLanding = () => {
+//     const { mode } = useContext(ColorModeContext);
+// 
+//     const [email, setEmail] = useState('');
+//     const [submitted, setSubmitted] = useState(false);
+//     const [page, setPage] = useState('home'); 
+//     const emailInputRef = useRef(null);
+// 
+//     // --- Form logic remains unchanged ---
+//     const handleSubmit = () => {
+//         if (email && email.includes('@') && email.includes('.')) {
+//             console.log('Omeca invite request:', { email });
+//             setSubmitted(true);
+//         } else {
+//             setSubmitted(false);
+//             const errorMsg = document.getElementById('emailError');
+//             if (errorMsg) {
+//                 errorMsg.style.opacity = '1';
+//                 setTimeout(() => (errorMsg.style.opacity = '0'), 4000);
+//             }
+//         }
+//     };
+// 
+//     const handleRequestInviteClick = () => {
+//         if (emailInputRef.current) {
+//             emailInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//             setTimeout(() => emailInputRef.current.focus(), 300);
+//         }
+//     };
+// 
+//     const currentColors = colors[mode];
+// 
+//     // --- Page Router Component ---
+//     const PageRouter = () => {
+//         React.useEffect(() => {
+//             window.scrollTo({ top: 0, behavior: 'smooth' });
+//         }, [page]);
+// 
+//         switch (page) {
+//             // Products
+//             case 'ledger': return <OmecaLedgerAPIPage setPage={setPage} />;
+//             case 'reconciliation': return <OmecaReconciliationPage setPage={setPage} />;
+//             case 'alerts': return <OmecaMarginAlertsPage setPage={setPage} />;
+//             case 'pricing': return <OmecaPricingPage setPage={setPage} />;
+//             
+//             // Company
+//             case 'about':
+//             case 'blog': return <OmecaCompanyInfoPage setPage={setPage} />;
+//             case 'careers': return <OmecaCareersPage setPage={setPage} />;
+//             case 'contact': return <OmecaContactPage setPage={setPage} />;
+//             case 'brief': return <OmecaBrief setPage={setPage} />;
+// 
+//             case "trust-stack":
+//     return <OmecaTrustStackPreview setPage={setPage} />;
+// 
+//             
+//             // Legal & Docs
+//             case 'privacy':
+//             case 'cookies':
+//             case 'terms':
+//             case 'security':
+//             case 'documentation': return <OmecaLegalPage setPage={setPage} currentTarget={page} />;
+//             
+//             case 'home':
+//             default:
+//                 return (
+//                     <>
+//                         {/* HERO SECTION */}
+//                         <Box
+//                             sx={{
+//                                 pt: { xs: 8, md: 9 },
+//                                 pb: { xs: 4, md: 6 },
+//                                 px: { xs: 2, sm: 4 },
+//                                 overflowX: 'hidden',
+//                                 textAlign: 'center',
+//                                 background: `radial-gradient(900px 400px at 50% -10%, ${currentColors.bgGradA} 0%, ${currentColors.bgTop} 60%), linear-gradient(180deg, ${currentColors.bgGradB} 0%, ${currentColors.bgTop} 40%)`
+//                             }}
+//                         >
+//                             <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+//                                 
+//                                 {/* BRAND HEADER */}
+//                                 <div>
+//                                     <Typography
+//                                         component="h1"
+//                                         sx={{
+//                                             fontWeight: 1000,
+//                                             lineHeight: 1.05,
+//                                             fontSize: "clamp(4rem, 12vw, 9rem)",
+//                                             letterSpacing: "-0.02em",
+//                                             mb: 3,
+//                                             textAlign: "center",
+//                                             background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
+//                                             WebkitBackgroundClip: "text",
+//                                             WebkitTextFillColor: "transparent",
+//                                         }}
+//                                     >
+//                                         Omeca
+//                                     </Typography>
+//                                 </div>
+//                                 
+//                                 {/* MAIN HERO HEADLINE */}
+//                                 <div>
+// <Typography
+//     variant="h3"
+//     fontWeight={900}
+//     sx={{
+//         fontSize: { xs: "1.8rem", sm: "2.6rem", md: "3.4rem", lg: "3.8rem" },
+//         wordBreak: "break-word",
+//         px: { xs: 2, sm: 4 },
+//         fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+//         lineHeight: 1.15,
+//         color: currentColors.textPrimary,
+//         textAlign: "center",
+//         mb: 2,
+//         "& .aiGradient": {
+//             background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
+//             WebkitBackgroundClip: "text",
+//             WebkitTextFillColor: "transparent",
+//             display: "inline-block",
+//             fontWeight: 900,
+//         },
+//     }}
+// >
+//     The <span className="aiGradient">Self-Driving</span> Cognitive ERP
+// </Typography>
+// 
+//                                 </div>
+// 
+// <Typography
+//     variant="h5"
+//     align="center"
+//     sx={{
+//         fontSize: { xs: '1rem', sm: '1.15rem', md: '1.3rem' },
+//         color: currentColors.textDim,
+//         px: { xs: 3, md: 0 },
+//         lineHeight: 1.6,
+//         fontWeight: 500,
+//         maxWidth: '720px',
+//         mx: 'auto',
+//         mb: 2.5,
+//     }}
+// >
+//     Transforming ERPs from passive record-keeping to continuous, autonomous control.  
+//     <strong>Omeca</strong> unifies operational truth, real-time close, and verifiable intelligence into a single cognitive system of record.
+// </Typography>
+// 
+//                             </motion.div>
+// 
+//                             {/* Inline invite form */}
+//                             <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.45 }}>
+//                                 <Box sx={{
+//                                     mt: { xs: 3, sm: 4 },
+//                                     flexDirection: { xs: 'column', sm: 'row' },
+//                                     alignItems: 'center',
+//                                     justifyContent: 'center',
+//                                     gap: { xs: 2, sm: 0 },
+//                                 }} id="invite-form-target">
+//                                     {!submitted ? (
+//                                         <>
+//                                             <TextField variant="outlined" placeholder="Your work email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+//                                                 inputRef={emailInputRef}
+//                                                 InputProps={{ sx: { width: { xs: '250px', sm: '350px' }, borderRadius: '8px 0 0 8px', border: `1px solid ${currentColors.textDim}44`, } }}
+//                                                 sx={{ '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
+//                                             />
+//                                             <Button variant="contained" size="large" endIcon={<ArrowForwardIosRounded />} onClick={handleSubmit}
+//                                                 sx={{ borderRadius: '0 8px 8px 0', py: 1.3, fontWeight: 800, textTransform: 'none', bgcolor: colors.accent, color: currentColors.bgTop, '&:hover': { bgcolor: colors.accentHover } }}>
+//                                                 Get Started
+//                                             </Button>
+//                                         </>
+//                                     ) : (
+//                                         <Typography variant="h6" sx={{ mt: 4, color: colors.accent }}>Thanks! We’ll be in touch shortly.</Typography>
+//                                     )}
+//                                 </Box>
+//                             </motion.div>
+// 
+//                             {/* Dashboard Preview Placement (Using the new lightweight component) */}
+//                             {/* <Box sx={{ py: { xs: 2, md: 4 } }}>
+//                                 <OmecaDashboardPreview />
+//                             </Box> */}
+// {/* Trust Stack Preview (Core / Ledger / Governance) */}
+// <Box sx={{ py: { xs: 2, md: 4 } }}>
+//     <OmecaDashboardPreview 
+//         setPage={setPage}
+//         onExplore={() => setPage("trust-stack")}
+//     />
+// </Box>
+// 
+// 
+// 
+//                         </Box>
+//                         
+//                         {/* CONTENT SECTIONS - NEW PITCH DECK ORDER (Fixes Issue 1, 4, 5) */}
+//                         <OmecaProblemSolutionComparison /> 
+//                         <OmecaTrustStack />              
+//                         <OmecaDeveloperIntegration setPage={setPage} /> 
+//                         <OmecaSupportedIntegrations />     
+//                     </>
+//                 );
+//         }
+//     };
+// 
+// 
+//     return (
+//         <Box sx={{
+//             bgcolor: currentColors.bgTop,
+//             color: currentColors.textPrimary,
+//             minHeight: '100vh',
+//         }}>
+// 
+//             {/* --- TOP NAV (UNIFIED) --- */}
+//             <AppBar position="static" elevation={0} sx={{ bgcolor: 'transparent', pt: 1 }}>
+//                 <Toolbar sx={{ justifyContent: 'space-between' }}>
+//                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.8, cursor: 'pointer' }} onClick={() => setPage('home')}>
+//                         <OmecaLogo size={90} />
+// 
+//                     </Box>
+// 
+//                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+//                         <ThemeToggleButton />
+//                         <Button
+//                             variant="outlined"
+//                             size="medium"
+//                             sx={{
+//                                 borderColor: colors.accent,
+//                                 color: colors.accent,
+//                                 fontWeight: 700,
+//                                 textTransform: 'none',
+//                                 '&:hover': {
+//                                     bgcolor: `${colors.accent}14`,
+//                                     borderColor: colors.accent,
+//                                 }
+//                             }}
+//                             onClick={handleRequestInviteClick}
+//                         >
+//                             Request Invite
+//                         </Button>
+//                     </Box>
+//                 </Toolbar>
+//             </AppBar>
+// 
+//             {/* --- MAIN PAGE CONTENT AREA (Router) --- */}
+//             <PageRouter />
+// 
+//             {/* --- FOOTER --- */}
+//             <OmecaAppFooter setPage={setPage} />
+//         </Box>
+//     );
+// };
+// 
+// // =================================================================
+// // 2. APP WRAPPER COMPONENT (FINAL EXPORT)
+// // =================================================================
+// 
+// const AppThemeWrapper = () => {
+//     const preferredMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+//     const [mode, setMode] = useState(preferredMode);
+// 
+//     const colorMode = useMemo(
+//         () => ({
+//             mode,
+//             toggleColorMode: () => {
+//                 setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+//             },
+//         }),
+//         [mode],
+//     );
+// 
+//     const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+// 
+//     return (
+//         <ColorModeContext.Provider value={{ ...colorMode, mode }}>
+//             <ThemeProvider theme={theme}>
+//                 <OmecaLanding />
+//             </ThemeProvider>
+//         </ColorModeContext.Provider>
+//     );
+// };
+// 
+// export default AppThemeWrapper;
+
+
+// Modernizing page
+
+
+import React, { useState, useMemo, useContext, useEffect, useRef } from 'react';
+import {
+    AppBar, Toolbar, Box,
+    Typography, TextField, Button, IconButton, 
+    createTheme, ThemeProvider, CssBaseline,
+    useMediaQuery, InputAdornment, Paper, Chip, LinearProgress, Grid
+} from '@mui/material';
+import { motion } from 'framer-motion';
+import { 
+    ArrowForward, 
+    Menu as MenuIcon,
+    AutoGraphRounded,
+    VerifiedUserRounded,
+    SpeedRounded,
+    Bolt as BoltIcon
+} from '@mui/icons-material';
+
+// --- IMPORTS (Relative to src/) ---
 import { colors, getDesignTokens } from "./layouts/theme/theme.js";
 import { ColorModeContext } from "./layouts/theme/ThemeContext.jsx";
 import ThemeToggleButton from "./layouts/ThemeToggleButton.jsx";
-
-// --- UI COMPONENTS ---
 import OmecaAppFooter from "./components/ui/AppFooter.jsx";
-import OmecaDashboardPreview from "./components/ui/OmecaDashboardPreview.jsx"; // NEW: Import the lightweight preview
-
-// --- PAGE COMPONENTS ---
-import OmecaCareersPage from "./components/pages/CareersPage.jsx";
-import OmecaCompanyInfoPage from "./components/pages/CompanyInfoPage.jsx";
-import OmecaContactPage from "./components/pages/ContactPage.jsx";
-import OmecaLedgerAPIPage from "./components/pages/LedgerAPIPage.jsx";
-import OmecaLegalPage from "./components/pages/LegalPage.jsx";
-import OmecaMarginAlertsPage from "./components/pages/MarginAlertsPage.jsx";
-import OmecaPricingPage from "./components/pages/PricingPage.jsx";
-import OmecaReconciliationPage from "./components/pages/ReconciliationPage.jsx";
-import OmecaBrief from "./components/pages/OmecaBrief.jsx";
 import OmecaLogo from "./components/ui/OmecaLogo.jsx";
 
+// --- SECTIONS ---
+import OmecaProblemSolutionComparison from "./omeca-governance/components/sections/ProblemSolutionComparison.jsx"; 
+import OmecaTrustStack from "./omeca-governance/components/sections/TrustStack.jsx"; 
+import OmecaDeveloperIntegration from "./omeca-governance/components/sections/DeveloperIntegration.jsx"; 
+import OmecaSupportedIntegrations from "./omeca-governance/components/sections/SupportedIntegrations.jsx"; 
 
-// --- SECTION COMPONENTS (located in omeca-governance/components/sections/) ---
+// --- PAGES ---
+import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
+import OmecaPricingPage from "./components/pages/PricingPage.jsx";
 
-// 1. Control Crisis component (File: ProblemSolutionComparison.jsx)
-import OmecaProblemSolutionComparison 
-  from "./omeca-governance/components/sections/ProblemSolutionComparison.jsx"; 
+// =================================================================
+// 1. INTERNAL COMPONENT: HOMEPAGE SNAPSHOT (Restored from Screenshot)
+// =================================================================
 
-// 2. The Trust Stack component (File: TrustStack.jsx)
-import OmecaTrustStack 
-  from "./omeca-governance/components/sections/TrustStack.jsx"; 
+const OmecaHomepagePreview = ({ onExplore }) => {
+  const { mode } = useContext(ColorModeContext);
+  const isDark = mode === 'dark';
 
-// 3. Pilot/Enterprise GTM component (File: DeveloperIntegration.jsx)
-import OmecaDeveloperIntegration 
-  from "./omeca-governance/components/sections/DeveloperIntegration.jsx"; 
+  // Simulation State
+  const [spend, setSpend] = useState(11.2);
+  const [unaudited, setUnaudited] = useState(2.5);
+  const [assurance, setAssurance] = useState(99.8);
+  const [efficiency, setEfficiency] = useState(92);
 
-// 4. Ecosystem Connect component (File: SupportedIntegrations.jsx)
-import OmecaSupportedIntegrations 
-  from "./omeca-governance/components/sections/SupportedIntegrations.jsx"; 
+  // Subtle live ticker effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+        setSpend(prev => +(prev + (Math.random() * 0.05 - 0.02)).toFixed(2));
+        setUnaudited(prev => Math.max(0, +(prev + (Math.random() * 0.1 - 0.05)).toFixed(1)));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
-// --- GOVERNANCE COMPONENTS ---
-// REMOVED: OmecaGovernanceDashboardPage import since it's no longer used as a preview
-import OmecaGovernanceWaitlistDialog 
-  from "./omeca-governance/components/OmecaGovernanceWaitlistDialog.jsx";
+  // Colors matching your screenshot
+  const cardBg = isDark ? "#131823" : "#FFFFFF"; 
+  const textColor = isDark ? "#FFFFFF" : "#1F2937";
+  const teal = "#38B2AC"; 
+  const red = "#F56565";  
+  const green = "#48BB78"; 
 
-  import OmecaTrustStackPreview 
-  from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
-  
-  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          bgcolor: cardBg,
+          borderRadius: 4,
+          p: { xs: 4, md: 6 },
+          maxWidth: '1000px',
+          mx: 'auto',
+          textAlign: 'center',
+          border: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}`,
+          boxShadow: isDark ? '0 20px 50px -10px rgba(0,0,0,0.5)' : '0 20px 50px -10px rgba(0,0,0,0.1)'
+        }}
+      >
+        {/* TITLE */}
+        <Typography variant="h4" fontWeight={800} sx={{ color: textColor, mb: 6 }}>
+            Live Snapshot from the <span style={{ color: teal }}>Omeca Trust Stack</span>
+        </Typography>
 
-// --- MOTION VARIANTS ---
-const fadeInUp = { 
-  hidden: { y: 20, opacity: 0 }, 
-  show: { 
-    y: 0, 
-    opacity: 1, 
-    transition: { type: "spring", stiffness: 100, damping: 20 } 
-  } 
+        {/* 3-COLUMN GRID */}
+        <Grid container spacing={4} justifyContent="center" alignItems="stretch" sx={{ mb: 6 }}>
+            
+            {/* 1. Total Spend (Plain) */}
+            <Grid item xs={12} md={4}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', height: '100%', p: 2 }}>
+                    <Typography variant="subtitle1" fontWeight={700} sx={{ color: textColor, mb: 1 }}>
+                        Total Machine Spend
+                    </Typography>
+                    <Typography variant="h2" fontWeight={800} sx={{ color: teal, mb: 1, fontSize: '3rem' }}>
+                        ${spend}M
+                    </Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ color: teal }}>
+                        +12.5% vs Last Period
+                    </Typography>
+                </Box>
+            </Grid>
+
+            {/* 2. Unaudited (Red Border) */}
+            <Grid item xs={12} md={4}>
+                <Box sx={{ 
+                    border: `1px solid ${red}`, 
+                    borderRadius: 3, 
+                    p: 4,
+                    bgcolor: isDark ? 'rgba(245, 101, 101, 0.05)' : 'rgba(245, 101, 101, 0.02)',
+                    height: '100%',
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                }}>
+                    <Typography variant="subtitle1" fontWeight={700} sx={{ color: textColor, mb: 1 }}>
+                        Unaudited Machine Spend
+                    </Typography>
+                    <Typography variant="h2" fontWeight={800} sx={{ color: red, mb: 1, fontSize: '3rem' }}>
+                        {unaudited}%
+                    </Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ color: red }}>
+                        -4.2% Cost Overrun
+                    </Typography>
+                </Box>
+            </Grid>
+
+            {/* 3. Assurance (Green Border) */}
+            <Grid item xs={12} md={4}>
+                <Box sx={{ 
+                    border: `1px solid ${green}`, 
+                    borderRadius: 3, 
+                    p: 4,
+                    bgcolor: isDark ? 'rgba(72, 187, 120, 0.05)' : 'rgba(72, 187, 120, 0.02)',
+                    height: '100%',
+                    display: 'flex', flexDirection: 'column', justifyContent: 'center'
+                }}>
+                    <Typography variant="subtitle1" fontWeight={700} sx={{ color: textColor, mb: 1 }}>
+                        Mandated Assurance Score
+                    </Typography>
+                    <Typography variant="h2" fontWeight={800} sx={{ color: green, mb: 1, fontSize: '3rem' }}>
+                        {assurance}%
+                    </Typography>
+                    <Typography variant="caption" fontWeight={700} sx={{ color: green }}>
+                        +12.5% vs Last Period
+                    </Typography>
+                </Box>
+            </Grid>
+        </Grid>
+
+        {/* BOTTOM STAT */}
+        <Box sx={{ mb: 6 }}>
+            <Typography variant="subtitle1" fontWeight={700} sx={{ color: textColor, mb: 1 }}>
+                Efficiency Signals
+            </Typography>
+            <Typography variant="h2" fontWeight={800} sx={{ color: teal, mb: 1, fontSize: '3rem' }}>
+                {efficiency}%
+            </Typography>
+            <Typography variant="caption" fontWeight={700} sx={{ color: teal }}>
+                +12.5% vs Last Period
+            </Typography>
+        </Box>
+
+        {/* CTA LINK */}
+        <Button
+            onClick={onExplore}
+            endIcon={<ArrowForward />}
+            sx={{
+                textTransform: 'none',
+                fontSize: '1.1rem',
+                fontWeight: 700,
+                color: teal,
+                '&:hover': { bgcolor: 'transparent', opacity: 0.8, transform: 'translateX(4px)' },
+                transition: 'all 0.2s'
+            }}
+        >
+            Explore Omeca Trust Stack
+        </Button>
+
+      </Paper>
+    </motion.div>
+  );
 };
 
+// =================================================================
+// 2. MAIN LANDING LOGIC
+// =================================================================
 
-// =================================================================
-// 1. MAIN APPLICATION ROUTER (OmecaLanding)
-// =================================================================
+const PlaceholderPage = ({ title }) => (
+    <Box sx={{ pt: 20, pb: 20, textAlign: 'center', minHeight: '60vh' }}>
+        <Typography variant="h2" fontWeight={800} color="text.primary" gutterBottom>{title}</Typography>
+        <Typography variant="h5" color="text.secondary">Coming Soon</Typography>
+    </Box>
+);
 
 const OmecaLanding = () => {
     const { mode } = useContext(ColorModeContext);
-
+    const [page, setPage] = useState('home'); 
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
-    const [page, setPage] = useState('home'); 
     const emailInputRef = useRef(null);
 
-    // --- Form logic remains unchanged ---
-    const handleSubmit = () => {
-        if (email && email.includes('@') && email.includes('.')) {
-            console.log('Omeca invite request:', { email });
-            setSubmitted(true);
-        } else {
-            setSubmitted(false);
-            const errorMsg = document.getElementById('emailError');
-            if (errorMsg) {
-                errorMsg.style.opacity = '1';
-                setTimeout(() => (errorMsg.style.opacity = '0'), 4000);
-            }
-        }
-    };
+    const currentColors = colors[mode];
+    const isDark = mode === 'dark';
 
+    useEffect(() => { window.scrollTo({ top: 0, behavior: 'smooth' }); }, [page]);
+
+    const handleSubmit = () => { if (email && email.includes('@')) setSubmitted(true); };
     const handleRequestInviteClick = () => {
         if (emailInputRef.current) {
             emailInputRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -2181,248 +2654,104 @@ const OmecaLanding = () => {
         }
     };
 
-    const currentColors = colors[mode];
-
-    // --- Page Router Component ---
-    const PageRouter = () => {
-        React.useEffect(() => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }, [page]);
-
+    const renderPage = () => {
         switch (page) {
-            // Products
-            case 'ledger': return <OmecaLedgerAPIPage setPage={setPage} />;
-            case 'reconciliation': return <OmecaReconciliationPage setPage={setPage} />;
-            case 'alerts': return <OmecaMarginAlertsPage setPage={setPage} />;
+            case 'trust-stack': return <OmecaTrustStackPreview setPage={setPage} initialLayer={null} />;
+            case 'trust-stack-core': return <OmecaTrustStackPreview setPage={setPage} initialLayer="core" />;
+            case 'trust-stack-ledger': return <OmecaTrustStackPreview setPage={setPage} initialLayer="ledger" />;
+            case 'trust-stack-governance': return <OmecaTrustStackPreview setPage={setPage} initialLayer="governance" />;
             case 'pricing': return <OmecaPricingPage setPage={setPage} />;
-            
-            // Company
-            case 'about':
-            case 'blog': return <OmecaCompanyInfoPage setPage={setPage} />;
-            case 'careers': return <OmecaCareersPage setPage={setPage} />;
-            case 'contact': return <OmecaContactPage setPage={setPage} />;
-            case 'brief': return <OmecaBrief setPage={setPage} />;
-
-            case "trust-stack":
-    return <OmecaTrustStackPreview setPage={setPage} />;
-
-            
-            // Legal & Docs
-            case 'privacy':
-            case 'cookies':
-            case 'terms':
-            case 'security':
-            case 'documentation': return <OmecaLegalPage setPage={setPage} currentTarget={page} />;
-            
+            case 'contact': return <PlaceholderPage title="Partner Login" />;
+            case 'brief': return <PlaceholderPage title="Investor Brief" />;
+            case 'careers': return <PlaceholderPage title="Careers" />;
+            case 'about': return <PlaceholderPage title="About Omeca" />;
             case 'home':
             default:
                 return (
                     <>
-                        {/* HERO SECTION */}
-                        <Box
-                            sx={{
-                                pt: { xs: 8, md: 9 },
-                                pb: { xs: 4, md: 6 },
-                                px: { xs: 2, sm: 4 },
-                                overflowX: 'hidden',
-                                textAlign: 'center',
-                                background: `radial-gradient(900px 400px at 50% -10%, ${currentColors.bgGradA} 0%, ${currentColors.bgTop} 60%), linear-gradient(180deg, ${currentColors.bgGradB} 0%, ${currentColors.bgTop} 40%)`
-                            }}
-                        >
-                            <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                                
-                                {/* BRAND HEADER */}
-                                <div>
-                                    <Typography
-                                        component="h1"
-                                        sx={{
-                                            fontWeight: 1000,
-                                            lineHeight: 1.05,
-                                            fontSize: "clamp(4rem, 12vw, 9rem)",
-                                            letterSpacing: "-0.02em",
-                                            mb: 3,
-                                            textAlign: "center",
-                                            background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
-                                            WebkitBackgroundClip: "text",
-                                            WebkitTextFillColor: "transparent",
-                                        }}
-                                    >
-                                        Omeca
+                        {/* HERO */}
+                        <Box sx={{ pt: { xs: 12, md: 20 }, pb: { xs: 10, md: 16 }, px: 3, overflow: 'hidden', position: 'relative', background: isDark ? `radial-gradient(circle at 50% 20%, ${colors.accent}10 0%, ${currentColors.bgTop} 60%)` : `radial-gradient(circle at 50% 20%, ${colors.accent}08 0%, ${currentColors.bgTop} 60%)` }}>
+                            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: "easeOut" }}>
+                                <Box sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto', mb: 8 }}>
+                                    <Typography variant="h1" sx={{ fontWeight: 700, fontSize: { xs: "3.5rem", md: "6rem" }, letterSpacing: "-0.03em", lineHeight: 1.1, mb: 3, color: currentColors.textPrimary }}>
+                                        The <span style={{ background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Self-Driving</span><br />Cognitive ERP
                                     </Typography>
-                                </div>
-                                
-                                {/* MAIN HERO HEADLINE */}
-                                <div>
-<Typography
-    variant="h3"
-    fontWeight={900}
-    sx={{
-        fontSize: { xs: "1.8rem", sm: "2.6rem", md: "3.4rem", lg: "3.8rem" },
-        wordBreak: "break-word",
-        px: { xs: 2, sm: 4 },
-        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-        lineHeight: 1.15,
-        color: currentColors.textPrimary,
-        textAlign: "center",
-        mb: 2,
-        "& .aiGradient": {
-            background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            display: "inline-block",
-            fontWeight: 900,
-        },
-    }}
->
-    The <span className="aiGradient">Self-Driving</span> Cognitive ERP
-</Typography>
-
-                                </div>
-
-<Typography
-    variant="h5"
-    align="center"
-    sx={{
-        fontSize: { xs: '1rem', sm: '1.15rem', md: '1.3rem' },
-        color: currentColors.textDim,
-        px: { xs: 3, md: 0 },
-        lineHeight: 1.6,
-        fontWeight: 500,
-        maxWidth: '720px',
-        mx: 'auto',
-        mb: 2.5,
-    }}
->
-    Transforming ERPs from passive record-keeping to continuous, autonomous control.  
-    <strong>Omeca</strong> unifies operational truth, real-time close, and verifiable intelligence into a single cognitive system of record.
-</Typography>
-
-                            </motion.div>
-
-                            {/* Inline invite form */}
-                            <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.35, duration: 0.45 }}>
-                                <Box sx={{
-                                    mt: { xs: 3, sm: 4 },
-                                    flexDirection: { xs: 'column', sm: 'row' },
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    gap: { xs: 2, sm: 0 },
-                                }} id="invite-form-target">
+                                    <Typography variant="h5" sx={{ fontSize: { xs: '1.1rem', md: '1.35rem' }, color: currentColors.textDim, lineHeight: 1.6, fontWeight: 400, maxWidth: '760px', mx: 'auto' }}>
+                                        Transforming ERPs from passive record-keeping to continuous, autonomous control. <strong>Omeca</strong> unifies operational truth, real-time close, and verifiable intelligence.
+                                    </Typography>
+                                </Box>
+                                {/* HOOK COMPONENT (Restored from Screenshot) */}
+                                <Box sx={{ maxWidth: 1000, mx: 'auto', mb: 10 }}>
+                                    <OmecaHomepagePreview onExplore={() => setPage("trust-stack")} />
+                                </Box>
+                                {/* EMAIL CAPTURE */}
+                                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1.5, flexWrap: 'wrap' }} id="invite-form-target">
                                     {!submitted ? (
                                         <>
-                                            <TextField variant="outlined" placeholder="Your work email" type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                                                inputRef={emailInputRef}
-                                                InputProps={{ sx: { width: { xs: '250px', sm: '350px' }, borderRadius: '8px 0 0 8px', border: `1px solid ${currentColors.textDim}44`, } }}
-                                                sx={{ '& .MuiOutlinedInput-notchedOutline': { border: 'none' } }}
-                                            />
-                                            <Button variant="contained" size="large" endIcon={<ArrowForwardIosRounded />} onClick={handleSubmit}
-                                                sx={{ borderRadius: '0 8px 8px 0', py: 1.3, fontWeight: 800, textTransform: 'none', bgcolor: colors.accent, color: currentColors.bgTop, '&:hover': { bgcolor: colors.accentHover } }}>
-                                                Get Started
-                                            </Button>
+                                            <TextField inputRef={emailInputRef} placeholder="Enter work email" value={email} onChange={(e) => setEmail(e.target.value)} variant="outlined" sx={{ bgcolor: 'background.paper', width: { xs: '100%', sm: 320 }, '& .MuiOutlinedInput-root': { borderRadius: 2 } }} InputProps={{ endAdornment: (<InputAdornment position="end"><IconButton edge="end" disabled><ArrowForward sx={{ color: colors.accent }} /></IconButton></InputAdornment>) }} />
+                                            <Button variant="contained" size="large" onClick={handleSubmit} sx={{ borderRadius: 2, px: 4, fontWeight: 800, textTransform: 'none', bgcolor: colors.accent, color: '#000', fontSize: '1rem', '&:hover': { bgcolor: colors.accentHover } }}>Request Invite</Button>
                                         </>
                                     ) : (
-                                        <Typography variant="h6" sx={{ mt: 4, color: colors.accent }}>Thanks! We’ll be in touch shortly.</Typography>
+                                        <Typography variant="h6" sx={{ color: colors.successGreen, fontWeight: 700, py: 1 }}>Access requested. We'll be in touch shortly.</Typography>
                                     )}
                                 </Box>
+                                <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', mt: 2, color: currentColors.textDim }}>Limited pilot availability for Q3 2025.</Typography>
                             </motion.div>
-
-                            {/* Dashboard Preview Placement (Using the new lightweight component) */}
-                            {/* <Box sx={{ py: { xs: 2, md: 4 } }}>
-                                <OmecaDashboardPreview />
-                            </Box> */}
-{/* Trust Stack Preview (Core / Ledger / Governance) */}
-<Box sx={{ py: { xs: 2, md: 4 } }}>
-    <OmecaDashboardPreview 
-        setPage={setPage}
-        onExplore={() => setPage("trust-stack")}
-    />
-</Box>
-
-
-
                         </Box>
                         
-                        {/* CONTENT SECTIONS - NEW PITCH DECK ORDER (Fixes Issue 1, 4, 5) */}
-                        <OmecaProblemSolutionComparison /> 
+                        {/* NARRATIVE SECTIONS */}
+                        <Box sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                            <OmecaProblemSolutionComparison /> 
+                        </Box>
                         <OmecaTrustStack />              
-                        <OmecaDeveloperIntegration setPage={setPage} /> 
+                        <Box sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)' }}>
+                            <OmecaDeveloperIntegration setPage={setPage} /> 
+                        </Box>
                         <OmecaSupportedIntegrations />     
                     </>
                 );
         }
     };
 
-
     return (
-        <Box sx={{
-            bgcolor: currentColors.bgTop,
-            color: currentColors.textPrimary,
-            minHeight: '100vh',
-        }}>
-
-            {/* --- TOP NAV (UNIFIED) --- */}
-            <AppBar position="static" elevation={0} sx={{ bgcolor: 'transparent', pt: 1 }}>
-                <Toolbar sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.8, cursor: 'pointer' }} onClick={() => setPage('home')}>
-                        <OmecaLogo size={90} />
-
-                    </Box>
-
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                        <ThemeToggleButton />
-                        <Button
-                            variant="outlined"
-                            size="medium"
-                            sx={{
-                                borderColor: colors.accent,
-                                color: colors.accent,
-                                fontWeight: 700,
-                                textTransform: 'none',
-                                '&:hover': {
-                                    bgcolor: `${colors.accent}14`,
-                                    borderColor: colors.accent,
-                                }
-                            }}
-                            onClick={handleRequestInviteClick}
-                        >
-                            Request Invite
-                        </Button>
-                    </Box>
-                </Toolbar>
-            </AppBar>
-
-            {/* --- MAIN PAGE CONTENT AREA (Router) --- */}
-            <PageRouter />
-
-            {/* --- FOOTER --- */}
-            <OmecaAppFooter setPage={setPage} />
+        <Box sx={{ bgcolor: currentColors.bgTop, color: currentColors.textPrimary, minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+            {/* GLOBAL NAV */}
+            {!page.startsWith('trust-stack') && (
+                <AppBar position="fixed" elevation={0} sx={{ bgcolor: isDark ? 'rgba(11, 15, 23, 0.8)' : 'rgba(248, 250, 252, 0.8)', backdropFilter: "blur(12px)", borderBottom: `1px solid ${currentColors.textDim}15`, transition: 'all 0.3s ease' }}>
+                    <Toolbar sx={{ justifyContent: 'space-between', height: 80 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, cursor: 'pointer' }} onClick={() => setPage('home')}>
+                            <OmecaLogo size={200} />
+                            {/* <Typography variant="h6" fontWeight={900} sx={{ color: currentColors.textPrimary, letterSpacing: '-0.5px' }}>OMECA</Typography> */}
+                        </Box>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, mr: 2 }}>
+                                <Button onClick={() => setPage('home')} sx={{ color: currentColors.textDim, fontWeight: 600, textTransform: 'none', '&:hover': { color: currentColors.textPrimary } }}>Product</Button>
+                                <Button onClick={() => setPage('pricing')} sx={{ color: currentColors.textDim, fontWeight: 600, textTransform: 'none', '&:hover': { color: currentColors.textPrimary } }}>Pricing</Button>
+                                <Button onClick={() => setPage('about')} sx={{ color: currentColors.textDim, fontWeight: 600, textTransform: 'none', '&:hover': { color: currentColors.textPrimary } }}>Company</Button>
+                            </Box>
+                            <ThemeToggleButton />
+                            <Button variant="outlined" size="small" sx={{ borderColor: `${colors.accent}50`, color: colors.accent, fontWeight: 700, borderRadius: 2, textTransform: 'none', display: { xs: 'none', sm: 'flex' }, '&:hover': { bgcolor: `${colors.accent}10`, borderColor: colors.accent } }} onClick={handleRequestInviteClick}>Partner Login</Button>
+                            <IconButton sx={{ display: { xs: 'flex', md: 'none' }, color: currentColors.textPrimary }}><MenuIcon /></IconButton>
+                        </Box>
+                    </Toolbar>
+                </AppBar>
+            )}
+            {/* CONTENT */}
+            <Box sx={{ flex: 1 }}>{renderPage()}</Box>
+            {/* FOOTER */}
+            {!page.startsWith('trust-stack') && <OmecaAppFooter setPage={setPage} />}
         </Box>
     );
 };
 
-// =================================================================
-// 2. APP WRAPPER COMPONENT (FINAL EXPORT)
-// =================================================================
-
 const AppThemeWrapper = () => {
-    const preferredMode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    const [mode, setMode] = useState(preferredMode);
-
-    const colorMode = useMemo(
-        () => ({
-            mode,
-            toggleColorMode: () => {
-                setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
-            },
-        }),
-        [mode],
-    );
-
+    const [mode, setMode] = useState('dark');
+    const colorMode = useMemo(() => ({ mode, toggleColorMode: () => setMode((prev) => (prev === 'light' ? 'dark' : 'light')), }), [mode]);
     const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-
     return (
         <ColorModeContext.Provider value={{ ...colorMode, mode }}>
             <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <OmecaLanding />
             </ThemeProvider>
         </ColorModeContext.Provider>
