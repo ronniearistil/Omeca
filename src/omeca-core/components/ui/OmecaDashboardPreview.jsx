@@ -4,8 +4,8 @@
 // import TrendingUp from '@mui/icons-material/TrendingUp';
 // 
 // // --- FIXED THEME IMPORTS ---
-// import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
-// import { colors } from '../../layouts/theme/theme.js';
+// import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+// import { colors } from '../../../shared/layouts/theme/theme.js';
 // 
 // // Helper component nested inside DashboardPreview.jsx
 // const SimpleGraphLine = ({ color, points }) => (
@@ -74,8 +74,8 @@
 // src/components/ui/OmecaHomepagePreview.jsx
 import React, { useContext, useState, useEffect } from "react";
 import { Box, Paper, Typography, Grid, Button } from "@mui/material";
-import { ColorModeContext } from "../../layouts/theme/ThemeContext.jsx";
-import { colors } from "../../layouts/theme/theme.js";
+import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../../../shared/layouts/theme/theme.js";
 import { motion } from "framer-motion";
 
 const OmecaHomepagePreview = ({ onExplore }) => {
@@ -142,8 +142,11 @@ const OmecaHomepagePreview = ({ onExplore }) => {
       <Paper
         elevation={0}
         sx={{
-          px: { xs: 2.5, md: 6 },
-          py: { xs: 3, md: 5 },
+          // px: { xs: 2.5, md: 6 },
+          // py: { xs: 3, md: 5 },
+          px: { xs: 2, sm: 3, md: 5 },
+py: { xs: 2.5, sm: 3.5, md: 5 },
+
           borderRadius: 3,
           background: palette.card,
           border: `1px solid ${palette.textDim}22`,
@@ -155,7 +158,8 @@ const OmecaHomepagePreview = ({ onExplore }) => {
           align="center"
           sx={{
             fontWeight: 900,
-            mb: 4,
+            // mb: 4,
+            mb: { xs: 3, md: 4 },
             color: palette.textPrimary,
           }}
         >
@@ -178,11 +182,18 @@ const OmecaHomepagePreview = ({ onExplore }) => {
             <Grid item xs={12} sm={6} md={3} key={idx}>
               <Box
                 sx={{
-                  p: 2.5,
-                  borderRadius: 2,
-                  textAlign: "center",
-                  background: `${m.color}08`,
-                  border: `1px solid ${m.color}55`,
+                  // p: 2.5,
+                  // borderRadius: 2,
+                  // textAlign: "center",
+                  // background: `${m.color}08`,
+                  // border: `1px solid ${m.color}55`,
+                  p: { xs: 2, sm: 2.5 },
+borderRadius: 2.5,
+textAlign: "center",
+background: `${m.color}0D`,
+border: `1px solid ${m.color}30`,
+backdropFilter: "blur(6px)",
+
                 }}
               >
                 <Typography variant="body2" sx={{ fontWeight: 700 }}>
@@ -208,7 +219,9 @@ const OmecaHomepagePreview = ({ onExplore }) => {
         </Grid>
 
         {/* CTA */}
-        <Box sx={{ textAlign: "center", mt: 4 }}>
+        {/* <Box sx={{ textAlign: "center", mt: 4 }}> */}
+        <Box sx={{ textAlign: "center", mt: { xs: 3, md: 4 } }}>
+
           <Button
             variant="text"
             onClick={onExplore}

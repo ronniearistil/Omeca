@@ -3,8 +3,8 @@
 // import { motion } from 'framer-motion';
 // 
 // // --- FIXED THEME PATHS ---
-// import { ColorModeContext } from '../../../layouts/theme/ThemeContext.jsx';
-// import { colors } from '../../../layouts/theme/theme.js';
+// import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+// import { colors } from '../../../shared/layouts/theme/theme.js';
 // 
 // const OmecaDeveloperIntegration = () => { 
 //     const { mode } = useContext(ColorModeContext);
@@ -526,13 +526,19 @@ const OmecaSystemMap = () => {
               height: 120,
             }}
           >
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              whileInView={{ scale: 1, opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, type: "spring", bounce: 0.4 }}
-              style={{ width: '100%', height: '100%' }}
-            >
+<motion.div
+  initial={{ scale: 0.8, opacity: 0 }}
+  whileInView={{ scale: 1, opacity: 1 }}
+  viewport={{ once: true }}
+  animate={{ 
+    boxShadow: [
+      "0 0 0 rgba(0,0,0,0.4)", 
+      "0 0 60px rgba(0,0,0,0.2)"
+    ]
+  }}
+  transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+  style={{ width: '100%', height: '100%' }}
+>
               <Box
                 sx={{
                   width: '100%',
@@ -543,7 +549,8 @@ const OmecaSystemMap = () => {
                   alignItems: 'center',
                   justifyContent: 'center',
                   background: hubGradient,
-                  boxShadow: `0 25px 50px -12px ${mode === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.3)'}`,
+                  backdropFilter: "blur(14px)",
+                  boxShadow: `0 24px 48px -12px ${mode === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.3)'}`,
                   border: "1px solid rgba(255,255,255,0.2)",
                   position: 'relative',
                   overflow: 'hidden'
@@ -604,10 +611,13 @@ const OmecaSystemMap = () => {
                     x2={node.logoPos.left}
                     y2={node.logoPos.top}
                     stroke={lineStroke}
-                    strokeWidth="1.5"
-                    strokeDasharray="5 5" // Dotted style
+                    // strokeWidth="1.5"
+                    strokeWidth="1.25"
+                    // strokeDasharray="5 5" 
+                    strokeDasharray="4 6"
                     initial={{ pathLength: 0, opacity: 0 }}
                     whileInView={{ pathLength: 1, opacity: 1 }}
+                    
                     viewport={{ once: true }}
                     transition={{ duration: 1, delay: i * 0.1 }}
                   />

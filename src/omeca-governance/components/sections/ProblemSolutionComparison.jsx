@@ -5,8 +5,8 @@
 // import CancelRounded from "@mui/icons-material/CancelRounded";
 // 
 // // --- FIXED THEME IMPORTS ---
-// import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
-// import { colors } from "../../../layouts/theme/theme.js";
+// import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+// import { colors } from "../../../shared/layouts/theme/theme.js";
 // 
 // const OmecaProblemSolutionComparison = () => { 
 //   const { mode } = useContext(ColorModeContext);
@@ -178,8 +178,8 @@ import AutoModeRounded from "@mui/icons-material/AutoModeRounded";
 import SyncRounded from "@mui/icons-material/SyncRounded";
 
 // Theme imports
-import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
-import { colors } from "../../../layouts/theme/theme.js";
+import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../../../shared/layouts/theme/theme.js";
 
 // =========================================
 // DATA
@@ -248,27 +248,42 @@ const carouselData = [
 ];
 
 // =========================================
-// SHARED CARD SHELL
+// SHARED CARD (UPDATED)
 // =========================================
-const SharedCard = ({ data, currentColors }) => (
+const SharedCard = ({ data, currentColors, isDark }) => (
   <Paper
     component={motion.div}
-    whileHover={{ y: -4 }}
+    whileHover={{ y: -4, scale: 1.01 }}
+    transition={{ type: "spring", stiffness: 90, damping: 18 }}
     elevation={0}
     sx={{
-      p: { xs: 2.5, md: 4 },
+      // p: { xs: 2.5, md: 4 },
+      p: { xs: 2, sm: 2.5, md: 4 },
+
       height: "100%",
       width: "100%",
-      borderRadius: 3,
+      borderRadius: 4, // unified OS radius
       border: `1px solid ${currentColors.textDim}22`,
-      backgroundColor: currentColors.card,
+
+      // OS glass surface
+      background: isDark
+        ? "linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015))"
+        : "linear-gradient(145deg, #FFFFFF, #F7F9FC)",
+      backdropFilter: "blur(14px)",
+
+      // OS shadow
+      boxShadow: isDark
+        ? "0 20px 50px -12px rgba(0,0,0,0.35)"
+        : "0 20px 50px -12px rgba(0,0,0,0.1)",
+
       display: "flex",
       flexDirection: "column",
       gap: 2,
-      transition: "all 0.25s ease",
       borderLeft: `4px solid ${data.accent}`,
+      transition: "all 0.28s cubic-bezier(0.24, 0.74, 0.32, 1)",
     }}
   >
+    {/* Header Row */}
     <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
       <Box
         sx={{
@@ -276,6 +291,7 @@ const SharedCard = ({ data, currentColors }) => (
           borderRadius: 2,
           backgroundColor: `${data.accent}1A`,
           color: data.accent,
+          height: "100%",
           display: "flex",
         }}
       >
@@ -285,8 +301,12 @@ const SharedCard = ({ data, currentColors }) => (
       <Box>
         <Typography
           variant="h6"
-          fontWeight={800}
-          sx={{ color: currentColors.textPrimary, lineHeight: 1.1 }}
+          fontWeight={900}
+          sx={{
+            color: currentColors.textPrimary,
+            lineHeight: 1.1,
+            letterSpacing: "-0.015em",
+          }}
         >
           {data.title}
         </Typography>
@@ -319,11 +339,12 @@ const SharedCard = ({ data, currentColors }) => (
 );
 
 // =========================================
-// MAIN COMPONENT (FINAL FIXED VERSION)
+// MAIN COMPONENT (UPDATED)
 // =========================================
 const OmecaMarketingCarousel = () => {
   const { mode } = useContext(ColorModeContext);
   const currentColors = colors[mode];
+  const isDark = mode === "dark";
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // Auto-cycle
@@ -338,14 +359,15 @@ const OmecaMarketingCarousel = () => {
   const currentData = carouselData[currentIndex];
 
   return (
-    <Box sx={{ py: { xs: 8, md: 12 }, width: "100%" }}>
+    // <Box sx={{ py: { xs: 6, md: 10 }, width: "100%" }}>
+    <Box sx={{ py: { xs: 3, sm: 4, md: 6 }, width: "100%" }}>
       <Container maxWidth="xl">
         {/* Tabs */}
         <Box
           sx={{
             display: "flex",
             justifyContent: "center",
-            mb: 5,
+            mb: 2,
             gap: 2,
             flexWrap: "wrap",
           }}
@@ -360,12 +382,19 @@ const OmecaMarketingCarousel = () => {
                   px: 3,
                   py: 1,
                   borderRadius: 50,
+
+                  // OS pill styling
                   border: `1px solid ${
-                    active ? colors.accent : "transparent"
+                    active ? colors.accent : currentColors.textDim + "15"
                   }`,
                   backgroundColor: active
-                    ? `${colors.accent}15`
-                    : "transparent",
+                    ? `${colors.accent}12`
+                    : `${currentColors.card}08`,
+                  backdropFilter: "blur(8px)",
+                  boxShadow: active
+                    ? `0 0 0 1px ${colors.accent}20`
+                    : "none",
+
                   transition: "all 0.25s ease",
                 }}
               >
@@ -395,41 +424,32 @@ const OmecaMarketingCarousel = () => {
           >
             <Grid
               container
-              spacing={{ xs: 2, md: 3 }}
+              // spacing={{ xs: 2, md: 3 }}
+              spacing={{ xs: 1.5, sm: 2, md: 3 }}
               justifyContent="center"
               alignItems="stretch"
               sx={{
                 maxWidth: "1400px",
                 margin: "0 auto",
+                pt: { xs: 1, md: 2 },
+                pb: { xs: 1, md: 2 },
               }}
             >
               {/* Crisis Card */}
-              <Grid
-                item
-                xs={12}
-                md={6}
-                sx={{
-                  display: "flex",
-                }}
-              >
+              <Grid item xs={12} md={6} sx={{ display: "flex" }}>
                 <SharedCard
                   data={currentData.crisis}
                   currentColors={currentColors}
+                  isDark={isDark}
                 />
               </Grid>
 
               {/* Solution Card */}
-              <Grid
-                item
-                xs={12}
-                md={6}
-                sx={{
-                  display: "flex",
-                }}
-              >
+              <Grid item xs={12} md={6} sx={{ display: "flex" }}>
                 <SharedCard
                   data={currentData.solution}
                   currentColors={currentColors}
+                  isDark={isDark}
                 />
               </Grid>
             </Grid>

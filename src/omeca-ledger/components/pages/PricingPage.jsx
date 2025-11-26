@@ -7,7 +7,7 @@
 // // import { colors } from '../theme/theme';
 // import { ColorModeContext } from '../components/theme/ThemeContext.js'; 
 // // import { colors } from '../components/theme/theme.js'; 
-// import { colors } from "../../layouts/theme/theme.js";
+// import { colors } from "../../../shared/layouts/theme/theme.js";
 // 
 // 
 // const BackButton = ({ setPage, currentColors }) => (
@@ -160,8 +160,8 @@ import {
   AutoGraphRounded
 } from '@mui/icons-material';
 
-import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
-import { colors } from '../../layouts/theme/theme.js';
+import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+import { colors } from '../../../shared/layouts/theme/theme.js';
 
 // --- MOTION CONFIG ---
 const containerVar = {

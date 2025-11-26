@@ -81,8 +81,8 @@ import { Container, Box, Grid, Typography, Button, Paper, Link } from '@mui/mate
 import { motion } from 'framer-motion';
 import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 // Corrected path assumption
-import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx'; 
-import { colors } from '../../layouts/theme/theme.js'; 
+import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx'; 
+import { colors } from '../../../shared/layouts/theme/theme.js'; 
 
 
 const BackButton = ({ setPage, currentColors }) => (

@@ -5,8 +5,8 @@
 // import { Container, Typography, Grid, Button } from '@mui/material';
 // import { motion } from 'framer-motion';
 // import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
-// import { ColorModeContext } from "../../layouts/theme/ThemeContext.jsx";
-// import { colors } from "../../layouts/theme/theme.js";
+// import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+// import { colors } from "../shared/layouts/theme/theme.js";
 // 
 // 
 // const OmecaSupportedIntegrations = () => { // RENAMED COMPONENT
@@ -70,8 +70,8 @@ import React, { useContext, useMemo } from 'react';
 import { Container, Typography, Box, Chip } from '@mui/material';
 import { motion } from 'framer-motion';
 
-import { ColorModeContext } from '../../../layouts/theme/ThemeContext.jsx';
-import { colors } from '../../../layouts/theme/theme.js';
+import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+import { colors } from '../../../shared/layouts/theme/theme.js';
 
 // Slow, elegant scroll
 const marquee = {
@@ -102,12 +102,16 @@ const OmecaSupportedIntegrations = () => {
 
   return (
     <Box sx={{ 
-      py: { xs: 12, md: 18 }, 
+      py: { xs: 6, md: 10 }, 
       position: 'relative',
       overflow: 'hidden',
-      background: isDark 
-        ? `linear-gradient(180deg, ${palette.bgTop} 0%, ${palette.card} 100%)` 
-        : palette.bgTop
+    //   background: isDark 
+    //     ? `linear-gradient(180deg, ${palette.bgTop} 0%, ${palette.card} 100%)` 
+    //     : palette.bgTop
+    background: isDark
+  ? `linear-gradient(145deg, ${palette.bgTop}, ${palette.card})`
+  : `linear-gradient(145deg, #FFFFFF, #F7F9FC)`,
+
     }}>
       
       {/* --- AMBIENT GLOW --- */}
@@ -166,13 +170,18 @@ const OmecaSupportedIntegrations = () => {
             position: "relative",
             overflow: "hidden",
             py: 6,
-            borderRadius: 6,
+            // borderRadius: 6,
+            borderRadius: 4,
             // Executive Glassmorphism
             background: isDark 
                 ? "linear-gradient(90deg, rgba(255,255,255,0.01) 0%, rgba(255,255,255,0.03) 50%, rgba(255,255,255,0.01) 100%)"
                 : "linear-gradient(90deg, rgba(0,0,0,0.01) 0%, rgba(0,0,0,0.03) 50%, rgba(0,0,0,0.01) 100%)",
             border: `1px solid ${palette.textDim}10`,
-            backdropFilter: "blur(10px)",
+            // backdropFilter: "blur(10px)",
+            backdropFilter: "blur(14px)",
+            WebkitMaskImage: "linear-gradient(to right, transparent, black 20%, black 80%, transparent)",
+maskImage: "linear-gradient(to right, transparent, black 20%, black 80%, transparent)",
+
             boxShadow: isDark ? "0 20px 60px -20px rgba(0,0,0,0.3)" : "0 20px 60px -20px rgba(0,0,0,0.05)"
           }}
         >
@@ -194,7 +203,8 @@ const OmecaSupportedIntegrations = () => {
             animate="animate"
             style={{
               display: "flex",
-              gap: "6rem", 
+            //   gap: "6rem", 
+            gap: "4rem",
               whiteSpace: "nowrap",
               alignItems: "center",
               paddingLeft: "6rem" 
@@ -209,7 +219,8 @@ const OmecaSupportedIntegrations = () => {
                   color: palette.textDim,
                   opacity: 0.5,
                   textTransform: "uppercase",
-                  letterSpacing: "0.05em",
+                //   letterSpacing: "0.05em",
+                letterSpacing: "0.04em",
                   userSelect: "none",
                   fontSize: { xs: "1rem", md: "1.3rem" },
                   fontFamily: "monospace", 

@@ -8,7 +8,7 @@
 // import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
 // 
 // // import { ColorModeContext } from '../components/theme/ThemeContext.js'; 
-// import { ColorModeContext } from "../../layouts/theme/ThemeContext.jsx";
+// import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
 // 
 // import { colors } from '../components/theme/theme.js'; 
 // 
@@ -277,8 +277,8 @@ import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
 
 // Corrected import paths
-import { ColorModeContext } from "../../layouts/theme/ThemeContext.jsx";
-import { colors } from "../../layouts/theme/theme.js";
+import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../../../shared/layouts/theme/theme.js";
 
 
 // =================================================================

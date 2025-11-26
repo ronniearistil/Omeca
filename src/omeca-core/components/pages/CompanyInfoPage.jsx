@@ -121,8 +121,8 @@ import { motion } from "framer-motion";
 import ArrowForwardIosRounded from "@mui/icons-material/ArrowForwardIosRounded";
 import PolicyRounded from "@mui/icons-material/PolicyRounded";
 
-import { ColorModeContext } from "../../layouts/theme/ThemeContext.jsx";
-import { colors } from "../../layouts/theme/theme.js";
+import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../../../shared/layouts/theme/theme.js";
 
 const BackButton = ({ setPage, currentColors }) => (
   <Button

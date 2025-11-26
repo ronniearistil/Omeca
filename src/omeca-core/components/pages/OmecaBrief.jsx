@@ -42,7 +42,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
-import OmecaFlowDiagram from "../../layouts/OmecaFlowDiagram.jsx";
+import OmecaFlowDiagram from "../../../shared/layouts/OmecaFlowDiagram.jsx";
 
 
 // -----------------------------------------------------------------------------
@@ -191,7 +191,7 @@ const AppHeader = () => (
             py: 0.5,
         }}
     >
-        <Container maxWidth="lg">
+<Container maxWidth={false} sx={{ px: { xs: 3, md: 6 }, maxWidth: "1600px", mx: "auto" }}>
             <Toolbar disableGutters sx={{ minHeight: { xs: 56, md: 64 } }}>
                 <OmecaLogo />
                 <Box sx={{ flexGrow: 1 }} />

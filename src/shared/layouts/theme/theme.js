@@ -1,4 +1,4 @@
-// src/layouts/theme/theme.js
+// s../shar../shared/layouts/theme/theme.js
 import { createTheme } from '@mui/material/styles'; // Although createTheme isn't used here, it's fine.
 
 // --- Color Palette and Configuration ---

@@ -10,8 +10,8 @@
 // import AssessmentRoundedIcon from "@mui/icons-material/AssessmentRounded";
 // 
 // // --- FIXED THEME IMPORTS ---
-// import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
-// import { colors } from "../../../layouts/theme/theme.js";
+// import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+// import { colors } from "../../../shared/layouts/theme/theme.js";
 // 
 // const OmecaProfitFlow = () => { 
 //   const { mode } = useContext(ColorModeContext);
@@ -130,8 +130,8 @@ import React, { useContext } from "react";
 import { Container, Typography, Grid, Paper, Box, useTheme, useMediaQuery } from "@mui/material";
 import { motion } from "framer-motion";
 import { Flare, AutorenewRounded, VerifiedRounded } from "@mui/icons-material";
-import { ColorModeContext } from "../../../layouts/theme/ThemeContext.jsx";
-import { colors } from "../../../layouts/theme/theme.js";
+import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../../../shared/layouts/theme/theme.js";
 
 // --- MOTION CONFIG ---
 const containerVar = {
@@ -147,7 +147,9 @@ const itemVar = {
   show: { 
     y: 0, 
     opacity: 1, 
-    transition: { type: "spring", stiffness: 60, damping: 20 } 
+    // transition: { type: "spring", stiffness: 60, damping: 20 } 
+    transition: { type: "spring", stiffness: 80, damping: 20 }
+
   }
 };
 
@@ -170,22 +172,37 @@ const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
           justifyContent: "space-between",
           
           // FLUID VISUALS
-          p: { xs: 4, lg: 5 },
-          borderRadius: 6,
-          background: isDark 
-            ? "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)" 
-            : "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+          p: { xs: 3, lg: 4 },
+          // borderRadius: 6,
+          borderRadius: 4,
+          // background: isDark 
+          //   ? "linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%)" 
+          //   : "linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%)",
+          background: isDark
+  ? "linear-gradient(145deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015))"
+  : "linear-gradient(145deg, #FFFFFF, #F7F9FC)",
+backdropFilter: "blur(14px)",
+
           border: `1px solid ${palette.textDim}15`,
           backdropFilter: "blur(12px)",
-          transition: "all 0.4s ease-out",
+          // transition: "all 0.4s ease-out",
+          transition: "all 0.28s cubic-bezier(0.24, 0.74, 0.32, 1)",
           
+          // "&:hover": {
+          //   transform: "translateY(-6px)",
+          //   borderColor: `${color}40`,
+          //   boxShadow: isDark 
+          //       ? `0 20px 60px -10px ${color}10`
+          //       : `0 20px 60px -10px ${color}20`,
+          // }
           "&:hover": {
-            transform: "translateY(-6px)",
-            borderColor: `${color}40`,
-            boxShadow: isDark 
-                ? `0 20px 60px -10px ${color}10`
-                : `0 20px 60px -10px ${color}20`,
-          }
+  transform: "translateY(-4px)",
+  borderColor: `${color}35`,
+  boxShadow: isDark
+    ? `0 24px 48px -12px ${color}15`
+    : `0 24px 48px -12px ${color}25`,
+}
+
         }}
       >
         {/* Content Top Section */}
@@ -193,8 +210,17 @@ const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
             {/* Header Row */}
             <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 4 }}>
                 <Box sx={{ 
-                    p: 1.5, borderRadius: 3, 
-                    bgcolor: `${color}10`, color: color,
+                    // p: 1.5, borderRadius: 3, 
+                    // bgcolor: `${color}10`,
+                    //  color: color,
+                    p: 1.5,
+borderRadius: 3,
+bgcolor: `${color}12`,
+color: color,
+boxShadow: isDark
+  ? `inset 0 0 0 1px ${color}30`
+  : `inset 0 0 0 1px ${color}25`,
+
                     display: "flex", alignItems: "center", justifyContent: "center" 
                 }}>
                     {React.cloneElement(icon, { sx: { fontSize: 32 } })}
@@ -217,7 +243,10 @@ const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
                 color: palette.textPrimary, 
                 mb: 1, 
                 letterSpacing: "-0.02em",
-                fontSize: { xs: "1.5rem", lg: "1.75rem" } 
+                // fontSize: { xs: "1.5rem", lg: "1.75rem" } 
+                fontSize: { xs: "1.55rem", lg: "1.85rem" },
+letterSpacing: "-0.02em",
+
             }}>
                 {title}
             </Typography>
@@ -226,8 +255,12 @@ const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
                 color: color, 
                 mb: 3, 
                 textTransform: "uppercase", 
-                fontSize: "0.75rem", 
-                letterSpacing: 1 
+                // fontSize: "0.75rem", 
+                // letterSpacing: 1 
+                fontSize: "0.7rem",
+letterSpacing: "0.06em",
+opacity: 0.95,
+
             }}>
                 {subtitle}
             </Typography>
@@ -238,8 +271,12 @@ const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
             <Typography variant="body1" sx={{ 
                 color: palette.textDim, 
                 lineHeight: 1.7, 
-                fontSize: { xs: "0.95rem", lg: "1.05rem" },
-                maxWidth: "100%" 
+                // fontSize: { xs: "0.95rem", lg: "1.05rem" },
+                // maxWidth: "100%" 
+                fontSize: { xs: "0.96rem", lg: "1.06rem" },
+lineHeight: 1.65,
+letterSpacing: "-0.01em",
+
             }}>
                 {body}
             </Typography>
@@ -287,7 +324,9 @@ const OmecaTrustStack = () => {
 
   return (
     <Box sx={{ 
-        py: { xs: 12, md: 16 }, 
+        // py: { xs: 4, md: 6 }, 
+        py: { xs: 6, md: 10 },
+          backgroundColor: mode === 'dark' ? '#121926' : '#F8FAFC',
         overflow: "hidden" 
     }}>
         <Container maxWidth="xl" sx={{ px: { xs: 3, md: 6, xl: 12 } }}>
@@ -300,7 +339,7 @@ const OmecaTrustStack = () => {
                 {/* Header Section */}
                 <Box sx={{ 
                     textAlign: "center", 
-                    mb: { xs: 8, md: 12 }, 
+                    mb: { xs: 4, md: 6 }, 
                     maxWidth: 900, 
                     mx: "auto" 
                 }}>

@@ -2,9 +2,9 @@
 // import { Container, Box, Grid, Typography, Button, Paper } from '@mui/material';
 // import { motion } from 'framer-motion';
 // import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-// import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
-// import TrendingUp from '@mui/icons-material/TrendingUp';
-// import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+// import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceWalletRounded';
+// import SyncAltRounded from '@mui/icons-material/SyncAltRounded';
+// import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
 // // import { ColorModeContext } from '../theme/ThemeContext';
 // // import { colors } from '../theme/theme';
 // import { ColorModeContext } from '../components/theme/ThemeContext.js'; 
@@ -21,14 +21,14 @@
 //     </Button>
 // );
 // 
-// const MarginAlertsPage = ({ setPage }) => {
+// const ReconciliationPage = ({ setPage }) => {
 //     const { mode } = useContext(ColorModeContext);
 //     const currentColors = colors[mode];
 // 
 //     const features = [
-//         { icon: <AttachMoneyRoundedIcon fontSize="large" />, title: "Real-Time Profit Protection", desc: "Set explicit margin thresholds (e.g., 30%) and receive immediate alerts when usage patterns put your projected profit at risk." },
-//         { icon: <TrendingUp fontSize="large" />, title: "Predictive Forecasting", desc: "AI models analyze historical and current usage to forecast cost spikes and revenue drops, giving you hours, not days, to adjust pricing or infrastructure." },
-//         { icon: <CodeRoundedIcon fontSize="large" />, title: "Automated Control Hooks", desc: "Integrate margin alerts directly into your operations pipeline to throttle high-cost users or automatically switch compute vendors when margins fall." },
+//         { icon: <AccountBalanceWalletRoundedIcon fontSize="large" />, title: "Automated Financial Matching", desc: "Match platform consumption against payment gateways (Stripe, etc.) and vendor invoices to eliminate end-of-month reconciliation debt instantly." },
+//         { icon: <SyncAltRounded fontSize="large" />, title: "Latency-Free Auditing", desc: "Validate transaction flow in real-time. Melucra ensures every penny of revenue corresponds to a machine event without manual intervention." },
+//         { icon: <CheckCircleOutlineRounded fontSize="large" />, title: "Discrepancy Flagging", desc: "Automatically flag and report any mismatch between expected revenue and reported usage, protecting against margin leakage and billing errors." },
 //     ];
 // 
 //     return (
@@ -36,18 +36,18 @@
 //             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 //                 <BackButton setPage={setPage} currentColors={currentColors} />
 //                 <Typography variant="h3" fontWeight={900} color={currentColors.textPrimary} sx={{ mb: 2 }}>
-//                     Predictive Margin Alerts
+//                     The Reconciliation Engine
 //                 </Typography>
 //                 <Typography variant="h6" color={currentColors.textDim} sx={{ mb: 6 }}>
-//                     Turn finance from a reporting function into a protective, profit-maximizing shield for your business.
+//                     Achieve instant, auditable clarity between your machine costs and your financial revenue.
 //                 </Typography>
 //             </motion.div>
 //             
 //             <Grid container spacing={4}>
 //                 {features.map((item, index) => (
 //                     <Grid item xs={12} sm={4} key={index}>
-//                         <Paper sx={{ p: 3, bgcolor: currentColors.card, height: '100%', borderLeft: `4px solid ${colors.accent}` }}>
-//                             <Box sx={{ color: colors.accent, mb: 1 }}>{item.icon}</Box>
+//                         <Paper sx={{ p: 3, bgcolor: currentColors.card, height: '100%', borderLeft: `4px solid ${colors.lucraGold}` }}>
+//                             <Box sx={{ color: colors.lucraGold, mb: 1 }}>{item.icon}</Box>
 //                             <Typography variant="h6" fontWeight={700} color={currentColors.textPrimary}>{item.title}</Typography>
 //                             <Typography variant="body1" color={currentColors.textDim} sx={{ mt: 1 }}>{item.desc}</Typography>
 //                         </Paper>
@@ -58,18 +58,21 @@
 //     );
 // };
 // 
-// export default MarginAlertsPage;
+// export default ReconciliationPage;
+
+// src/components/pages/ReconciliationPage.jsx
 
 import React, { useContext } from 'react';
 import { Container, Box, Grid, Typography, Button, Paper } from '@mui/material';
 import { motion } from 'framer-motion';
 import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+import AccountBalanceWalletRoundedIcon from '@mui/icons-material/AccountBalanceWalletRounded';
+import SyncAltRounded from '@mui/icons-material/SyncAltRounded';
+import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
 
-import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
-import { colors } from '../../layouts/theme/theme.js';
+// --- FIXED THEME IMPORTS ---
+import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+import { colors } from '../../../shared/layouts/theme/theme.js';
 
 const BackButton = ({ setPage, currentColors }) => (
     <Button
@@ -87,25 +90,25 @@ const BackButton = ({ setPage, currentColors }) => (
     </Button>
 );
 
-const MarginAlertsPage = ({ setPage }) => {
+const ReconciliationPage = ({ setPage }) => {
     const { mode } = useContext(ColorModeContext);
     const currentColors = colors[mode];
 
     const features = [
         {
-            icon: <AttachMoneyRoundedIcon fontSize="large" />,
-            title: "Live Margin Health",
-            desc: "Omeca monitors every unit of usage and spend as it happens so finance leaders see margin erosion the moment it begins rather than after the fact."
+            icon: <AccountBalanceWalletRoundedIcon fontSize="large" />,
+            title: "Automated Financial Matching",
+            desc: "Match platform consumption against payment gateways (Stripe, etc.) and vendor invoices to eliminate end-of-month reconciliation debt instantly."
         },
         {
-            icon: <TrendingUp fontSize="large" />,
-            title: "Predictive Drift Detection",
-            desc: "Forecast models analyze operational and financial patterns to identify drift in cost revenue and contribution margin before it becomes visible in traditional reports."
+            icon: <SyncAltRounded fontSize="large" />,
+            title: "Latency-Free Auditing",
+            desc: "Validate transaction flow in real-time. Melucra ensures every penny of revenue corresponds to a machine event without manual intervention."
         },
         {
-            icon: <CodeRoundedIcon fontSize="large" />,
-            title: "Autonomous Guardrails",
-            desc: "Link alerts directly to your workflows so the system can slow high burn processes shift workloads or adjust pricing logic the instant margin drops below your targets."
+            icon: <CheckCircleOutlineRounded fontSize="large" />,
+            title: "Discrepancy Flagging",
+            desc: "Automatically flag and report any mismatch between expected revenue and reported usage, protecting against margin leakage and billing errors."
         }
     ];
 
@@ -118,17 +121,12 @@ const MarginAlertsPage = ({ setPage }) => {
             >
                 <BackButton setPage={setPage} currentColors={currentColors} />
 
-                <Typography 
-                    variant="h3" 
-                    fontWeight={900} 
-                    color={currentColors.textPrimary} 
-                    sx={{ mb: 2 }}
-                >
-                    Predictive Margin Alerts
+                <Typography variant="h3" fontWeight={900} color={currentColors.textPrimary} sx={{ mb: 2 }}>
+                    The Reconciliation Engine
                 </Typography>
 
                 <Typography variant="h6" color={currentColors.textDim} sx={{ mb: 6 }}>
-                    Omeca transforms margin control into a continuous real-time function powered by operational truth predictive insight and verifiable financial intelligence.
+                    Achieve instant, auditable clarity between your machine costs and your financial revenue.
                 </Typography>
             </motion.div>
 
@@ -140,10 +138,12 @@ const MarginAlertsPage = ({ setPage }) => {
                                 p: 3,
                                 bgcolor: currentColors.card,
                                 height: '100%',
-                                borderLeft: `4px solid ${colors.accent}`
+                                borderLeft: `4px solid ${colors.lucraGold}`
                             }}
                         >
-                            <Box sx={{ color: colors.accent, mb: 1 }}>{item.icon}</Box>
+                            <Box sx={{ color: colors.lucraGold, mb: 1 }}>
+                                {item.icon}
+                            </Box>
 
                             <Typography variant="h6" fontWeight={700} color={currentColors.textPrimary}>
                                 {item.title}
@@ -160,4 +160,4 @@ const MarginAlertsPage = ({ setPage }) => {
     );
 };
 
-export default MarginAlertsPage;
+export default ReconciliationPage;

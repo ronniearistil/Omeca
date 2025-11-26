@@ -392,158 +392,338 @@
 // export default OmecaTrustStackPreview;
 
 
-import React, { useState, useMemo, useContext } from "react";
-import { Box, Typography, Button, IconButton, Paper, Grid, Tooltip, CssBaseline } from "@mui/material";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { motion } from "framer-motion";
-import { Gavel as GovernanceIcon, Sync as LedgerIcon, Calculate as CoreIcon, Brightness4, Brightness7, ArrowBack } from "@mui/icons-material";
+import React, { useState, useMemo } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Paper,
+  Grid,
+  CssBaseline,
+  Container,
+  AppBar,
+  Toolbar,
+  Chip,
+  useMediaQuery
+} from "@mui/material";
+import { createTheme, ThemeProvider, styled, alpha } from "@mui/material/styles";
+import { motion, AnimatePresence } from "framer-motion";
+import {
+  Gavel as GovernanceIcon,
+  Sync as LedgerIcon,
+  Calculate as CoreIcon,
+  Brightness4,
+  Brightness7,
+  ArrowBack,
+  ArrowForward
+} from "@mui/icons-material";
 
-// --- DASHBOARD IMPORTS (Keeping original structure) ---
+// --- DASHBOARD IMPORTS (Preserved) ---
 import OmecaGovernancePage from "./OmecaGovernancePage";
 import OmecaOperationalControlPage from "./OmecaCorePage";
 import OmecaReconciliationPage from "./OmecaLedgerPage";
 
-// --- COLORS ---
-const colors = {
+// --- DESIGN TOKENS ---
+const tokens = {
   accent: "#00E5BE",
   lucraGold: "#D4AF37",
-  successGreen: "#2ECC40",
-  dark: { bgTop: "#0F1521", card: "#1C2736", textPrimary: "#F0F3F7", textDim: "rgba(255,255,255,0.70)" },
-  light: { bgTop: "#F8FAFC", card: "#FFFFFF", textPrimary: "#1F2937", textDim: "rgba(0,0,0,0.65)" },
+  success: "#2ECC40",
+  gradients: {
+    text: "linear-gradient(135deg, #00E5BE 0%, #D4AF37 100%)",
+    cardDark: "linear-gradient(145deg, rgba(28,39,54,0.6) 0%, rgba(28,39,54,0.3) 100%)",
+    cardLight: "linear-gradient(145deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.4) 100%)",
+  }
 };
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {}, mode: "dark" });
+// --- STYLED COMPONENTS ---
 
-// --- CARD STYLES ---
-const CardWrapper = styled(Paper)(({ theme, active }) => ({
-  padding: theme.spacing(4),
-  borderRadius: 16,
-  background: theme.palette.mode === "dark" ? colors.dark.card : colors.light.card,
-  border: `1px solid ${active ? colors.accent : theme.palette.divider}`,
-  cursor: "pointer",
+const GlassCard = styled(motion.div)(({ theme }) => ({
   height: "100%",
-  transition: "all 0.3s ease",
+  background: theme.palette.mode === "dark" ? tokens.gradients.cardDark : tokens.gradients.cardLight,
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  borderRadius: 24,
+  border: `1px solid ${alpha(theme.palette.divider, 0.1)}`,
+  boxShadow: theme.palette.mode === "dark" 
+    ? "0 8px 32px 0 rgba(0, 0, 0, 0.3)" 
+    : "0 8px 32px 0 rgba(31, 38, 135, 0.1)",
+  padding: theme.spacing(4),
+  display: "flex",
+  flexDirection: "column",
+  cursor: "pointer",
   position: "relative",
   overflow: "hidden",
-  "&:hover": { transform: "translateY(-6px)", borderColor: colors.accent, boxShadow: "0 12px 30px rgba(0,0,0,0.2)" },
+  transition: "border-color 0.3s ease",
+  "&:hover": {
+    border: `1px solid ${alpha(tokens.accent, 0.5)}`,
+  },
 }));
 
+const GradientText = styled(Typography)(({ theme }) => ({
+  background: tokens.gradients.text,
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
+  width: "fit-content",
+}));
+
+const NavGlass = styled(AppBar)(({ theme }) => ({
+  background: alpha(theme.palette.background.default, 0.7),
+  backdropFilter: "blur(12px)",
+  boxShadow: "none",
+  borderBottom: `1px solid ${alpha(theme.palette.divider, 0.05)}`,
+  zIndex: 1200,
+}));
+
+// --- DATA MODEL ---
 const DASHBOARDS = [
   {
     id: "core",
-    layer: "L1",
+    layer: "Layer 1",
     name: "Omeca Core",
     tagline: "Operational Control",
-    desc: "Real-time spend integrity and margin signals. The verified data stream.", // [cite: 72, 80]
+    desc: "Real-time spend integrity and margin signals. The verified data stream.",
     icon: CoreIcon,
-    color: colors.successGreen,
+    color: tokens.success,
     component: OmecaOperationalControlPage,
   },
   {
     id: "ledger",
-    layer: "L2",
+    layer: "Layer 2",
     name: "Omeca Ledger",
     tagline: "Continuous Close",
-    desc: "Automated reconciliation and subledger alignment. Books that close themselves.", // [cite: 74, 82]
+    desc: "Automated reconciliation and subledger alignment. Books that close themselves.",
     icon: LedgerIcon,
-    color: colors.accent,
+    color: tokens.accent,
     component: OmecaReconciliationPage,
   },
   {
     id: "governance",
-    layer: "L3",
+    layer: "Layer 3",
     name: "Omeca Governance",
     tagline: "Verifiable Trust",
-    desc: "Immutable proofs and explainable compliance for every AI-driven transaction.", // [cite: 75, 86]
+    desc: "Immutable proofs and explainable compliance for every AI-driven transaction.",
     icon: GovernanceIcon,
-    color: colors.lucraGold,
+    color: tokens.lucraGold,
     component: OmecaGovernancePage,
   },
 ];
 
-const TrustStackHome = ({ setPage, mode }) => (
-  <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", py: 10, px: 3 }}>
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} style={{ textAlign: "center", maxWidth: 800 }}>
-      <Typography variant="h3" fontWeight={900} gutterBottom sx={{ background: `linear-gradient(135deg, ${colors.accent}, ${colors.lucraGold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-        Explore the Trust Stack
-      </Typography>
-      <Typography variant="h6" color="text.secondary" sx={{ mb: 8, fontWeight: 400 }}>
-        Interact with the three layers of the Self-Driving Cognitive ERP.
-      </Typography>
-    </motion.div>
+// --- SUB-COMPONENTS ---
 
-    <Grid container spacing={4} maxWidth="lg">
-      {DASHBOARDS.map((d, i) => (
-        <Grid item xs={12} md={4} key={d.id}>
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.1 }}>
-            <CardWrapper onClick={() => setPage(d.id)}>
-              <Box sx={{ p: 1.5, borderRadius: 2, bgcolor: `${d.color}15`, width: "fit-content", mb: 3 }}>
-                <d.icon sx={{ color: d.color, fontSize: 32 }} />
+const SelectionView = ({ setPage }) => {
+  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+  return (
+    <Container maxWidth="lg" sx={{ pt: { xs: 6, md: 8 }, pb: 10 }}>
+      <Box sx={{ mb: 8, textAlign: { xs: "left", md: "center" }, display: "flex", flexDirection: "column", alignItems: { xs: "flex-start", md: "center" } }}>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }} 
+          animate={{ opacity: 1, y: 0 }} 
+          transition={{ duration: 0.6 }}
+        >
+          <GradientText variant={isMobile ? "h3" : "h2"} fontWeight={800} gutterBottom>
+            The Trust Stack
+          </GradientText>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0 }} 
+          animate={{ opacity: 1 }} 
+          transition={{ delay: 0.2, duration: 0.6 }}
+        >
+          <Typography variant={isMobile ? "body1" : "h5"} color="text.secondary" sx={{ maxWidth: 700, lineHeight: 1.6 }}>
+            Interact with the three layers of the Self-Driving Cognitive ERP. 
+            Select a module to enter the dashboard.
+          </Typography>
+        </motion.div>
+      </Box>
+
+      <Grid container spacing={3}>
+        {DASHBOARDS.map((d, i) => (
+          <Grid item xs={12} md={4} key={d.id}>
+            <GlassCard
+              whileHover={{ y: -8, scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1, type: "spring", stiffness: 100 }}
+              onClick={() => setPage(d.id)}
+            >
+              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 3 }}>
+                <Box sx={{ 
+                  p: 1.5, 
+                  borderRadius: "12px", 
+                  bgcolor: alpha(d.color, 0.15), 
+                  color: d.color 
+                }}>
+                  <d.icon fontSize="medium" />
+                </Box>
+                <Chip 
+                  label={d.layer} 
+                  size="small" 
+                  sx={{ 
+                    fontWeight: 700, 
+                    bgcolor: alpha(d.color, 0.1), 
+                    color: d.color,
+                    border: `1px solid ${alpha(d.color, 0.2)}`
+                  }} 
+                />
               </Box>
-              <Typography variant="overline" sx={{ color: d.color, fontWeight: 800, letterSpacing: 1 }}>{d.layer}</Typography>
-              <Typography variant="h5" fontWeight={800} sx={{ mb: 2 }}>{d.name}</Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 4, minHeight: 40 }}>{d.desc}</Typography>
-              <Button size="small" sx={{ color: d.color, fontWeight: 700 }}>Launch Dashboard →</Button>
-            </CardWrapper>
-          </motion.div>
-        </Grid>
-      ))}
-    </Grid>
-  </Box>
-);
+
+              <Typography variant="h5" fontWeight={700} gutterBottom>
+                {d.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ flexGrow: 1, mb: 4, lineHeight: 1.7 }}>
+                {d.desc}
+              </Typography>
+
+              <Box sx={{ display: "flex", alignItems: "center", color: d.color, fontWeight: 600 }}>
+                <Typography variant="button" sx={{ mr: 1 }}>Launch</Typography>
+                <ArrowForward fontSize="small" />
+              </Box>
+            </GlassCard>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  );
+};
 
 const OmecaTrustStackPreview = ({ setPage: setAppPage }) => {
   const [internalPage, setInternalPage] = useState("home");
   const [mode, setMode] = useState("dark");
-  const colorMode = useMemo(() => ({ mode, toggleColorMode: () => setMode((m) => (m === "light" ? "dark" : "light")) }), [mode]);
-  
+
   const theme = useMemo(() => createTheme({
     palette: {
       mode,
-      primary: { main: colors.accent },
-      background: { default: mode === 'dark' ? colors.dark.bgTop : colors.light.bgTop, paper: mode === 'dark' ? colors.dark.card : colors.light.card },
-      text: { primary: mode === 'dark' ? colors.dark.textPrimary : colors.light.textPrimary, secondary: mode === 'dark' ? colors.dark.textDim : colors.light.textDim },
-      divider: mode === 'dark' ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+      primary: { main: tokens.accent },
+      background: { 
+        default: mode === 'dark' ? "#0F1521" : "#F3F6F9", 
+        paper: mode === 'dark' ? "#1C2736" : "#FFFFFF" 
+      },
+      text: { 
+        primary: mode === 'dark' ? "#F0F3F7" : "#1F2937", 
+        secondary: mode === 'dark' ? alpha("#fff", 0.6) : alpha("#000", 0.6) 
+      },
     },
-    typography: { fontFamily: 'Inter, sans-serif' }
+    typography: {
+      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      button: { textTransform: 'none', fontWeight: 600 },
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: { borderRadius: 12 },
+        },
+      },
+    },
   }), [mode]);
 
   const ActiveComponent = DASHBOARDS.find((x) => x.id === internalPage)?.component;
 
-  // Handler to go completely back to main landing page
-  const handleExit = () => setAppPage("home");
-
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        
-        {/* GLOBAL NAV CONTROLS */}
-        <Box sx={{ position: "fixed", top: 20, left: 20, right: 20, zIndex: 1200, display: "flex", justifyContent: "space-between", pointerEvents: "none" }}>
-          {/* Back Button */}
-          <Box sx={{ pointerEvents: "auto" }}>
-             {internalPage !== "home" ? (
-               <Button variant="contained" startIcon={<ArrowBack />} onClick={() => setInternalPage("home")} sx={{ bgcolor: "background.paper", color: "text.primary", fontWeight: 700, borderRadius: 8 }}>
-                 Back to Stack
-               </Button>
-             ) : (
-                <Button variant="text" startIcon={<ArrowBack />} onClick={handleExit} sx={{ color: "text.secondary", fontWeight: 700 }}>
-                 Back to Homepage
-               </Button>
-             )}
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      
+      {/* STICKY GLASS HEADER */}
+      <NavGlass position="sticky">
+        <Toolbar sx={{ justifyContent: "space-between", py: 1 }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            {internalPage !== "home" ? (
+              <Button 
+                startIcon={<ArrowBack />} 
+                onClick={() => setInternalPage("home")}
+                color="inherit"
+                sx={{ opacity: 0.8, "&:hover": { opacity: 1 } }}
+              >
+                Back to Stack
+              </Button>
+            ) : (
+              <Button 
+                startIcon={<ArrowBack />} 
+                onClick={() => setAppPage && setAppPage("home")}
+                color="inherit"
+                sx={{ opacity: 0.7 }}
+              >
+                Exit
+              </Button>
+            )}
           </Box>
-          
-          {/* Theme Toggle */}
-          <Box sx={{ pointerEvents: "auto" }}>
-             <IconButton onClick={colorMode.toggleColorMode} sx={{ bgcolor: "background.paper", boxShadow: 2 }}>
-               {mode === "dark" ? <Brightness7 sx={{ color: colors.lucraGold }} /> : <Brightness4 sx={{ color: colors.accent }} />}
-             </IconButton>
-          </Box>
-        </Box>
 
-        {ActiveComponent ? <ActiveComponent setPage={setInternalPage} /> : <TrustStackHome setPage={setInternalPage} mode={mode} />}
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            {internalPage !== "home" && (
+               <Typography variant="subtitle2" sx={{ display: { xs: 'none', sm: 'block' }, color: "text.secondary", mr: 2 }}>
+                 {DASHBOARDS.find(d => d.id === internalPage)?.name}
+               </Typography>
+            )}
+            <IconButton 
+              onClick={() => setMode((prev) => (prev === "light" ? "dark" : "light"))}
+              sx={{ 
+                bgcolor: alpha(theme.palette.text.primary, 0.05), 
+                backdropFilter: "blur(4px)",
+                "&:hover": { bgcolor: alpha(theme.palette.text.primary, 0.1) }
+              }}
+            >
+              {mode === "dark" ? <Brightness7 sx={{ color: tokens.lucraGold }} /> : <Brightness4 sx={{ color: tokens.accent }} />}
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </NavGlass>
+
+      {/* CONTENT AREA */}
+      <Box sx={{ minHeight: "100vh", position: "relative" }}>
+        {/* Ambient Background Glows */}
+        <Box sx={{ 
+          position: "fixed", 
+          top: -100, 
+          left: "20%", 
+          width: "40vw", 
+          height: "40vw", 
+          bgcolor: tokens.accent, 
+          opacity: mode === 'dark' ? 0.07 : 0.04, 
+          filter: "blur(120px)", 
+          borderRadius: "50%", 
+          zIndex: -1 
+        }} />
+        <Box sx={{ 
+          position: "fixed", 
+          bottom: -100, 
+          right: "10%", 
+          width: "30vw", 
+          height: "30vw", 
+          bgcolor: tokens.lucraGold, 
+          opacity: mode === 'dark' ? 0.05 : 0.03, 
+          filter: "blur(100px)", 
+          borderRadius: "50%", 
+          zIndex: -1 
+        }} />
+
+        {/* Page Transitions */}
+        <AnimatePresence mode="wait">
+          {ActiveComponent ? (
+            <motion.div
+              key="dashboard"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ minHeight: "90vh" }}
+            >
+              <ActiveComponent setPage={setInternalPage} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              <SelectionView setPage={setInternalPage} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </Box>
+    </ThemeProvider>
   );
 };
 

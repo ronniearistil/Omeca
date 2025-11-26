@@ -1,8 +1,8 @@
 // src/OmecaConnect/components/layout/OmecaFlowDiagram.jsx
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import { colors } from "../layouts/theme/theme.js";
-import { ColorModeContext } from "../layouts/theme/ThemeContext.jsx";
+import { colors } from "./theme/theme.js";
+import { ColorModeContext } from "./theme/ThemeContext.jsx";
 
 
 const OmecaFlowDiagram = () => {

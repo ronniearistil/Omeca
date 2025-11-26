@@ -1,53 +1,89 @@
-// import React from "react";
-// import { CssBaseline } from "@mui/material";
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import ThemeWrapper from "./layouts/theme/ThemeContext.jsx";
-// 
-// import OmecaLanding from "./OmecaLanding.jsx";
-// import OmecaGovernanceInvestorBrief from "./omeca-governance/components/pages/OmecaGovernanceInvestorBrief.jsx";
-// import OmecaGovernanceDashboardPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
-// import OmecaGovernanceDashboardPage from "./omeca-governance/components/pages/OmecaGovernancePage.jsx";
-// import OmecaBrief from "./components/pages/OmecaBrief.jsx";
-// 
-// 
-// export default function App() {
-//   return (
-//     <BrowserRouter>
-//       <ThemeWrapper>
-//         <CssBaseline />
-//         <div className="omeca-wrapper">
-//           <Routes>
-// 
-//             {/* ✅ Primary Landing Page */}
-//             <Route path="/" element={<OmecaLanding />} />
-//             {/* ✅ Investor Pitch */}
-//             <Route path="/brief" element={<OmecaBrief />} />
-// 
-//             {/* Governance pages (still WIP) */}
-//             <Route path="/brief" element={<OmecaGovernanceInvestorBrief />} />
-//             <Route path="/coredashboard" element={<OmecaGovernanceDashboardPage />} />
-//             <Route path="/preview" element={<OmecaGovernanceDashboardPreview />} />
-// 
-//             {/* Catch-all → redirect to landing */}
-//             <Route path="*" element={<Navigate to="/" replace />} />
-// 
-//           </Routes>
-//         </div>
-//       </ThemeWrapper>
-//     </BrowserRouter>
-//   );
-// }
-
-
 // src/App.jsx
-import React from 'react';
-// This imports the "AppThemeWrapper" default export from the file I gave you
-import OmecaLandingApp from './OmecaLanding.jsx'; 
+import React from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { CssBaseline } from "@mui/material";
+
+import ThemeWrapper from "./shared/layouts/theme/ThemeContext.jsx";
+import OmecaLanding from "./OmecaLanding.jsx";
+
+// --- LEDGER PAGES (final correct paths) ---
+import PricingPage from "./omeca-ledger/components/pages/PricingPage.jsx";
+import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage.jsx";
+import LegalPage from "./omeca-ledger/components/pages/LegalPage.jsx";
+
+// --- CORE PAGES (final correct paths) ---
+import CareersPage from "./omeca-core/components/pages/CareersPage.jsx";
+import CompanyInfoPage from "./omeca-core/components/pages/CompanyInfoPage.jsx";
+import ContactPage from "./omeca-core/components/pages/ContactPage.jsx";
+import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage.jsx";
+import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage.jsx";
+import OmecaBrief from "./omeca-core/components/pages/OmecaBrief.jsx";
+
+// Minimal placeholder
+const Placeholder = ({ title }) => (
+    <div style={{ padding: "120px 40px", textAlign: "center" }}>
+        <h1>{title}</h1>
+        <p>Content coming soon.</p>
+    </div>
+);
 
 export default function App() {
-  // The Landing App already handles Themes, CSSBaseline, and Routing internally.
-  return (
-    <OmecaLandingApp />
-  );
+    return (
+        <BrowserRouter>
+            <ThemeWrapper>
+                <CssBaseline />
+                <Routes>
+                    {/* Landing */}
+                    <Route path="/" element={<OmecaLanding />} />
+
+                    {/* Trust Stack */}
+                    <Route path="/trust-stack" element={<Placeholder title="Trust Stack" />} />
+
+                    {/* Product & Feature Pages */}
+                    <Route path="/pricing" element={<PricingPage />} />
+                    <Route path="/ledger-api" element={<LedgerAPIPage />} />
+                    <Route path="/reconciliation" element={<ReconciliationPage />} />
+                    <Route path="/margin-alerts" element={<MarginAlertsPage />} />
+
+                    {/* Company */}
+                    <Route path="/about" element={<CompanyInfoPage />} />
+                    <Route path="/careers" element={<CareersPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/blog" element={<Placeholder title="Blog" />} />
+
+                    {/* Resources */}
+                    <Route path="/brief" element={<OmecaBrief />} />
+                    <Route path="/documentation" element={<Placeholder title="Documentation" />} />
+                    <Route path="/security" element={<Placeholder title="Security" />} />
+
+                    {/* Legal */}
+                    <Route path="/privacy" element={<Placeholder title="Privacy Policy" />} />
+                    <Route path="/terms" element={<Placeholder title="Terms of Service" />} />
+                    <Route path="/cookies" element={<Placeholder title="Cookie Policy" />} />
+                    <Route path="/legal" element={<LegalPage />} />
+
+                    {/* Fallback */}
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+            </ThemeWrapper>
+        </BrowserRouter>
+    );
 }
 
+
+
+
+
+
+// // src/App.jsx
+// import React from 'react';
+// import AppThemeWrapper from './OmecaLanding'; // Or wherever you saved my previous component
+// 
+// function App() {
+//   // DIRECTLY render the component. 
+//   // Do NOT wrap this in <AppLayout> or <Container>.
+//   return <AppThemeWrapper />;
+// }
+// 
+// export default App;
+// 

@@ -1,13 +1,14 @@
-// // src/Omeca/pages/LedgerAPIPage.jsx (Conceptual File Path & Name Change)
-// 
 // import React, { useContext } from 'react';
 // import { Container, Box, Grid, Typography, Button, Paper } from '@mui/material';
 // import { motion } from 'framer-motion';
 // import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-// import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-// import PolicyRoundedIcon from '@mui/icons-material/PolicyRoundedIcon';
-// import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx'; // Corrected path assumption
-// import { colors } from '../../layouts/theme/theme.js'; // Corrected path assumption
+// import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+// import TrendingUp from '@mui/icons-material/TrendingUp';
+// import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
+// // import { ColorModeContext } from '../theme/ThemeContext';
+// // import { colors } from '../theme/theme';
+// import { ColorModeContext } from '../components/theme/ThemeContext.js'; 
+// import { colors } from '../components/theme/theme.js'; 
 // 
 // 
 // const BackButton = ({ setPage, currentColors }) => (
@@ -20,14 +21,14 @@
 //     </Button>
 // );
 // 
-// const OmecaLedgerAPIPage = ({ setPage }) => { // RENAMED COMPONENT
+// const MarginAlertsPage = ({ setPage }) => {
 //     const { mode } = useContext(ColorModeContext);
 //     const currentColors = colors[mode];
 // 
 //     const features = [
-//         { icon: <StorageRoundedIcon fontSize="large" />, title: "Immutable Ledger Core", desc: "Every machine event is cryptographically signed and stored in an immutable ledger, providing a complete, non-repudiable audit trail for financial compliance." },
-//         { icon: <PolicyRoundedIcon fontSize="large" />, title: "Real-Time Event Ingestion", desc: "Low-latency API ingestion built for high-throughput machine data streams, ensuring your reconciliation and margin calculations are always current." },
-//         { icon: <StorageRoundedIcon fontSize="large" />, title: "Schema Flexibility", desc: "Handle diverse data structures from multiple cloud providers and proprietary systems. Normalize compute, usage, and revenue signals automatically." },
+//         { icon: <AttachMoneyRoundedIcon fontSize="large" />, title: "Real-Time Profit Protection", desc: "Set explicit margin thresholds (e.g., 30%) and receive immediate alerts when usage patterns put your projected profit at risk." },
+//         { icon: <TrendingUp fontSize="large" />, title: "Predictive Forecasting", desc: "AI models analyze historical and current usage to forecast cost spikes and revenue drops, giving you hours, not days, to adjust pricing or infrastructure." },
+//         { icon: <CodeRoundedIcon fontSize="large" />, title: "Automated Control Hooks", desc: "Integrate margin alerts directly into your operations pipeline to throttle high-cost users or automatically switch compute vendors when margins fall." },
 //     ];
 // 
 //     return (
@@ -35,10 +36,10 @@
 //             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
 //                 <BackButton setPage={setPage} currentColors={currentColors} />
 //                 <Typography variant="h3" fontWeight={900} color={currentColors.textPrimary} sx={{ mb: 2 }}>
-//                     Ledger API: The Core of Machine Finance
+//                     Predictive Margin Alerts
 //                 </Typography>
 //                 <Typography variant="h6" color={currentColors.textDim} sx={{ mb: 6 }}>
-//                     Transform chaotic usage data into the single source of truth for your AI-native ERP.
+//                     Turn finance from a reporting function into a protective, profit-maximizing shield for your business.
 //                 </Typography>
 //             </motion.div>
 //             
@@ -57,19 +58,18 @@
 //     );
 // };
 // 
-// export default OmecaLedgerAPIPage; // RENAMED EXPORT
-
-// src/components/pages/LedgerAPIPage.jsx
+// export default MarginAlertsPage;
 
 import React, { useContext } from 'react';
 import { Container, Box, Grid, Typography, Button, Paper } from '@mui/material';
 import { motion } from 'framer-motion';
 import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
-import StorageRoundedIcon from '@mui/icons-material/StorageRounded';
-import PolicyRounded from '@mui/icons-material/PolicyRounded';
+import AttachMoneyRoundedIcon from '@mui/icons-material/AttachMoneyRounded';
+import TrendingUp from '@mui/icons-material/TrendingUp';
+import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 
-import { ColorModeContext } from '../../layouts/theme/ThemeContext.jsx';
-import { colors } from '../../layouts/theme/theme.js';
+import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
+import { colors } from '../../../shared/layouts/theme/theme.js';
 
 const BackButton = ({ setPage, currentColors }) => (
     <Button
@@ -87,25 +87,25 @@ const BackButton = ({ setPage, currentColors }) => (
     </Button>
 );
 
-const OmecaLedgerAPIPage = ({ setPage }) => {
+const MarginAlertsPage = ({ setPage }) => {
     const { mode } = useContext(ColorModeContext);
     const currentColors = colors[mode];
 
     const features = [
         {
-            icon: <StorageRoundedIcon fontSize="large" />,
-            title: "Immutable Financial Record",
-            desc: "Every machine action is converted into a signed tamper proof ledger entry that forms the foundation for continuous accounting and end to end financial trust."
+            icon: <AttachMoneyRoundedIcon fontSize="large" />,
+            title: "Live Margin Health",
+            desc: "Omeca monitors every unit of usage and spend as it happens so finance leaders see margin erosion the moment it begins rather than after the fact."
         },
         {
-            icon: <PolicyRounded fontSize="large" />,
-            title: "Continuous Event Streaming",
-            desc: "Ingest operational and financial signals as they happen so margin cost and revenue stay in a live state rather than waiting for batch cycles or manual reconciliation."
+            icon: <TrendingUp fontSize="large" />,
+            title: "Predictive Drift Detection",
+            desc: "Forecast models analyze operational and financial patterns to identify drift in cost revenue and contribution margin before it becomes visible in traditional reports."
         },
         {
-            icon: <StorageRoundedIcon fontSize="large" />,
-            title: "Unified Machine Schema",
-            desc: "Normalize usage compute and spend signals into one structure that feeds the Cognitive ERP and removes fragmentation across clouds agents and AI workflows."
+            icon: <CodeRoundedIcon fontSize="large" />,
+            title: "Autonomous Guardrails",
+            desc: "Link alerts directly to your workflows so the system can slow high burn processes shift workloads or adjust pricing logic the instant margin drops below your targets."
         }
     ];
 
@@ -118,17 +118,17 @@ const OmecaLedgerAPIPage = ({ setPage }) => {
             >
                 <BackButton setPage={setPage} currentColors={currentColors} />
 
-                <Typography
-                    variant="h3"
-                    fontWeight={900}
-                    color={currentColors.textPrimary}
+                <Typography 
+                    variant="h3" 
+                    fontWeight={900} 
+                    color={currentColors.textPrimary} 
                     sx={{ mb: 2 }}
                 >
-                    Ledger API The Engine of Continuous Accounting
+                    Predictive Margin Alerts
                 </Typography>
 
                 <Typography variant="h6" color={currentColors.textDim} sx={{ mb: 6 }}>
-                    Omeca captures every machine action as structured verifiable financial truth and the Ledger API turns high velocity signals into continuous accounting.
+                    Omeca transforms margin control into a continuous real-time function powered by operational truth predictive insight and verifiable financial intelligence.
                 </Typography>
             </motion.div>
 
@@ -160,4 +160,4 @@ const OmecaLedgerAPIPage = ({ setPage }) => {
     );
 };
 
-export default OmecaLedgerAPIPage;
+export default MarginAlertsPage;
