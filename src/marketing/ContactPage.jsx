@@ -277,8 +277,8 @@ import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 import CheckCircleOutlineRounded from '@mui/icons-material/CheckCircleOutlineRounded';
 
 // Corrected import paths
-import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx";
-import { colors } from "../../../shared/layouts/theme/theme.js";
+import { ColorModeContext } from "../shared/layouts/theme/ThemeContext.jsx";
+import { colors } from "../shared/layouts/theme/theme.js";
 
 
 // =================================================================

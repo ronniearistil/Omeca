@@ -188,8 +188,11 @@ import {
 } from '@mui/material';
 import { ArrowForward, Security, GppGood } from '@mui/icons-material';
 
+// import { ColorModeContext } from '../layouts/theme/ThemeContext.jsx';
+// import { colors } from '../layouts/theme/theme.js';
 import { ColorModeContext } from '../layouts/theme/ThemeContext.jsx';
 import { colors } from '../layouts/theme/theme.js';
+
 import OmecaLogo from "../ui/OmecaLogo.jsx";
 
 const AppFooter = ({ setPage }) => {

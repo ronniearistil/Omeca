@@ -42,7 +42,7 @@ import AnalyticsIcon from '@mui/icons-material/Analytics';
 import CloudSyncIcon from '@mui/icons-material/CloudSync';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
-import OmecaFlowDiagram from "../../../shared/layouts/OmecaFlowDiagram.jsx";
+import OmecaFlowDiagram from "../shared/layouts/OmecaFlowDiagram.jsx";
 
 
 // -----------------------------------------------------------------------------

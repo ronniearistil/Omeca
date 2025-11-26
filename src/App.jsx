@@ -12,12 +12,12 @@ import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage.jsx";
 import LegalPage from "./omeca-ledger/components/pages/LegalPage.jsx";
 
 // --- CORE PAGES (final correct paths) ---
-import CareersPage from "./omeca-core/components/pages/CareersPage.jsx";
-import CompanyInfoPage from "./omeca-core/components/pages/CompanyInfoPage.jsx";
-import ContactPage from "./omeca-core/components/pages/ContactPage.jsx";
+import CareersPage from "./marketing/CareersPage.jsx";
+import CompanyInfoPage from "./marketing/CompanyInfoPage.jsx";
+import ContactPage from "./marketing/ContactPage.jsx";
 import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage.jsx";
 import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage.jsx";
-import OmecaBrief from "./omeca-core/components/pages/OmecaBrief.jsx";
+import OmecaBrief from "./marketing/OmecaBrief.jsx";
 
 // Minimal placeholder
 const Placeholder = ({ title }) => (

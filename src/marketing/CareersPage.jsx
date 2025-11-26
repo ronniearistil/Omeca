@@ -7,8 +7,8 @@ import ArrowForwardIosRounded from '@mui/icons-material/ArrowForwardIosRounded';
 import TrendingUp from '@mui/icons-material/TrendingUp';
 import CodeRoundedIcon from '@mui/icons-material/CodeRounded';
 
-import { ColorModeContext } from "../../../shared/layouts/theme/ThemeContext.jsx"; 
-import { colors } from "../../../shared/layouts/theme/theme.js"; 
+import { ColorModeContext } from "../shared/layouts/theme/ThemeContext.jsx"; 
+import { colors } from "../shared/layouts/theme/theme.js"; 
 
 const BackButton = ({ setPage, currentColors }) => (
     <Button
