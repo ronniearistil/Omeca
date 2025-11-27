@@ -181,129 +181,145 @@
 // 
 // export default AppFooter;
 
+// src/shared/layouts/AppFooter.jsx
+
 import React, { useContext } from 'react';
 import {
     Box, Container, Grid,
-    Typography, Button, Link, Stack, Divider
+    Typography, Link, Stack, Divider, Chip
 } from '@mui/material';
-import { ArrowForward, Security, GppGood } from '@mui/icons-material';
+import { Security, GppGood, Circle } from '@mui/icons-material';
+import { useNavigate } from "react-router-dom";
 
-// import { ColorModeContext } from '../layouts/theme/ThemeContext.jsx';
-// import { colors } from '../layouts/theme/theme.js';
-import { ColorModeContext } from '../layouts/theme/ThemeContext.jsx';
-import { colors } from '../layouts/theme/theme.js';
+import { ColorModeContext } from '../layouts/theme/ThemeContext.jsx'; // Adjust path as needed based on your folder structure
+import { colors } from '../layouts/theme/theme.js'; // Adjust path as needed
 
-import OmecaLogo from "../ui/OmecaLogo.jsx";
+import OmecaLogo from "../ui/OmecaLogo.jsx"; // Adjust path as needed
 
-const AppFooter = ({ setPage }) => {
+const AppFooter = () => {
     const { mode } = useContext(ColorModeContext);
-    const currentColors = colors[mode];
     const isDark = mode === 'dark';
+    const currentColors = colors[mode];
+    const navigate = useNavigate();
 
-    // 🔗 FULL NAVIGATION MAP (ALL LINKS RESTORED)
     const footerLinks = [
         {
             title: 'The Trust Stack',
             links: [
-                { name: 'Omeca Core (L1)', target: 'trust-stack' },
-                { name: 'Omeca Ledger (L2)', target: 'trust-stack' },
-                { name: 'Omeca Governance (L3)', target: 'trust-stack' },
-                { name: 'Platform Pricing', target: 'pricing' },
+                { name: 'Omeca Core (L1)', route: '/trust-stack' },
+                { name: 'Omeca Ledger (L2)', route: '/trust-stack' },
+                { name: 'Omeca Governance (L3)', route: '/trust-stack' },
+                { name: 'Platform Pricing', route: '/pricing' },
             ]
         },
         {
             title: 'Company',
             links: [
-                { name: 'About Us', target: 'about' },
-                { name: 'Careers', target: 'careers' },
-                { name: 'Blog', target: 'blog' },
-                { name: 'Contact Sales', target: 'contact' },
+                // ✅ FIXED ROUTE: Points to /company now
+                { name: 'About Us', route: '/company' }, 
+                { name: 'Careers', route: '/careers' },
+                { name: 'Blog', route: '/blog' },
+                { name: 'Contact Sales', route: '/contact' },
             ]
         },
         {
             title: 'Resources',
             links: [
-                { name: 'Investor Brief', target: 'brief' },
-                { name: 'Documentation', target: 'documentation' },
-                { name: 'Security', target: 'security' },
+                { name: 'Investor Brief', route: '/brief' },
+                { name: 'Documentation', route: '/documentation' },
+                { name: 'Security', route: '/security' },
             ]
         },
         {
             title: 'Legal',
             links: [
-                { name: 'Privacy Policy', target: 'privacy' },
-                { name: 'Terms of Service', target: 'terms' },
-                { name: 'Cookie Policy', target: 'cookies' },
+                { name: 'Privacy Policy', route: '/privacy' },
+                { name: 'Terms of Service', route: '/terms' },
+                { name: 'Cookie Policy', route: '/cookies' },
             ]
         }
     ];
 
     return (
         <Box
+            component="footer"
             sx={{
                 bgcolor: currentColors.bgTop,
-                borderTop: `1px solid ${currentColors.textDim}15`,
-                // pt: { xs: 6, md: 8 },
-                // pb: { xs: 4, md: 6 },
-                pt: { xs: 5, md: 7 },
-                pb: { xs: 3, md: 5 },
-
+                borderTop: '1px solid',
+                borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)',
+                pt: { xs: 8, md: 10 },
+                pb: { xs: 4, md: 6 },
+                position: 'relative',
+                zIndex: 10
             }}
         >
-<Container maxWidth={false} sx={{ px: { xs: 3, md: 6 }, maxWidth: "1600px", mx: "auto" }}>
-                {/* <Grid container spacing={4}> */}
-<Grid container spacing={{ xs: 3, md: 4 }} alignItems="center">
-                    <Grid item xs={12} md={3}>
-    <Box
-        sx={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",         // ← vertically center to The Trust Stack
-        }}
-    >
-        <Box
-            sx={{
-                mb: 2,
-                display: "flex",
-                alignItems: "flex-start",       // ← aligns logo left with first column
-                cursor: "pointer",
-            }}
-            onClick={() => setPage('home')}
-        >
-            <OmecaLogo size={160} />
-        </Box>
+            <Container maxWidth="xl" sx={{ px: { xs: 3, md: 6, lg: 10 } }}>
+                <Grid container spacing={{ xs: 6, md: 4 }}>
 
-        <Typography
-            variant="body2"
-            sx={{
-                color: currentColors.textDim,
-                maxWidth: "260px",
-                lineHeight: 1.5,
-                mt: 0,                           // tighter
-            }}
-        >
-            Transforming ERPs from passive  
-            record-keeping to continuous,  
-            autonomous control.
-        </Typography>
-    </Box>
-</Grid>
+                    {/* LOGO + MISSION */}
+                    <Grid item xs={12} md={4} lg={3}>
+                        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+                            <Box
+                                sx={{ 
+                                    mb: 3, 
+                                    display: "flex", 
+                                    alignItems: "center", 
+                                    cursor: "pointer",
+                                    opacity: 0.9,
+                                    transition: 'opacity 0.2s',
+                                    '&:hover': { opacity: 1 }
+                                }}
+                                onClick={() => navigate('/')}
+                            >
+                                <OmecaLogo size={140} />
+                            </Box>
 
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color: currentColors.textDim,
+                                    maxWidth: "280px",
+                                    lineHeight: 1.6,
+                                    fontSize: '0.95rem',
+                                    mb: 3
+                                }}
+                            >
+                                Transforming ERPs from passive record-keeping to continuous, autonomous control.
+                            </Typography>
 
-                    {/* RIGHT SIDE — NAV COLUMNS */}
-                    <Grid item xs={12} md={9}>
-<Grid container spacing={4} alignItems="center">
+                            <Stack direction="row" spacing={1}>
+                                <Chip 
+                                    icon={<Circle sx={{ fontSize: '8px !important', color: colors.successGreen }} />} 
+                                    label="Systems Operational" 
+                                    size="small"
+                                    sx={{ 
+                                        bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)',
+                                        color: currentColors.textDim,
+                                        fontSize: '0.7rem',
+                                        fontWeight: 600,
+                                        border: '1px solid',
+                                        borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
+                                    }} 
+                                />
+                            </Stack>
+                        </Box>
+                    </Grid>
+
+                    {/* NAVIGATION LINKS */}
+                    <Grid item xs={12} md={8} lg={9}>
+                        <Grid container spacing={4} justifyContent={{ md: "flex-end" }}>
                             {footerLinks.map((section) => (
                                 <Grid item xs={6} sm={3} key={section.title}>
                                     <Typography
                                         variant="overline"
-                                        fontWeight={700}
+                                        fontWeight={800}
                                         sx={{
-                                            color: currentColors.textDim,
+                                            color: currentColors.textPrimary,
                                             display: 'block',
-                                            mb: 2,
-                                            letterSpacing: 1.2,
+                                            mb: 3,
+                                            letterSpacing: 1,
+                                            fontSize: '0.75rem',
+                                            opacity: 0.9
                                         }}
                                     >
                                         {section.title}
@@ -311,22 +327,21 @@ const AppFooter = ({ setPage }) => {
 
                                     <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
                                         {section.links.map((link) => (
-                                            <Box key={link.name} component="li" sx={{ mb: 1.4 }}>
+                                            <Box key={link.name} component="li" sx={{ mb: 1.5 }}>
                                                 <Link
-                                                    underline="none"
                                                     component="button"
-                                                    onClick={() => setPage(link.target)}
+                                                    onClick={() => navigate(link.route)}
+                                                    underline="none"
                                                     sx={{
-                                                        fontSize: '0.9rem',
-                                                        color: currentColors.textPrimary,
+                                                        fontSize: '0.95rem',
+                                                        color: currentColors.textDim,
                                                         textAlign: 'left',
-                                                        // '&:hover': { color: colors.accent },
-                                                        '&:hover': { 
-  color: colors.accent, 
-  transform: 'translateX(2px)', 
-  transition: 'all 0.2s ease' 
-},
-
+                                                        fontWeight: 500,
+                                                        transition: 'all 0.2s ease',
+                                                        '&:hover': {
+                                                            color: colors.accent,
+                                                            transform: 'translateX(4px)',
+                                                        }
                                                     }}
                                                 >
                                                     {link.name}
@@ -340,43 +355,33 @@ const AppFooter = ({ setPage }) => {
                     </Grid>
                 </Grid>
 
-                {/* DIVIDER */}
-                <Divider
-                    sx={{
-                        my: 4,
-                        borderColor: `${currentColors.textDim}15`
-                    }}
-                />
+                <Divider sx={{ my: 6, borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
 
-                {/* BOTTOM — LEGAL & SECURITY BADGES */}
+                {/* BOTTOM ROW: Copyright + Compliance */}
                 <Box
                     sx={{
                         display: 'flex',
-                        flexDirection: { xs: 'column', md: 'row' },
+                        flexDirection: { xs: 'column-reverse', md: 'row' },
                         justifyContent: 'space-between',
-                        alignItems: 'center',
-                        // gap: 3,
-                        gap: { xs: 2, md: 3 },
+                        alignItems: { xs: 'flex-start', md: 'center' },
+                        gap: 3,
                     }}
                 >
-                    <Typography
-                        variant="body2"
-                        sx={{ color: currentColors.textDim }}
-                    >
+                    <Typography variant="body2" sx={{ color: currentColors.textDim, fontSize: '0.85rem' }}>
                         © {new Date().getFullYear()} Melucra Inc. All rights reserved.
                     </Typography>
 
-                    <Stack direction="row" spacing={3} alignItems="center">
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <GppGood sx={{ fontSize: 17, color: currentColors.textDim }} />
-                            <Typography variant="caption" sx={{ color: currentColors.textDim }}>
+                    <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 2, sm: 4 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                            <GppGood sx={{ fontSize: 18, color: currentColors.textDim }} />
+                            <Typography variant="caption" fontWeight={600} sx={{ color: currentColors.textDim, letterSpacing: 0.5 }}>
                                 SOC 2 TYPE II READY
                             </Typography>
                         </Box>
 
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Security sx={{ fontSize: 17, color: currentColors.textDim }} />
-                            <Typography variant="caption" sx={{ color: currentColors.textDim }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                            <Security sx={{ fontSize: 18, color: currentColors.textDim }} />
+                            <Typography variant="caption" fontWeight={600} sx={{ color: currentColors.textDim, letterSpacing: 0.5 }}>
                                 ZERO TRUST ARCHITECTURE
                             </Typography>
                         </Box>

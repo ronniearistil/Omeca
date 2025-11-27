@@ -1166,8 +1166,8 @@ import LayersIcon from '@mui/icons-material/Layers';
 
 // --- Color Palette and Configuration (REUSED for consistency) ---
 const colors = {
-  accent: '#00E5BE',
-  lucraGold: '#D4AF37', // Primary color for L3 Governance
+  accent: '#00ace5ff',
+  lucraGold: '#37d495ff', // Primary color for L3 Governance
   errorRed: '#FF4136',
   successGreen: '#2ECC40',
   logoDark: '#1A334A',

@@ -18,8 +18,8 @@ import {
 
 // --- Color Palette and Configuration (WCAG Readability Enhanced) ---
 export const colors = {
-    accent: '#00E5BE',
-    lucraGold: '#D4AF37',
+    accent: '#00ace5ff',
+    lucraGold: '#37d4cfff',
     errorRed: '#FF4136',
     successGreen: '#2ECC40',
     logoDark: '#1A334A',

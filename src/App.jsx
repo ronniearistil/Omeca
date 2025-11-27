@@ -6,18 +6,20 @@ import { CssBaseline } from "@mui/material";
 import ThemeWrapper from "./shared/layouts/theme/ThemeContext.jsx";
 import OmecaLanding from "./OmecaLanding.jsx";
 
-// --- LEDGER PAGES (final correct paths) ---
+// --- LEDGER PAGES ---
 import PricingPage from "./omeca-ledger/components/pages/PricingPage.jsx";
 import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage.jsx";
 import LegalPage from "./omeca-ledger/components/pages/LegalPage.jsx";
 
-// --- CORE PAGES (final correct paths) ---
+// --- CORE PAGES ---
 import CareersPage from "./marketing/CareersPage.jsx";
 import CompanyInfoPage from "./marketing/CompanyInfoPage.jsx";
 import ContactPage from "./marketing/ContactPage.jsx";
 import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage.jsx";
 import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage.jsx";
 import OmecaBrief from "./marketing/OmecaBrief.jsx";
+
+import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
 
 // Minimal placeholder
 const Placeholder = ({ title }) => (
@@ -37,7 +39,7 @@ export default function App() {
                     <Route path="/" element={<OmecaLanding />} />
 
                     {/* Trust Stack */}
-                    <Route path="/trust-stack" element={<Placeholder title="Trust Stack" />} />
+                    <Route path="/trust-stack" element={<OmecaTrustStackPreview />} />
 
                     {/* Product & Feature Pages */}
                     <Route path="/pricing" element={<PricingPage />} />
@@ -45,8 +47,8 @@ export default function App() {
                     <Route path="/reconciliation" element={<ReconciliationPage />} />
                     <Route path="/margin-alerts" element={<MarginAlertsPage />} />
 
-                    {/* Company */}
-                    <Route path="/about" element={<CompanyInfoPage />} />
+                    {/* Company - FIXED THIS ROUTE */}
+                    <Route path="/company" element={<CompanyInfoPage />} /> 
                     <Route path="/careers" element={<CareersPage />} />
                     <Route path="/contact" element={<ContactPage />} />
                     <Route path="/blog" element={<Placeholder title="Blog" />} />

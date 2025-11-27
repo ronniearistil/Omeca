@@ -4104,6 +4104,560 @@
 // 
 
 // src/OmecaLanding.jsx
+// import React, { useState, useContext, useEffect, useRef } from "react";
+// import {
+//   AppBar,
+//   Toolbar,
+//   Box,
+//   Container,
+//   Typography,
+//   TextField,
+//   Button,
+//   IconButton,
+//   Grid,
+//   Chip,
+// } from "@mui/material";
+// import { ArrowForward, Menu as MenuIcon, Bolt, CheckCircle } from "@mui/icons-material";
+// import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+// import { useNavigate } from "react-router-dom";
+// 
+// import { colors } from "./shared/layouts/theme/theme.js";
+// import { ColorModeContext } from "./shared/layouts/theme/ThemeContext.jsx";
+// import ThemeToggleButton from "./shared/layouts/ThemeToggleButton.jsx";
+// 
+// // UI Components (Preserving imports)
+// import OmecaAppFooter from "./shared/ui/AppFooter.jsx";
+// import OmecaLogo from "./shared/ui/OmecaLogo.jsx";
+// 
+// // Sections (Preserving imports)
+// import OmecaProblemSolutionComparison from "./omeca-governance/components/sections/ProblemSolutionComparison.jsx";
+// import OmecaTrustStack from "./omeca-governance/components/sections/TrustStack.jsx";
+// import OmecaDeveloperIntegration from "./omeca-governance/components/sections/DeveloperIntegration.jsx";
+// import OmecaSupportedIntegrations from "./omeca-governance/components/sections/SupportedIntegrations.jsx";
+// 
+// // --- VISUAL ASSETS & UTILS ---
+// 
+// // 1. Subtle Noise Texture (The "Premium" feel)
+// const NoiseOverlay = () => (
+//   <Box
+//     sx={{
+//       position: "fixed",
+//       top: 0,
+//       left: 0,
+//       width: "100%",
+//       height: "100%",
+//       pointerEvents: "none",
+//       zIndex: 9999,
+//       opacity: 0.03,
+//       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+//     }}
+//   />
+// );
+// 
+// // 2. Technical Grid Background
+// const GridBackground = ({ isDark }) => (
+//   <Box
+//     sx={{
+//       position: "absolute",
+//       top: 0,
+//       left: 0,
+//       right: 0,
+//       height: "100%",
+//       overflow: "hidden",
+//       zIndex: 0,
+//       maskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
+//     }}
+//   >
+//     <Box
+//       sx={{
+//         width: "100%",
+//         height: "100%",
+//         backgroundImage: `linear-gradient(${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px),
+//         linear-gradient(90deg, ${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px)`,
+//         backgroundSize: "60px 60px",
+//       }}
+//     />
+//   </Box>
+// );
+// 
+// // 3. Spotlight Card (The "Stripe" Hover Effect)
+// const SpotlightCard = ({ children, delay = 0 }) => {
+//   const { mode } = useContext(ColorModeContext);
+//   const isDark = mode === "dark";
+//   const mouseX = useMotionValue(0);
+//   const mouseY = useMotionValue(0);
+// 
+//   function handleMouseMove({ currentTarget, clientX, clientY }) {
+//     const { left, top } = currentTarget.getBoundingClientRect();
+//     mouseX.set(clientX - left);
+//     mouseY.set(clientY - top);
+//   }
+// 
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, y: 20 }}
+//       whileInView={{ opacity: 1, y: 0 }}
+//       viewport={{ once: true, margin: "-50px" }}
+//       transition={{ duration: 0.5, delay }}
+//       onMouseMove={handleMouseMove}
+//       style={{ height: "100%", position: "relative" }}
+//     >
+//       <Box
+//         sx={{
+//           height: "100%",
+//           position: "relative",
+//           borderRadius: 5,
+//           border: "1px solid",
+//           borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
+//           bgcolor: isDark ? "rgba(10,10,12,0.6)" : "rgba(255,255,255,0.6)",
+//           backdropFilter: "blur(12px)",
+//           overflow: "hidden",
+//           group: "card",
+//         }}
+//       >
+//         {/* Mouse Glow Effect */}
+//         <motion.div
+//           style={{
+//             pointerEvents: "none",
+//             position: "absolute",
+//             top: 0,
+//             left: 0,
+//             right: 0,
+//             bottom: 0,
+//             background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'}, transparent 80%)`,
+//             zIndex: 1,
+//           }}
+//         />
+//         
+//         <Box sx={{ p: 3, position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+//           {children}
+//         </Box>
+//       </Box>
+//     </motion.div>
+//   );
+// };
+// 
+// // 4. Smooth Counter
+// const Counter = ({ value, suffix = "", color }) => {
+//   const nodeRef = useRef();
+//   const prevValue = useRef(value);
+// 
+//   useEffect(() => {
+//     const node = nodeRef.current;
+//     if (!node) return;
+// 
+//     const controls = animate(prevValue.current, value, {
+//       duration: 0.8,
+//       ease: "easeOut",
+//       onUpdate: (v) => {
+//         node.textContent = v.toFixed(1) + suffix;
+//       },
+//     });
+//     prevValue.current = value;
+//     return () => controls.stop();
+//   }, [value, suffix]);
+// 
+//   return (
+//     <Typography
+//       ref={nodeRef}
+//       variant="h2"
+//       sx={{
+//         color,
+//         mb: 1,
+//         fontSize: { xs: "2rem", md: "2.6rem" },
+//         fontWeight: 700,
+//         fontFamily: '"JetBrains Mono", monospace',
+//         letterSpacing: "-0.04em",
+//       }}
+//     >
+//       {value}{suffix}
+//     </Typography>
+//   );
+// };
+// 
+// // --- SUB-COMPONENTS ---
+// 
+// const LivePreviewPanel = ({ onExplore }) => {
+//   const { mode } = useContext(ColorModeContext);
+//   const isDark = mode === "dark";
+// 
+//   // Data simulation
+//   const [data, setData] = useState({ integrity: 98.3, recon: 92.1, evidence: 99.7 });
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       setData(d => ({
+//         integrity: Math.min(100, Math.max(90, d.integrity + (Math.random() * 0.4 - 0.2))),
+//         recon: Math.min(100, Math.max(85, d.recon + (Math.random() * 0.6 - 0.25))),
+//         evidence: Math.min(100, Math.max(95, d.evidence + (Math.random() * 0.2 - 0.1))),
+//       }));
+//     }, 2000);
+//     return () => clearInterval(interval);
+//   }, []);
+// 
+//   const textDim = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
+// 
+//   return (
+//     <Box sx={{ width: "100%", maxWidth: 500, mx: "auto" }}>
+//       <Box sx={{ display: "flex", alignItems: "center", mb: 3, gap: 1.5 }}>
+//         <Box sx={{ position: 'relative', display: 'flex' }}>
+//             <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: colors.successGreen }} />
+//             <Box sx={{ position: 'absolute', width: 8, height: 8, borderRadius: '50%', bgcolor: colors.successGreen, animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite', opacity: 0.7 }} />
+//             <style>{`@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }`}</style>
+//         </Box>
+//         <Typography variant="overline" sx={{ fontWeight: 700, color: colors.accent, letterSpacing: "1px" }}>
+//           SYSTEM LIVE
+//         </Typography>
+//       </Box>
+// 
+//       <Grid container spacing={2}>
+//         <Grid item xs={12} sm={6}>
+//           <SpotlightCard delay={0.1}>
+//             <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+//               Core Integrity
+//             </Typography>
+//             <Counter value={data.integrity} suffix="%" color={colors.accent} />
+//             <Box sx={{ height: 4, width: '100%', bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: 2, overflow: 'hidden' }}>
+//                 <Box sx={{ height: '100%', width: `${data.integrity}%`, bgcolor: colors.accent, transition: 'width 1s ease' }} />
+//             </Box>
+//           </SpotlightCard>
+//         </Grid>
+// 
+//         <Grid item xs={12} sm={6}>
+//           <SpotlightCard delay={0.2}>
+//             <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+//               Ledger Recon
+//             </Typography>
+//             <Counter value={data.recon} suffix="%" color="#34d399" />
+//             <Box sx={{ height: 4, width: '100%', bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)', borderRadius: 2, overflow: 'hidden' }}>
+//                 <Box sx={{ height: '100%', width: `${data.recon}%`, bgcolor: '#34d399', transition: 'width 1s ease' }} />
+//             </Box>
+//           </SpotlightCard>
+//         </Grid>
+// 
+//         <Grid item xs={12}>
+//           <SpotlightCard delay={0.3}>
+//             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+//                 <Box>
+//                     <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+//                     Governance Proofs
+//                     </Typography>
+//                     <Counter value={data.evidence} suffix="%" color={colors.lucraGold} />
+//                 </Box>
+//                 <CheckCircle sx={{ color: colors.lucraGold, opacity: 0.5, fontSize: 32 }} />
+//             </Box>
+//             <Typography variant="body2" sx={{ color: textDim, mt: 1 }}>
+//               Immutable evidence chain verified on-ledger.
+//             </Typography>
+//           </SpotlightCard>
+//         </Grid>
+// 
+//         <Grid item xs={12}>
+//             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+//                 <Button
+//                     onClick={onExplore}
+//                     fullWidth
+//                     sx={{
+//                         py: 2,
+//                         borderRadius: 4,
+//                         bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+//                         color: isDark ? '#fff' : '#000',
+//                         textTransform: 'none',
+//                         fontSize: '1rem',
+//                         fontWeight: 600,
+//                         border: '1px solid',
+//                         borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+//                         justifyContent: 'space-between',
+//                         px: 3,
+//                         "&:hover": {
+//                             bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+//                             borderColor: colors.accent
+//                         }
+//                     }}
+//                     endIcon={<ArrowForward sx={{ color: colors.accent }} />}
+//                 >
+//                     Explore Full Architecture
+//                 </Button>
+//             </motion.div>
+//         </Grid>
+//       </Grid>
+//     </Box>
+//   );
+// };
+// 
+// 
+// // --- MAIN PAGE ---
+// 
+// const OmecaLanding = () => {
+//   const navigate = useNavigate();
+//   const { mode } = useContext(ColorModeContext);
+//   const currentColors = colors[mode];
+//   const isDark = mode === "dark";
+// 
+//   const [email, setEmail] = useState("");
+//   const [submitted, setSubmitted] = useState(false);
+//   
+//   const handleRequest = () => {
+//     if (email.includes("@")) setSubmitted(true);
+//   };
+// 
+//   return (
+//     <Box
+//       sx={{
+//         bgcolor: currentColors.bgTop,
+//         color: currentColors.textPrimary,
+//         minHeight: "100vh",
+//         display: "flex",
+//         flexDirection: "column",
+//         position: "relative",
+//       }}
+//     >
+//       <NoiseOverlay />
+//       
+//       {/* GLOBAL NAV */}
+//       <AppBar
+//         position="fixed"
+//         elevation={0}
+//         sx={{
+//           bgcolor: isDark ? "rgba(11,15,23,0.7)" : "rgba(255,255,255,0.7)",
+//           backdropFilter: "blur(20px)",
+//           borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+//           zIndex: 1200,
+//         }}
+//       >
+//         <Toolbar sx={{ justifyContent: "space-between", height: 72 }}>
+//           <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer", opacity: 0.9, "&:hover": { opacity: 1 } }} onClick={() => navigate("/")}>
+//             <OmecaLogo size={180} />
+//           </Box>
+// 
+//           <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+//             <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+//               {['Product', 'Pricing', 'Company'].map((item) => (
+//                 <Button 
+//                     key={item} 
+//                     onClick={() => navigate(`/${item.toLowerCase()}`)} 
+//                     sx={{ 
+//                         color: currentColors.textDim, 
+//                         fontWeight: 500,
+//                         "&:hover": { color: currentColors.textPrimary, bgcolor: 'transparent' }
+//                     }}
+//                 >
+//                   {item}
+//                 </Button>
+//               ))}
+//             </Box>
+// 
+//             <ThemeToggleButton />
+// 
+//             <Button
+//               variant="outlined"
+//               size="small"
+//               sx={{
+//                 borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)',
+//                 color: currentColors.textPrimary,
+//                 borderRadius: 50,
+//                 textTransform: 'none',
+//                 px: 2.5,
+//                 display: { xs: "none", sm: "flex" },
+//                 "&:hover": { borderColor: colors.accent, bgcolor: 'transparent' }
+//               }}
+//               onClick={() => navigate("/contact")}
+//             >
+//               Partner Login
+//             </Button>
+// 
+//             <IconButton sx={{ display: { xs: "flex", md: "none" } }}>
+//               <MenuIcon />
+//             </IconButton>
+//           </Box>
+//         </Toolbar>
+//       </AppBar>
+// 
+//       {/* CONTENT WRAPPER */}
+//       <Box sx={{ pt: { xs: 12, md: 16 }, position: 'relative', zIndex: 1 }}>
+//         
+//         {/* HERO SECTION */}
+//         <Box sx={{ position: 'relative', pb: { xs: 10, md: 16 } }}>
+//           <GridBackground isDark={isDark} />
+//           
+//           <Container maxWidth="xl" sx={{ maxWidth: "1400px", px: { xs: 3, md: 6 }, position: 'relative' }}>
+//             <Grid container spacing={{ xs: 8, md: 6 }} alignItems="center">
+//               
+//               {/* HERO TEXT */}
+//               <Grid item xs={12} md={6}>
+//                 <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
+//                   
+//                   {/* Badge */}
+//                   <Chip 
+//                     label="Waitlist Open for Q4 2025" 
+//                     icon={<Bolt style={{ color: colors.accent, fontSize: 16 }} />}
+//                     sx={{ 
+//                         mb: 3, 
+//                         bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', 
+//                         border: '1px solid', 
+//                         borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+//                         color: currentColors.textDim,
+//                         fontWeight: 600
+//                     }} 
+//                   />
+// 
+//                   <Typography
+//                     variant="h1"
+//                     sx={{
+//                       fontWeight: 800,
+//                       fontSize: { xs: "3rem", md: "4.8rem" },
+//                       letterSpacing: "-0.03em",
+//                       lineHeight: 1.1,
+//                       mb: 3,
+//                       background: isDark 
+//                         ? `linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%)`
+//                         : `linear-gradient(180deg, #000 0%, rgba(0,0,0,0.7) 100%)`,
+//                       WebkitBackgroundClip: "text",
+//                       WebkitTextFillColor: "transparent",
+//                     }}
+//                   >
+//                     The Cognitive ERP
+//                     <br />
+//                     <Box
+//                       component="span"
+//                       sx={{
+//                         background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
+//                         WebkitBackgroundClip: "text",
+//                         WebkitTextFillColor: "transparent",
+//                       }}
+//                     >
+//                       that drives itself.
+//                     </Box>
+//                   </Typography>
+// 
+//                   <Typography variant="h6" sx={{ color: currentColors.textDim, mb: 5, maxWidth: 540, lineHeight: 1.6, fontWeight: 400 }}>
+//                     Transform passive record-keeping into autonomous control. 
+//                     Unify operational truth and real-time close with verifiable intelligence.
+//                   </Typography>
+// 
+//                   {/* UNIFIED INPUT COMPONENT (The "Stripe" Waitlist Bar) */}
+//                   {!submitted ? (
+//                     <Box
+//                         component="form"
+//                         sx={{
+//                             display: 'flex',
+//                             alignItems: 'center',
+//                             maxWidth: 420,
+//                             bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#fff',
+//                             border: '1px solid',
+//                             borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+//                             borderRadius: 50,
+//                             p: 0.5,
+//                             pl: 2.5,
+//                             boxShadow: isDark ? 'none' : '0 4px 20px rgba(0,0,0,0.05)',
+//                             transition: 'all 0.2s',
+//                             "&:focus-within": {
+//                                 borderColor: colors.accent,
+//                                 boxShadow: `0 0 0 4px ${colors.accent}20`
+//                             }
+//                         }}
+//                     >
+//                         <input 
+//                             value={email}
+//                             onChange={(e) => setEmail(e.target.value)}
+//                             placeholder="work@company.com"
+//                             style={{
+//                                 border: 'none',
+//                                 background: 'transparent',
+//                                 outline: 'none',
+//                                 width: '100%',
+//                                 color: currentColors.textPrimary,
+//                                 fontSize: '1rem'
+//                             }}
+//                         />
+//                         <Button
+//                             onClick={handleRequest}
+//                             sx={{
+//                                 borderRadius: 50,
+//                                 px: 3,
+//                                 py: 1,
+//                                 bgcolor: colors.accent,
+//                                 color: '#000',
+//                                 fontWeight: 700,
+//                                 textTransform: 'none',
+//                                 minWidth: 'fit-content',
+//                                 "&:hover": { bgcolor: '#fff' }
+//                             }}
+//                         >
+//                             Request Access
+//                         </Button>
+//                     </Box>
+//                   ) : (
+//                     <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+//                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: colors.successGreen }}>
+//                             <CheckCircle />
+//                             <Typography fontWeight={600}>We've added you to the priority queue.</Typography>
+//                         </Box>
+//                     </motion.div>
+//                   )}
+//                   
+//                   <Box sx={{ mt: 3, display: 'flex', gap: 2, opacity: 0.6 }}>
+//                     {/* Trust Badges placeholder */}
+//                     <Typography variant="caption" sx={{ color: currentColors.textDim }}>Used by teams at</Typography>
+//                     <Typography variant="caption" sx={{ fontWeight: 700 }}>RHO</Typography>
+//                     <Typography variant="caption" sx={{ fontWeight: 700 }}>PLAID</Typography>
+//                     <Typography variant="caption" sx={{ fontWeight: 700 }}>BREX</Typography>
+//                   </Box>
+// 
+//                 </motion.div>
+//               </Grid>
+// 
+//               {/* RIGHT SIDE PREVIEW */}
+//               <Grid item xs={12} md={6}>
+//                 <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.8 }}>
+//                     <LivePreviewPanel onExplore={() => navigate("/trust-stack")} />
+//                 </motion.div>
+//               </Grid>
+// 
+//             </Grid>
+//           </Container>
+//         </Box>
+// 
+//         {/* SECTIONS - Using subtle dividers instead of hard backgrounds */}
+//         
+//         <Container maxWidth="xl" sx={{ maxWidth: "1400px" }}>
+//             <Box sx={{ borderTop: '1px solid', borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
+//         </Container>
+// 
+//         <Box sx={{ position: 'relative' }}>
+//           <Container maxWidth="xl" sx={{ maxWidth: "1600px", py: { xs: 8, md: 12 } }}>
+//             <OmecaProblemSolutionComparison />
+//           </Container>
+//         </Box>
+// 
+//         <Box sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderY: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
+//           <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+//             <OmecaTrustStack />
+//           </Container>
+//         </Box>
+// 
+//         <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+//           <OmecaDeveloperIntegration navigate={navigate} />
+//         </Container>
+// 
+//         <Box sx={{ bgcolor: isDark ? currentColors.bgTop : "#fff" }}>
+//           <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+//             <OmecaSupportedIntegrations />
+//           </Container>
+//         </Box>
+//       </Box>
+// 
+//       {/* FOOTER */}
+//       <OmecaAppFooter />
+//     </Box>
+//   );
+// };
+// 
+// export default OmecaLanding;
+
+
+// Ultra Modern Landing Page for Omeca
+
+// src/OmecaLanding.jsx
 import React, { useState, useContext, useEffect, useRef } from "react";
 import {
   AppBar,
@@ -4114,17 +4668,18 @@ import {
   TextField,
   Button,
   IconButton,
-  InputAdornment,
   Grid,
+  Chip,
 } from "@mui/material";
-import { ArrowForward, Menu as MenuIcon } from "@mui/icons-material";
-import { motion } from "framer-motion";
+import { ArrowForward, Menu as MenuIcon, Bolt, CheckCircle, Security, GppGood } from "@mui/icons-material";
+import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import { colors } from "./shared/layouts/theme/theme.js";
 import { ColorModeContext } from "./shared/layouts/theme/ThemeContext.jsx";
 import ThemeToggleButton from "./shared/layouts/ThemeToggleButton.jsx";
 
-// UI
+// UI Components
 import OmecaAppFooter from "./shared/ui/AppFooter.jsx";
 import OmecaLogo from "./shared/ui/OmecaLogo.jsx";
 
@@ -4134,77 +4689,95 @@ import OmecaTrustStack from "./omeca-governance/components/sections/TrustStack.j
 import OmecaDeveloperIntegration from "./omeca-governance/components/sections/DeveloperIntegration.jsx";
 import OmecaSupportedIntegrations from "./omeca-governance/components/sections/SupportedIntegrations.jsx";
 
-// Pages
-import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
-import OmecaPricingPage from "./omeca-ledger/components/pages/PricingPage.jsx";
+// --- VISUAL ASSETS (Noise & Grid - Keeping the "10/10" Polish) ---
 
-// ============================================================================
-// Shared motion + glass utilities
-// ============================================================================
+const NoiseOverlay = () => (
+  <Box
+    sx={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+      pointerEvents: "none",
+      zIndex: 10000,
+      opacity: 0.03,
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+    }}
+  />
+);
 
-const fadeIn = {
-  hidden: { opacity: 0, y: 24 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
+const GridBackground = ({ isDark }) => (
+  <Box
+    sx={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      height: "100%",
+      overflow: "hidden",
+      zIndex: 0,
+      maskImage: "linear-gradient(to bottom, black 40%, transparent 100%)",
+    }}
+  >
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        backgroundImage: `linear-gradient(${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px),
+        linear-gradient(90deg, ${isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.03)'} 1px, transparent 1px)`,
+        backgroundSize: "60px 60px",
+      }}
+    />
+  </Box>
+);
 
-const GlassCard = ({ children, color = colors.accent, delay = 0 }) => {
+const SpotlightCard = ({ children, delay = 0 }) => {
   const { mode } = useContext(ColorModeContext);
   const isDark = mode === "dark";
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16, scale: 0.98 }}
-      whileInView={{ opacity: 1, y: 0, scale: 1 }}
-      viewport={{ once: true, amount: 0.4 }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay }}
-      style={{ height: "100%" }}
+      onMouseMove={handleMouseMove}
+      style={{ height: "100%", position: "relative" }}
     >
       <Box
         sx={{
-          position: "relative",
           height: "100%",
-          borderRadius: 4,
-          background: isDark
-            ? "rgba(15, 23, 42, 0.85)"
-            : "rgba(255, 255, 255, 0.82)",
-          backdropFilter: "blur(18px)",
+          position: "relative",
+          borderRadius: 5,
           border: "1px solid",
-          borderColor: isDark
-            ? "rgba(148, 163, 184, 0.35)"
-            : "rgba(15, 23, 42, 0.06)",
-          boxShadow: isDark
-            ? "0 18px 45px rgba(15, 23, 42, 0.75)"
-            : "0 18px 45px rgba(15, 23, 42, 0.08)",
-          transition: "all 0.25s ease",
+          borderColor: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)",
+          bgcolor: isDark ? "rgba(10,10,12,0.6)" : "rgba(255,255,255,0.6)",
+          backdropFilter: "blur(12px)",
           overflow: "hidden",
-          "&:hover": {
-            borderColor: color,
-            boxShadow: `0 0 24px ${color}55`,
-            transform: "translateY(-3px)",
-          },
         }}
       >
-        {/* subtle top sheen */}
-        <Box
-          sx={{
+        <motion.div
+          style={{
+            pointerEvents: "none",
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
-            height: "1px",
-            background: `linear-gradient(90deg, transparent, ${color}66, transparent)`,
-            opacity: 0.8,
+            bottom: 0,
+            background: useMotionTemplate`radial-gradient(600px circle at ${mouseX}px ${mouseY}px, ${isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.04)'}, transparent 80%)`,
+            zIndex: 1,
           }}
         />
-        <Box
-          sx={{
-            p: { xs: 2.5, md: 3 },
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
+        <Box sx={{ p: 3, position: "relative", zIndex: 2, height: "100%", display: "flex", flexDirection: "column", justifyContent: "center" }}>
           {children}
         </Box>
       </Box>
@@ -4212,561 +4785,178 @@ const GlassCard = ({ children, color = colors.accent, delay = 0 }) => {
   );
 };
 
-const AnimatedNumber = ({ value, suffix = "", color }) => (
-  <Typography
-    variant="h2"
-    sx={{
-      color,
-      mb: 1,
-      fontSize: { xs: "2.2rem", md: "2.8rem" },
-      fontWeight: 800,
-      fontFamily: '"JetBrains Mono", monospace',
-      letterSpacing: "-0.04em",
-    }}
-  >
-    {value}
-    {suffix}
-  </Typography>
-);
+const Counter = ({ value, suffix = "", color }) => {
+  const nodeRef = useRef();
+  const prevValue = useRef(value);
 
-// ============================================================================
-// Right-side snapshot panel (OS-style view)
-// ============================================================================
+  useEffect(() => {
+    const node = nodeRef.current;
+    if (!node) return;
+    const controls = animate(prevValue.current, value, {
+      duration: 0.8,
+      ease: "easeOut",
+      onUpdate: (v) => { node.textContent = v.toFixed(1) + suffix; },
+    });
+    prevValue.current = value;
+    return () => controls.stop();
+  }, [value, suffix]);
 
-const OmecaHomepagePreview = ({ onExplore }) => {
+  return (
+    <Typography
+      ref={nodeRef}
+      variant="h2"
+      sx={{
+        color,
+        mb: 1,
+        fontSize: { xs: "2rem", md: "2.6rem" },
+        fontWeight: 700,
+        fontFamily: '"JetBrains Mono", monospace',
+        letterSpacing: "-0.04em",
+      }}
+    >
+      {value}{suffix}
+    </Typography>
+  );
+};
+
+// --- PREVIEW PANEL (Updated with L1/L2/L3 Messaging) ---
+
+const LivePreviewPanel = ({ onExplore }) => {
   const { mode } = useContext(ColorModeContext);
   const isDark = mode === "dark";
+  const textDim = isDark ? "rgba(255,255,255,0.5)" : "rgba(0,0,0,0.5)";
 
-  const [spend, setSpend] = useState(11.18);
-  const [unaudited, setUnaudited] = useState(2.5);
-  const [assurance] = useState(99.8);
-  const [efficiency] = useState(92);
+  // Simulating the "Continuous Close" metrics
+  const [data, setData] = useState({ 
+    control: 98.4,  // L1 Control
+    recon: 95.2,    // L2 Reconciliation
+    evidence: 100   // L3 Evidence (Target is 100%)
+  });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSpend((s) => +(s + (Math.random() * 0.08 - 0.03)).toFixed(2));
-      setUnaudited((u) =>
-        Math.max(0, +(u + (Math.random() * 0.12 - 0.06)).toFixed(1))
-      );
-    }, 3200);
+      setData(d => ({
+        control: Math.min(100, Math.max(90, d.control + (Math.random() * 0.4 - 0.2))),
+        recon: Math.min(100, Math.max(85, d.recon + (Math.random() * 0.6 - 0.25))),
+        evidence: 100, // Stays at 100% as per "Immutable Attestation"
+      }));
+    }, 2000);
     return () => clearInterval(interval);
   }, []);
 
-  const textColor = isDark ? "#E5E7EB" : "#020617";
-  const textDim = isDark ? "#9CA3AF" : "#6B7280";
-  const neonTeal = colors.accent;
-  const alertRed = "#fb7185";
-  const cyberGreen = "#34d399";
-
   return (
-    <Box sx={{ position: "relative", zIndex: 1 }}>
-      <Typography
-        variant="h5"
-        sx={{
-          mb: 4,
-          fontWeight: 600,
-          color: textColor,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        Operational Truth:{" "}
-        <Box component="span" sx={{ color: neonTeal, fontWeight: 800 }}>
-          LIVE NEURAL VIEW
+    <Box sx={{ width: "100%", maxWidth: 500, mx: "auto" }}>
+      <Box sx={{ display: "flex", alignItems: "center", mb: 3, gap: 1.5 }}>
+        <Box sx={{ position: 'relative', display: 'flex' }}>
+            <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: colors.successGreen }} />
+            <Box sx={{ position: 'absolute', width: 8, height: 8, borderRadius: '50%', bgcolor: colors.successGreen, animation: 'ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite', opacity: 0.7 }} />
+            <style>{`@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }`}</style>
         </Box>
-      </Typography>
+        <Typography variant="overline" sx={{ fontWeight: 700, color: colors.accent, letterSpacing: "1px" }}>
+          CONTINUOUS CONTROL LIVE
+        </Typography>
+      </Box>
 
-      <Grid container spacing={2.5}>
-        {/* Total Spend */}
+      <Grid container spacing={2}>
+        {/* L1: CORE */}
         <Grid item xs={12} sm={6}>
-          <GlassCard color={neonTeal} delay={0.05}>
-            <Typography
-              variant="body2"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                fontWeight: 600,
-                color: textDim,
-                mb: 1,
-              }}
-            >
-              Total Machine Spend
+          <SpotlightCard delay={0.1}>
+            <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              L1: Operational Control
             </Typography>
-            <AnimatedNumber
-              value={`$${spend.toFixed(2)}`}
-              suffix="M"
-              color={neonTeal}
-            />
-            <Typography
-              variant="caption"
-              sx={{ color: neonTeal, fontWeight: 600 }}
-            >
-              +12.5% period change
+            <Typography variant="body2" sx={{ fontSize: '0.8rem', color: currentColors => currentColors.textPrimary, mb: 1 }}>
+              Forecast Accuracy
             </Typography>
-          </GlassCard>
+            <Counter value={data.control} suffix="%" color={colors.accent} />
+            <Typography variant="caption" sx={{ color: textDim }}>
+              Real-time cash & spend
+            </Typography>
+          </SpotlightCard>
         </Grid>
 
-        {/* Unaudited */}
+        {/* L2: LEDGER */}
         <Grid item xs={12} sm={6}>
-          <GlassCard color={alertRed} delay={0.1}>
-            <Typography
-              variant="body2"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                fontWeight: 500,
-                color: textDim,
-                mb: 1,
-              }}
-            >
-              Unaudited
+          <SpotlightCard delay={0.2}>
+            <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              L2: Continuous Close
             </Typography>
-            <AnimatedNumber
-              value={unaudited.toFixed(1)}
-              suffix="%"
-              color={alertRed}
-            />
-            <Typography variant="caption" sx={{ color: alertRed }}>
-              Requires attention
+             <Typography variant="body2" sx={{ fontSize: '0.8rem', color: currentColors => currentColors.textPrimary, mb: 1 }}>
+              Auto-Reconciliation
             </Typography>
-          </GlassCard>
+            <Counter value={data.recon} suffix="%" color="#34d399" />
+            <Typography variant="caption" sx={{ color: textDim }}>
+              Subledger alignment
+            </Typography>
+          </SpotlightCard>
         </Grid>
 
-        {/* Assurance */}
-        <Grid item xs={12} sm={6}>
-          <GlassCard color={cyberGreen} delay={0.15}>
-            <Typography
-              variant="body2"
-              sx={{
-                textTransform: "uppercase",
-                letterSpacing: "0.12em",
-                fontWeight: 600,
-                color: textDim,
-                mb: 1,
-              }}
-            >
-              Assurance
+        {/* L3: GOVERNANCE */}
+        <Grid item xs={12}>
+          <SpotlightCard delay={0.3}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                <Box>
+                    <Typography variant="caption" sx={{ color: textDim, fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                    L3: Verifiable Trust
+                    </Typography>
+                     <Typography variant="body2" sx={{ fontSize: '0.8rem', color: currentColors => currentColors.textPrimary, mb: 1 }}>
+                      Evidence Attached
+                    </Typography>
+                    <Counter value={data.evidence} suffix="%" color={colors.lucraGold} />
+                </Box>
+                <GppGood sx={{ color: colors.lucraGold, opacity: 0.8, fontSize: 32 }} />
+            </Box>
+            <Typography variant="body2" sx={{ color: textDim, mt: 1 }}>
+              Immutable attestation for AI-driven finance.
             </Typography>
-            <AnimatedNumber
-              value={assurance.toFixed(1)}
-              suffix="%"
-              color={cyberGreen}
-            />
-            <Typography variant="caption" sx={{ color: cyberGreen }}>
-              Audit ready
-            </Typography>
-          </GlassCard>
+          </SpotlightCard>
         </Grid>
 
-        {/* Efficiency + CTA */}
-        <Grid item xs={12} sm={6}>
-          <GlassCard color={neonTeal} delay={0.2}>
-            <Typography
-              variant="h6"
-              sx={{ fontWeight: 700, color: textColor, mb: 1 }}
-            >
-              Global Efficiency Signal
-            </Typography>
-            <Typography variant="body2" sx={{ color: textDim, mb: 2 }}>
-              AI-optimized close processes running at {efficiency}% capacity.
-            </Typography>
-            <Button
-              onClick={onExplore}
-              endIcon={<ArrowForward />}
-              sx={{
-                borderRadius: 50,
-                px: 3,
-                py: 1,
-                fontWeight: 600,
-                bgcolor: isDark
-                  ? "rgba(255,255,255,0.06)"
-                  : "rgba(15,23,42,0.05)",
-                color: textColor,
-                "&:hover": {
-                  bgcolor: neonTeal,
-                  color: "#000",
-                },
-              }}
-            >
-              Explore Trust Stack
-            </Button>
-          </GlassCard>
+        <Grid item xs={12}>
+            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                <Button
+                    onClick={onExplore}
+                    fullWidth
+                    sx={{
+                        py: 2,
+                        borderRadius: 4,
+                        bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.04)',
+                        color: isDark ? '#fff' : '#000',
+                        textTransform: 'none',
+                        fontSize: '1rem',
+                        fontWeight: 600,
+                        border: '1px solid',
+                        borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                        justifyContent: 'space-between',
+                        px: 3,
+                        "&:hover": {
+                            borderColor: colors.accent,
+                            bgcolor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.08)',
+                        }
+                    }}
+                    endIcon={<ArrowForward sx={{ color: colors.accent }} />}
+                >
+                    Explore The Trust Stack
+                </Button>
+            </motion.div>
         </Grid>
       </Grid>
     </Box>
   );
 };
 
-// ============================================================================
-// Simple placeholder page for routes we have not fleshed out yet
-// ============================================================================
-
-const PlaceholderPage = ({ title }) => (
-  <Box sx={{ pt: 20, pb: 20, textAlign: "center", minHeight: "60vh" }}>
-    <Typography
-      variant="h2"
-      fontWeight={800}
-      color="text.primary"
-      gutterBottom
-    >
-      {title}
-    </Typography>
-    <Typography variant="h5" color="text.secondary">
-      Coming soon
-    </Typography>
-  </Box>
-);
-
-// ============================================================================
-// Main Landing Component
-// ============================================================================
+// --- MAIN PAGE ---
 
 const OmecaLanding = () => {
+  const navigate = useNavigate();
   const { mode } = useContext(ColorModeContext);
   const currentColors = colors[mode];
   const isDark = mode === "dark";
 
-  const [page, setPage] = useState("home");
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const emailInputRef = useRef(null);
-
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [page]);
-
-  const handleSubmit = () => {
-    if (email && email.includes("@")) {
-      setSubmitted(true);
-      // TODO: wire to backend / waitlist
-    }
-  };
-
-  const handleRequestInviteClick = () => {
-    if (emailInputRef.current) {
-      emailInputRef.current.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-      setTimeout(() => emailInputRef.current.focus(), 300);
-    }
-  };
-
-  const renderPage = () => {
-    switch (page) {
-      case "trust-stack":
-        return <OmecaTrustStackPreview setPage={setPage} initialLayer={null} />;
-      case "trust-stack-core":
-        return (
-          <OmecaTrustStackPreview setPage={setPage} initialLayer="core" />
-        );
-      case "trust-stack-ledger":
-        return (
-          <OmecaTrustStackPreview setPage={setPage} initialLayer="ledger" />
-        );
-      case "trust-stack-governance":
-        return (
-          <OmecaTrustStackPreview
-            setPage={setPage}
-            initialLayer="governance"
-          />
-        );
-      case "pricing":
-        return <OmecaPricingPage setPage={setPage} />;
-      case "contact":
-        return <PlaceholderPage title="Partner Login" />;
-      case "brief":
-        return <PlaceholderPage title="Investor Brief" />;
-      case "careers":
-        return <PlaceholderPage title="Careers" />;
-      case "about":
-        return <PlaceholderPage title="About Omeca" />;
-      case "home":
-      default:
-        return (
-          <>
-            {/* HERO */}
-            <Box
-              sx={{
-                width: "100%",
-                pt: { xs: 12, md: 18 },
-                pb: { xs: 10, md: 14 },
-                overflow: "hidden",
-                position: "relative",
-                display: "flex",
-                justifyContent: "center",
-                background: isDark
-                  ? `
-                    radial-gradient(circle at 20% 0%, ${colors.accent}18, transparent 55%),
-                    radial-gradient(circle at 80% 70%, ${colors.lucraGold}12, transparent 55%),
-                    ${currentColors.bgTop}
-                  `
-                  : `
-                    radial-gradient(circle at 15% -20%, ${colors.accent}18, transparent 55%),
-                    radial-gradient(circle at 90% 80%, ${colors.lucraGold}10, transparent 55%),
-                    ${currentColors.bgTop}
-                  `,
-              }}
-            >
-              <Box
-                sx={{
-                  width: "100%",
-                  maxWidth: "1600px",
-                  px: { xs: 3, md: 6 },
-                }}
-              >
-                <motion.div
-                  variants={fadeIn}
-                  initial="hidden"
-                  animate="show"
-                >
-                  <Grid
-                    container
-                    spacing={{ xs: 8, md: 10 }}
-                    alignItems="center"
-                  >
-                    {/* LEFT SIDE — HEADLINE + BODY + EMAIL */}
-                    <Grid item xs={12} md={6}>
-                      <Box sx={{ maxWidth: 600, mx: { xs: "auto", md: 0 } }}>
-                        <Typography
-                          variant="h1"
-                          sx={{
-                            fontWeight: 700,
-                            fontSize: { xs: "2.8rem", md: "4.6rem" },
-                            letterSpacing: "-0.03em",
-                            lineHeight: { xs: 1.15, md: 1.05 },
-                            mb: 3,
-                            color: currentColors.textPrimary,
-                            textAlign: { xs: "center", md: "left" },
-                          }}
-                        >
-                          The{" "}
-                          <Box
-                            component="span"
-                            sx={{
-                              background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
-                              WebkitBackgroundClip: "text",
-                              WebkitTextFillColor: "transparent",
-                            }}
-                          >
-                            Self-Driving
-                          </Box>
-                          <br />
-                          Cognitive ERP
-                        </Typography>
-
-                        <Typography
-                          variant="h5"
-                          sx={{
-                            fontSize: { xs: "1.1rem", md: "1.35rem" },
-                            color: currentColors.textDim,
-                            lineHeight: 1.6,
-                            fontWeight: 400,
-                            mb: 4,
-                            textAlign: { xs: "center", md: "left" },
-                          }}
-                        >
-                          Transforming ERPs from passive record-keeping to
-                          continuous, autonomous control.{" "}
-                          <strong>Omeca</strong> unifies operational truth,
-                          real-time close, and verifiable intelligence.
-                        </Typography>
-
-                        {/* EMAIL CAPTURE */}
-                        <Box
-                          sx={{
-                            display: "flex",
-                            justifyContent: {
-                              xs: "center",
-                              md: "flex-start",
-                            },
-                            alignItems: "center",
-                            gap: 1,
-                            flexWrap: "wrap",
-                          }}
-                          id="invite-form-target"
-                        >
-                          {!submitted ? (
-                            <>
-                              <TextField
-                                inputRef={emailInputRef}
-                                placeholder="Enter work email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                variant="outlined"
-                                sx={{
-                                  bgcolor: "background.paper",
-                                  width: { xs: "100%", sm: 280 },
-                                  "& .MuiOutlinedInput-root": {
-                                    borderRadius: 2,
-                                  },
-                                }}
-                                InputProps={{
-                                  endAdornment: (
-                                    <InputAdornment position="end">
-                                      <IconButton edge="end" disabled>
-                                        <ArrowForward
-                                          sx={{ color: colors.accent }}
-                                        />
-                                      </IconButton>
-                                    </InputAdornment>
-                                  ),
-                                }}
-                              />
-
-                              <Button
-                                variant="contained"
-                                size="large"
-                                onClick={handleSubmit}
-                                sx={{
-                                  borderRadius: 2,
-                                  px: 3.5,
-                                  fontWeight: 800,
-                                  textTransform: "none",
-                                  bgcolor: colors.accent,
-                                  color: "#000",
-                                  fontSize: "1rem",
-                                  "&:hover": { bgcolor: colors.accentHover },
-                                }}
-                              >
-                                Request Invite
-                              </Button>
-                            </>
-                          ) : (
-                            <Typography
-                              variant="h6"
-                              sx={{
-                                color: colors.successGreen,
-                                fontWeight: 700,
-                                py: 1,
-                                textAlign: {
-                                  xs: "center",
-                                  md: "left",
-                                },
-                              }}
-                            >
-                              Access requested. We will be in touch shortly.
-                            </Typography>
-                          )}
-                        </Box>
-
-                        <Typography
-                          variant="caption"
-                          sx={{
-                            display: "block",
-                            mt: 1.5,
-                            color: currentColors.textDim,
-                            textAlign: { xs: "center", md: "left" },
-                          }}
-                        >
-                          Limited pilot availability for Q4 2025.
-                        </Typography>
-                      </Box>
-                    </Grid>
-
-                    {/* RIGHT SIDE — SNAPSHOT PANEL */}
-                    <Grid item xs={12} md={6}>
-                      <Box
-                        sx={{
-                          maxWidth: 520,
-                          mx: { xs: "auto", md: 0 },
-                        }}
-                      >
-                        <OmecaHomepagePreview
-                          onExplore={() => setPage("trust-stack")}
-                        />
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </motion.div>
-              </Box>
-            </Box>
-
-            {/* NARRATIVE SECTIONS */}
-            <Box
-              sx={{
-                bgcolor: isDark
-                  ? "rgba(255,255,255,0.02)"
-                  : "rgba(0,0,0,0.02)",
-                display: "flex",
-                justifyContent: "center",
-                width: "100%",
-              }}
-            >
-              <Container
-                maxWidth="xl"
-                sx={{
-                  maxWidth: "1600px !important",
-                  py: { xs: 6, md: 10 },
-                  px: { xs: 2, md: 3 },
-                }}
-              >
-                <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-                  <OmecaProblemSolutionComparison />
-                </Box>
-              </Container>
-            </Box>
-
-            {/* Trust Stack */}
-            <Box
-              sx={{
-                bgcolor: isDark ? currentColors.bgTop : "#FFFFFF",
-              }}
-            >
-              <Container
-                maxWidth="lg"
-                sx={{
-                  py: { xs: 6, md: 10 },
-                  px: { xs: 3, md: 4 },
-                }}
-              >
-                <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-                  <OmecaTrustStack />
-                </Box>
-              </Container>
-            </Box>
-
-            {/* Developer Integration */}
-            <Box
-              sx={{
-                bgcolor: isDark
-                  ? "rgba(255,255,255,0.02)"
-                  : "rgba(0,0,0,0.02)",
-              }}
-            >
-              <Container
-                maxWidth="lg"
-                sx={{
-                  py: { xs: 4, md: 6 },
-                  px: { xs: 1.5, md: 2 },
-                }}
-              >
-                <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-                  <OmecaDeveloperIntegration setPage={setPage} />
-                </Box>
-              </Container>
-            </Box>
-
-            {/* Supported Integrations */}
-            <Box
-              sx={{
-                bgcolor: isDark ? currentColors.bgTop : "#FFFFFF",
-              }}
-            >
-              <Container
-                maxWidth="lg"
-                sx={{
-                  py: { xs: 4, md: 6 },
-                  px: { xs: 1.5, md: 2 },
-                }}
-              >
-                <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
-                  <OmecaSupportedIntegrations />
-                </Box>
-              </Container>
-            </Box>
-          </>
-        );
-    }
+  
+  const handleRequest = () => {
+    if (email.includes("@")) setSubmitted(true);
   };
 
   return (
@@ -4777,123 +4967,259 @@ const OmecaLanding = () => {
         minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
       }}
     >
-      {/* GLOBAL NAV (hidden on Trust Stack full-screen view) */}
-      {!page.startsWith("trust-stack") && (
-        <AppBar
-          position="fixed"
-          elevation={0}
-          sx={{
-            bgcolor: isDark
-              ? "rgba(11, 15, 23, 0.65)"
-              : "rgba(248, 250, 252, 0.65)",
-            backdropFilter: "blur(16px)",
-            borderBottom: `1px solid ${currentColors.textDim}15`,
-            transition: "all 0.3s ease",
-          }}
-        >
-          <Toolbar
-            sx={{
-              justifyContent: "space-between",
-              height: 80,
-              px: { xs: 1.5, md: 2 },
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1.5,
-                cursor: "pointer",
-              }}
-              onClick={() => setPage("home")}
-            >
-              <OmecaLogo size={200} />
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Box
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  gap: 1,
-                  mr: 2,
-                }}
-              >
-                <Button
-                  onClick={() => setPage("home")}
-                  sx={{
-                    color: currentColors.textDim,
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": { color: currentColors.textPrimary },
-                  }}
-                >
-                  Product
-                </Button>
-                <Button
-                  onClick={() => setPage("pricing")}
-                  sx={{
-                    color: currentColors.textDim,
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": { color: currentColors.textPrimary },
-                  }}
-                >
-                  Pricing
-                </Button>
-                <Button
-                  onClick={() => setPage("about")}
-                  sx={{
-                    color: currentColors.textDim,
-                    fontWeight: 600,
-                    textTransform: "none",
-                    "&:hover": { color: currentColors.textPrimary },
-                  }}
-                >
-                  Company
-                </Button>
-              </Box>
-              <ThemeToggleButton />
-              <Button
-                variant="outlined"
-                size="small"
-                sx={{
-                  borderColor: `${colors.accent}50`,
-                  color: colors.accent,
-                  fontWeight: 700,
-                  borderRadius: 2,
-                  textTransform: "none",
-                  display: { xs: "none", sm: "flex" },
-                  "&:hover": {
-                    bgcolor: `${colors.accent}10`,
-                    borderColor: colors.accent,
-                  },
-                }}
-                onClick={handleRequestInviteClick}
-              >
-                Partner Login
-              </Button>
-              <IconButton
-                sx={{
-                  display: { xs: "flex", md: "none" },
-                  color: currentColors.textPrimary,
-                }}
-              >
-                <MenuIcon />
-              </IconButton>
-            </Box>
-          </Toolbar>
-        </AppBar>
-      )}
+      <NoiseOverlay />
+      
+{/* GLOBAL NAV */}
+      <AppBar
+        position="fixed"
+        elevation={0}
+        sx={{
+          bgcolor: isDark ? "rgba(11,15,23,0.7)" : "rgba(255,255,255,0.7)",
+          backdropFilter: "blur(20px)",
+          borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
+          zIndex: 1200,
+        }}
+      >
+        <Toolbar sx={{ justifyContent: "space-between", height: 72 }}>
+          <Box sx={{ display: "flex", alignItems: "center", cursor: "pointer", opacity: 0.9, "&:hover": { opacity: 1 } }} onClick={() => navigate("/")}>
+            <OmecaLogo size={98} />
+          </Box>
 
-      {/* CONTENT */}
-      <Box sx={{ flex: 1 }}>{renderPage()}</Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+              {['Product', 'Pricing', 'Company'].map((item) => (
+                <Button 
+                    key={item} 
+                    onClick={() => {
+                        // ✅ ROUTING LOGIC UPDATE
+                        if (item === 'Product') {
+                            navigate('/trust-stack'); // Directs to OmecaTrustStackPreview.jsx
+                        } else if (item === 'Company') {
+                            navigate('/company'); // Directs to OmecaCompanyInfoPage.jsx
+                        } else {
+                            navigate(`/${item.toLowerCase()}`); // Handles 'Pricing' -> '/pricing'
+                        }
+                    }}
+                    sx={{ 
+                        color: currentColors.textDim, 
+                        fontWeight: 500,
+                        "&:hover": { color: currentColors.textPrimary, bgcolor: 'transparent' }
+                    }}
+                >
+                  {item}
+                </Button>
+              ))}
+            </Box>
+
+            <ThemeToggleButton />
+
+            <Button
+              variant="outlined"
+              size="small"
+              sx={{
+                borderColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)',
+                color: currentColors.textPrimary,
+                borderRadius: 50,
+                textTransform: 'none',
+                px: 2.5,
+                display: { xs: "none", sm: "flex" },
+                "&:hover": { borderColor: colors.accent, bgcolor: 'transparent' }
+              }}
+              onClick={() => navigate("/contact")}
+            >
+              Partner Login
+            </Button>
+
+            <IconButton sx={{ display: { xs: "flex", md: "none" } }}>
+              <MenuIcon />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      
+      {/* CONTENT WRAPPER */}
+      <Box sx={{ pt: { xs: 12, md: 16 }, position: 'relative', zIndex: 1 }}>
+        
+        {/* HERO SECTION */}
+        <Box sx={{ position: 'relative', pb: { xs: 10, md: 16 } }}>
+          <GridBackground isDark={isDark} />
+          
+          <Container maxWidth="xl" sx={{ maxWidth: "1400px", px: { xs: 3, md: 6 }, position: 'relative' }}>
+            <Grid container spacing={{ xs: 8, md: 6 }} alignItems="center">
+              
+              {/* HERO TEXT */}
+              <Grid item xs={12} md={6}>
+                <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}>
+                  
+                  {/* TRUST BADGE (Updated to NVIDIA/Google) */}
+                  <Chip 
+                    label="Backed by NVIDIA Inception & Google Cloud" 
+                    icon={<Bolt style={{ color: colors.accent, fontSize: 16 }} />}
+                    sx={{ 
+                        mb: 3, 
+                        bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)', 
+                        border: '1px solid', 
+                        borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                        color: currentColors.textDim,
+                        fontWeight: 600
+                    }} 
+                  />
+
+                  {/* HEADLINE (Updated to "Self-Driving") */}
+                  <Typography
+                    variant="h1"
+                    sx={{
+                      fontWeight: 800,
+                      fontSize: { xs: "3rem", md: "4.8rem" },
+                      letterSpacing: "-0.03em",
+                      lineHeight: 1.1,
+                      mb: 3,
+                      background: isDark 
+                        ? `linear-gradient(180deg, #fff 0%, rgba(255,255,255,0.7) 100%)`
+                        : `linear-gradient(180deg, #000 0%, rgba(0,0,0,0.7) 100%)`,
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                    }}
+                  >
+                    The Self-Driving
+                    <br />
+                    <Box
+                      component="span"
+                      sx={{
+                        background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`,
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                      }}
+                    >
+                      Cognitive ERP
+                    </Box>
+                  </Typography>
+
+                  {/* SUBHEADLINE (Updated to "Transforming passive record keeping") */}
+                  <Typography variant="h6" sx={{ color: currentColors.textDim, mb: 5, maxWidth: 580, lineHeight: 1.6, fontWeight: 400 }}>
+                    Transforming ERPs from passive record-keeping to continuous, autonomous control. 
+                    Unify operational truth, real-time close, and verifiable intelligence.
+                  </Typography>
+
+                  {/* CTA INPUT */}
+                  {!submitted ? (
+                    <Box
+                        component="form"
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            maxWidth: 440,
+                            bgcolor: isDark ? 'rgba(255,255,255,0.05)' : '#fff',
+                            border: '1px solid',
+                            borderColor: isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
+                            borderRadius: 50,
+                            p: 0.5,
+                            pl: 2.5,
+                            boxShadow: isDark ? 'none' : '0 4px 20px rgba(0,0,0,0.05)',
+                            transition: 'all 0.2s',
+                            "&:focus-within": {
+                                borderColor: colors.accent,
+                                boxShadow: `0 0 0 4px ${colors.accent}20`
+                            }
+                        }}
+                    >
+                        <input 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            placeholder="work@company.com"
+                            style={{
+                                border: 'none',
+                                background: 'transparent',
+                                outline: 'none',
+                                width: '100%',
+                                color: currentColors.textPrimary,
+                                fontSize: '1rem'
+                            }}
+                        />
+                        <Button
+                            onClick={handleRequest}
+                            sx={{
+                                borderRadius: 50,
+                                px: 3,
+                                py: 1.2,
+                                bgcolor: colors.accent,
+                                color: '#000',
+                                fontWeight: 700,
+                                textTransform: 'none',
+                                minWidth: 'fit-content',
+                                whiteSpace: 'nowrap',
+                                "&:hover": { bgcolor: '#fff' }
+                            }}
+                        >
+                            Request Pilot
+                        </Button>
+                    </Box>
+                  ) : (
+                    <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: colors.successGreen }}>
+                            <CheckCircle />
+                            <Typography fontWeight={600}>Pilot request sent. We will be in touch.</Typography>
+                        </Box>
+                    </motion.div>
+                  )}
+                  
+                  <Box sx={{ mt: 3, display: 'flex', gap: 2, opacity: 0.6 }}>
+                    <Typography variant="caption" sx={{ color: currentColors.textDim }}>Targeting high-growth teams at</Typography>
+                    <Typography variant="caption" sx={{ fontWeight: 700 }}>SERIES B+</Typography>
+                    <Typography variant="caption" sx={{ fontWeight: 700 }}>PRE-IPO</Typography>
+                  </Box>
+
+                </motion.div>
+              </Grid>
+
+              {/* RIGHT SIDE PREVIEW */}
+              <Grid item xs={12} md={6}>
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.8 }}>
+                    <LivePreviewPanel onExplore={() => navigate("/trust-stack")} />
+                </motion.div>
+              </Grid>
+
+            </Grid>
+          </Container>
+        </Box>
+
+        {/* SECTIONS DIVIDER */}
+        <Container maxWidth="xl" sx={{ maxWidth: "1400px" }}>
+            <Box sx={{ borderTop: '1px solid', borderColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)' }} />
+        </Container>
+
+        {/* --- SECTIONS (Unchanged Structure, Imports Handle Content) --- */}
+
+        <Box sx={{ position: 'relative' }}>
+          <Container maxWidth="xl" sx={{ maxWidth: "1600px", py: { xs: 8, md: 12 } }}>
+            <OmecaProblemSolutionComparison />
+          </Container>
+        </Box>
+
+        <Box sx={{ bgcolor: isDark ? 'rgba(255,255,255,0.02)' : 'rgba(0,0,0,0.02)', borderY: `1px solid ${isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)'}` }}>
+          <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+            <OmecaTrustStack />
+          </Container>
+        </Box>
+
+        <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+          <OmecaDeveloperIntegration navigate={navigate} />
+        </Container>
+
+        <Box sx={{ bgcolor: isDark ? currentColors.bgTop : "#fff" }}>
+          <Container maxWidth="lg" sx={{ py: { xs: 8, md: 12 } }}>
+            <OmecaSupportedIntegrations />
+          </Container>
+        </Box>
+      </Box>
 
       {/* FOOTER */}
-      {!page.startsWith("trust-stack") && <OmecaAppFooter setPage={setPage} />}
+      <OmecaAppFooter />
     </Box>
   );
 };
 
 export default OmecaLanding;
-
