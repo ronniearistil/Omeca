@@ -16,5 +16,8 @@ tree -L 4 app
 # Frontend
 tree -L 4 src
 
+# Seed " Current use "Nuke and Pave" not best practice convert to alembic once the basics have been stablized.
+python seed.py
+
 
 
