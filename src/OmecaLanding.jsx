@@ -4688,6 +4688,7 @@ import OmecaProblemSolutionComparison from "./omeca-governance/components/sectio
 import OmecaTrustStack from "./omeca-governance/components/sections/TrustStack.jsx";
 import OmecaDeveloperIntegration from "./omeca-governance/components/sections/DeveloperIntegration.jsx";
 import OmecaSupportedIntegrations from "./omeca-governance/components/sections/SupportedIntegrations.jsx";
+import LiveEngineDashboard from './omeca-core/components/ui/LiveEngineDashboard';
 
 // --- VISUAL ASSETS (Noise & Grid - Keeping the "10/10" Polish) ---
 
@@ -5185,6 +5186,13 @@ const OmecaLanding = () => {
             </Grid>
           </Container>
         </Box>
+
+{/* RIGHT SIDE PREVIEW
+<Grid item xs={12} md={6}>
+  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.2, duration: 0.8 }}>
+      <LiveEngineDashboard />
+  </motion.div>
+</Grid> */}
 
         {/* SECTIONS DIVIDER */}
         <Container maxWidth="xl" sx={{ maxWidth: "1400px" }}>

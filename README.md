@@ -20,4 +20,8 @@ tree -L 4 src
 python seed.py
 
 
-
+# Key End Points
+http://127.0.0.1:8000/api/v1/reconciliation/status
+http://127.0.0.1:8000/api/v1/integrity/score
+http://127.0.0.1:8000/api/v1/reconciliation/status
+http://127.0.0.1:8000/api/v1/governance/proofs
