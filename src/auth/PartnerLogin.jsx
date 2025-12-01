@@ -283,7 +283,11 @@
 
 import React, { useState, useContext, useEffect } from "react";
 import { 
-  Box, Container, Paper, Typography, TextField, Button, IconButton, Collapse, Link, alpha, Alert, MenuItem 
+  Box, Container, Paper, Typography, TextField, Button, IconButton, Link, alpha, Alert, MenuItem,
+  // --- FIX: Ensure InputAdornment is imported ---
+  InputAdornment,
+  CircularProgress, // Added CircularProgress, often needed for loading states
+  Collapse 
 } from "@mui/material";
 import { 
   ArrowBack, Email, Lock, Visibility, VisibilityOff, Person, Business, 
@@ -303,7 +307,7 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 
 // --- SHARED CONFIG ---
-import { auth, db, APP_ID } from "../lib/firebase.js";
+import { auth, db, APP_ID } from "../lib/firebase";
 
 // --- THEME ---
 import { colors } from "../shared/layouts/theme/theme.js";
@@ -366,15 +370,24 @@ const PartnerLogin = () => {
     }
 
     // SCENARIO 2: EXECUTE AUTH
+    // Validate Step 2 fields if signing up (only if on step 2)
+    if (!isLogin && signupStep === 2) {
+       if (!formData.fullName || !formData.company || !formData.industry || !formData.companySize) {
+           setError("Please complete your profile details.");
+           return;
+       }
+    }
+
     setLoading(true);
 
+    // Auth Guard (for development/preview environments)
     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
         try { await signInWithCustomToken(auth, __initial_auth_token); } catch(e) {}
     }
 
     try {
       if (isLogin) {
-        // --- LOGIN ---
+        // === LOGIN ===
         const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
         const user = userCredential.user;
 
@@ -389,7 +402,7 @@ const PartnerLogin = () => {
         setTimeout(() => navigate('/dashboard'), 1500); // Redirect to Dashboard
 
       } else {
-        // --- SIGN UP ---
+        // === SIGN UP ===
         const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
         const user = userCredential.user;
 
@@ -402,7 +415,7 @@ const PartnerLogin = () => {
                 industry: formData.industry,
                 companySize: formData.companySize,
                 email: formData.email,
-                role: 'user_applicant', // Generic role
+                role: 'user_applicant',
                 createdAt: new Date().toISOString()
             });
         } catch (dbError) {
