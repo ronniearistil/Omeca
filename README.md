@@ -25,3 +25,10 @@ http://127.0.0.1:8000/api/v1/reconciliation/status
 http://127.0.0.1:8000/api/v1/integrity/score
 http://127.0.0.1:8000/api/v1/reconciliation/status
 http://127.0.0.1:8000/api/v1/governance/proofs
+
+# Deployment
+Fly - flyctl deploy
+Gcloud - gcloud run deploy omeca-backend --source .
+
+# New Termial 
+code -n

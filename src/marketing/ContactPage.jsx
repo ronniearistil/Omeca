@@ -641,7 +641,7 @@ const OmecaContactPage = () => {
                                                     Prefer email? 
                                                 </Typography>
                                                 <Link
-                                                    href="mailto:cerp@omeca.com"
+                                                    href="mailto:aerp@omeca.co"
                                                     underline="hover"
                                                     sx={{
                                                         color: colors.accent,
@@ -653,7 +653,7 @@ const OmecaContactPage = () => {
                                                     }}
                                                 >
                                                     <EmailOutlined sx={{ fontSize: 16 }} />
-                                                    cerp@omeca.com
+                                                    aerp@omeca.co
                                                 </Link>
                                             </Box>
                                         </Grid>
