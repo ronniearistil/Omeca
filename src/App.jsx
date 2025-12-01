@@ -1,121 +1,47 @@
-// // src/App.jsx
-// import React from "react";
-// import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import { CssBaseline } from "@mui/material";
-// 
-// import ThemeWrapper from "./shared/layouts/theme/ThemeContext.jsx";
-// import OmecaLanding from "./OmecaLanding.jsx";
-// 
-// // --- LEDGER PAGES ---
-// import PricingPage from "./omeca-ledger/components/pages/PricingPage.jsx";
-// import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage.jsx";
-// import LegalPage from "./omeca-ledger/components/pages/LegalPage.jsx";
-// 
-// // --- CORE PAGES ---
-// import CareersPage from "./marketing/CareersPage.jsx";
-// import CompanyInfoPage from "./marketing/CompanyInfoPage.jsx";
-// import ContactPage from "./marketing/ContactPage.jsx";
-// import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage.jsx";
-// import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage.jsx";
-// import OmecaBrief from "./marketing/OmecaBrief.jsx";
-// 
-// import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
-// 
-// // Minimal placeholder
-// const Placeholder = ({ title }) => (
-//     <div style={{ padding: "120px 40px", textAlign: "center" }}>
-//         <h1>{title}</h1>
-//         <p>Content coming soon.</p>
-//     </div>
-// );
-// 
-// export default function App() {
-//     return (
-//         <BrowserRouter>
-//             <ThemeWrapper>
-//                 <CssBaseline />
-//                 <Routes>
-//                     {/* Landing */}
-//                     <Route path="/" element={<OmecaLanding />} />
-// 
-//                     {/* Trust Stack */}
-//                     <Route path="/trust-stack" element={<OmecaTrustStackPreview />} />
-// 
-//                     {/* Product & Feature Pages */}
-//                     <Route path="/pricing" element={<PricingPage />} />
-//                     <Route path="/ledger-api" element={<LedgerAPIPage />} />
-//                     <Route path="/reconciliation" element={<ReconciliationPage />} />
-//                     <Route path="/margin-alerts" element={<MarginAlertsPage />} />
-// 
-//                     {/* Company - FIXED THIS ROUTE */}
-//                     <Route path="/company" element={<CompanyInfoPage />} /> 
-//                     <Route path="/careers" element={<CareersPage />} />
-//                     <Route path="/contact" element={<ContactPage />} />
-//                     <Route path="/blog" element={<Placeholder title="Blog" />} />
-// 
-//                     {/* Resources */}
-//                     <Route path="/brief" element={<OmecaBrief />} />
-//                     <Route path="/documentation" element={<Placeholder title="Documentation" />} />
-//                     <Route path="/security" element={<Placeholder title="Security" />} />
-// 
-//                     {/* Legal */}
-//                     <Route path="/privacy" element={<Placeholder title="Privacy Policy" />} />
-//                     <Route path="/terms" element={<Placeholder title="Terms of Service" />} />
-//                     <Route path="/cookies" element={<Placeholder title="Cookie Policy" />} />
-//                     <Route path="/legal" element={<LegalPage />} />
-// 
-//                     {/* Fallback */}
-//                     <Route path="*" element={<Navigate to="/" replace />} />
-//                 </Routes>
-//             </ThemeWrapper>
-//         </BrowserRouter>
-//     );
-// }
-
-
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CssBaseline } from "@mui/material";
 
-import ThemeWrapper from "./shared/layouts/theme/ThemeContext.jsx";
+// --- CORE FIX: Removing '.jsx' / '.js' extensions to simplify path resolution ---
+import ThemeWrapper from "./shared/layouts/theme/ThemeContext";
 
 // --- AUTH IMPORTS ---
-import PartnerLogin from "./auth/PartnerLogin.jsx";
-import ProtectedRoute from "./auth/ProtectedRoute.jsx"; 
+import PartnerLogin from "./auth/PartnerLogin";
+import ProtectedRoute from "./auth/ProtectedRoute"; 
 
 // --- SHARED PAGES ---
-import OmecaLanding from "./OmecaLanding.jsx";
-import DashboardPage from "./shared/pages/DashboardPage.jsx"; 
+import OmecaLanding from "./OmecaLanding";
+import DashboardPage from "./shared/pages/DashboardPage"; 
 
 // Ledger Pages
-import PricingPage from "./omeca-ledger/components/pages/PricingPage.jsx";
-import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage.jsx";
-import LegalPage from "./omeca-ledger/components/pages/LegalPage.jsx";
+import PricingPage from "./omeca-ledger/components/pages/PricingPage";
+import LedgerAPIPage from "./omeca-ledger/components/pages/LedgerAPIPage";
+import LegalPage from "./omeca-ledger/components/pages/LegalPage";
 
 // Core Pages
-import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage.jsx";
-import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage.jsx";
+import MarginAlertsPage from "./omeca-core/components/pages/MarginAlertsPage";
+import ReconciliationPage from "./omeca-core/components/pages/ReconciliationPage";
 
 // Marketing / Governance Pages
-import CareersPage from "./marketing/CareersPage.jsx";
-import CompanyInfoPage from "./marketing/CompanyInfoPage.jsx";
-import ContactPage from "./marketing/ContactPage.jsx";
-import OmecaBrief from "./marketing/OmecaBrief.jsx";
-import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview.jsx";
+import CareersPage from "./marketing/CareersPage";
+import CompanyInfoPage from "./marketing/CompanyInfoPage";
+import ContactPage from "./marketing/ContactPage";
+import OmecaBrief from "./marketing/OmecaBrief";
+import OmecaTrustStackPreview from "./omeca-governance/components/pages/OmecaTrustStackPreview";
 
-// Reporting Imports (New/Required for gating)
-import AgentActivityReport from "./reporting/ai/AgentActivityReport.jsx";
-import ExplainabilityReport from "./reporting/ai/ExplainabilityReport.jsx";
-import RiskDashboardPage from "./reporting/ai/RiskDashboardPage.jsx";
-import FinancialOverviewPage from "./reporting/financial/FinancialOverviewPage.jsx";
-import InvestorMetricsPage from "./reporting/financial/InvestorMetricsPage.jsx";
-import ProfitAndLossPage from "./reporting/financial/ProfitAndLossPage.jsx";
-import AuditSummaryPage from "./reporting/governance/AuditSummaryPage.jsx";
-import ComplianceDashboardPage from "./reporting/governance/ComplianceDashboardPage.jsx";
-import EvidenceReportPage from "./reporting/governance/EvidenceReportPage.jsx";
-import ForecastVsActualPage from "./reporting/operational/ForecastVsActualPage.jsx";
-import MarginAnalysisPage from "./reporting/operational/MarginAnalysisPage.jsx";
-import VarianceReportPage from "./reporting/operational/VarianceReportPage.jsx";
+// --- REPORTING IMPORTS (Required for Gating) ---
+import AgentActivityReport from "./reporting/ai/AgentActivityReport";
+import ExplainabilityReport from "./reporting/ai/ExplainabilityReport";
+import RiskDashboardPage from "./reporting/ai/RiskDashboardPage";
+import FinancialOverviewPage from "./reporting/financial/FinancialOverviewPage";
+import InvestorMetricsPage from "./reporting/financial/InvestorMetricsPage";
+import ProfitAndLossPage from "./reporting/financial/ProfitAndLossPage";
+import AuditSummaryPage from "./reporting/governance/AuditSummaryPage";
+import ComplianceDashboardPage from "./reporting/governance/ComplianceDashboardPage";
+import EvidenceReportPage from "./reporting/governance/EvidenceReportPage";
+import ForecastVsActualPage from "./reporting/operational/ForecastVsActualPage";
+import MarginAnalysisPage from "./reporting/operational/MarginAnalysisPage";
+import VarianceReportPage from "./reporting/operational/VarianceReportPage";
 
 
 const Placeholder = ({ title }) => (
@@ -125,7 +51,7 @@ const Placeholder = ({ title }) => (
     </div>
 );
 
-// Helper function to wrap protected routes
+// Helper component to wrap protected routes
 const SecuredRoute = ({ element: Component }) => (
     <ProtectedRoute>
         <Component />
@@ -135,7 +61,7 @@ const SecuredRoute = ({ element: Component }) => (
 export default function App() {
     return (
         <BrowserRouter>
-            <ThemeWrapper>
+            <ThemeWrapper> 
                 <CssBaseline />
                 <Routes>
                     {/* ===================================================

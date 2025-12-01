@@ -1,8 +1,10 @@
-// 
 // import React, { useState, useContext, useEffect } from "react";
 // import { 
-//   Box, Container, Paper, Typography, TextField, Button, InputAdornment, 
-//   CircularProgress, IconButton, Collapse, Link, alpha, Alert, MenuItem 
+//   Box, Container, Paper, Typography, TextField, Button, IconButton, Link, alpha, Alert, MenuItem,
+//   // --- FIX: Ensure InputAdornment is imported ---
+//   InputAdornment,
+//   CircularProgress, // Added CircularProgress, often needed for loading states
+//   Collapse 
 // } from "@mui/material";
 // import { 
 //   ArrowBack, Email, Lock, Visibility, VisibilityOff, Person, Business, 
@@ -22,7 +24,7 @@
 // import { doc, setDoc } from "firebase/firestore";
 // 
 // // --- SHARED CONFIG ---
-// import { auth, db, APP_ID } from "../lib/firebase.js";
+// import { auth, db, APP_ID } from "../lib/firebase";
 // 
 // // --- THEME ---
 // import { colors } from "../shared/layouts/theme/theme.js";
@@ -38,7 +40,7 @@
 //   
 //   // STATE
 //   const [isLogin, setIsLogin] = useState(true);
-//   const [signupStep, setSignupStep] = useState(1); // 1 = Creds, 2 = Profile
+//   const [signupStep, setSignupStep] = useState(1); 
 //   
 //   const [showPassword, setShowPassword] = useState(false);
 //   const [loading, setLoading] = useState(false);
@@ -57,12 +59,8 @@
 //   // --- INITIALIZE FROM LANDING PAGE ---
 //   useEffect(() => {
 //     if (location.state) {
-//         if (location.state.email) {
-//             setFormData(prev => ({ ...prev, email: location.state.email }));
-//         }
-//         if (location.state.isSignup) {
-//             setIsLogin(false);
-//         }
+//         if (location.state.email) setFormData(prev => ({ ...prev, email: location.state.email }));
+//         if (location.state.isSignup) setIsLogin(false);
 //     }
 //   }, [location.state]);
 // 
@@ -74,7 +72,7 @@
 //     setError("");
 //     setSuccessMsg("");
 //     
-//     // SCENARIO 1: SIGN UP - STEP 1 (Move to Step 2)
+//     // SCENARIO 1: SIGN UP - STEP 1 -> 2
 //     if (!isLogin && signupStep === 1) {
 //         if (!formData.email || !formData.password) {
 //             setError("Please fill in all fields.");
@@ -88,8 +86,8 @@
 //         return;
 //     }
 // 
-//     // SCENARIO 2: SIGN UP - STEP 2 OR LOGIN (Execute Firebase Auth)
-//     // Validate Step 2 fields if signing up
+//     // SCENARIO 2: EXECUTE AUTH
+//     // Validate Step 2 fields if signing up (only if on step 2)
 //     if (!isLogin && signupStep === 2) {
 //        if (!formData.fullName || !formData.company || !formData.industry || !formData.companySize) {
 //            setError("Please complete your profile details.");
@@ -99,14 +97,14 @@
 // 
 //     setLoading(true);
 // 
-//     // Auth Guard
+//     // Auth Guard (for development/preview environments)
 //     if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
 //         try { await signInWithCustomToken(auth, __initial_auth_token); } catch(e) {}
 //     }
 // 
 //     try {
 //       if (isLogin) {
-//         // === LOGIN LOGIC ===
+//         // === LOGIN ===
 //         const userCredential = await signInWithEmailAndPassword(auth, formData.email, formData.password);
 //         const user = userCredential.user;
 // 
@@ -117,11 +115,11 @@
 //             return;
 //         }
 // 
-//         setSuccessMsg("Login successful! Redirecting...");
-//         setTimeout(() => navigate('/'), 1500);
+//         setSuccessMsg("Login successful! Entering Dashboard...");
+//         setTimeout(() => navigate('/dashboard'), 1500); // Redirect to Dashboard
 // 
 //       } else {
-//         // === SIGN UP LOGIC (COMPLETE) ===
+//         // === SIGN UP ===
 //         const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
 //         const user = userCredential.user;
 // 
@@ -134,7 +132,7 @@
 //                 industry: formData.industry,
 //                 companySize: formData.companySize,
 //                 email: formData.email,
-//                 role: 'partner_applicant',
+//                 role: 'user_applicant',
 //                 createdAt: new Date().toISOString()
 //             });
 //         } catch (dbError) {
@@ -144,22 +142,21 @@
 //         await sendEmailVerification(user);
 //         await signOut(auth);
 // 
-//         setSuccessMsg(`Account created! Verification sent to ${formData.email}`);
+//         setSuccessMsg(`Congratulations! We've received your application. Please check your email to verify your account.`);
 //         setFormData({ email: "", password: "", fullName: "", company: "", industry: "", companySize: "" });
 //         
-//         // Reset to Login view
 //         setTimeout(() => {
 //             setIsLogin(true);
 //             setSignupStep(1);
 //             setSuccessMsg("");
-//         }, 3000);
+//         }, 5000);
 //       }
 //     } catch (err) {
 //       console.error(err);
 //       let msg = err.message;
 //       if (msg.includes("auth/invalid-email")) msg = "Invalid email address.";
 //       if (msg.includes("auth/user-not-found") || msg.includes("auth/invalid-credential")) msg = "Invalid email or password.";
-//       if (msg.includes("auth/email-already-in-use")) msg = "This email is already in use. Please log in.";
+//       if (msg.includes("auth/email-already-in-use")) msg = "This email is already in use.";
 //       if (msg.includes("auth/weak-password")) msg = "Password should be at least 6 characters.";
 //       setError(msg);
 //     } finally {
@@ -210,36 +207,29 @@
 //         }}>
 //             <Box sx={{ mb: 4, textAlign: 'center' }}>
 //               <Box sx={{ display: 'flex', justifyContent: 'center', mb: 3 }}><OmecaLogo size={48} /></Box>
-//               {/* UPDATED TITLE TEXT */}
 //               <Typography variant="h4" fontWeight={800} gutterBottom>
-//                 {isLogin ? "Partner Portal" : "Request Access"}
+//                 {isLogin ? "Welcome" : "Create Account"}
 //               </Typography>
-//               {/* UPDATED SUBTITLE TEXT */}
 //               <Typography variant="body2" sx={{ color: currentColors.textDim }}>
 //                 {isLogin 
-//                     ? "Secure access for verified audit partners." 
-//                     : (signupStep === 1 ? "Step 1: Create your credentials." : "Step 2: Set up your partner profile.")
+//                     ? "Sign in to access your dashboard." 
+//                     : (signupStep === 1 ? "Step 1: Set up your login." : "Step 2: Tell us about your organization.")
 //                 }
 //               </Typography>
 //             </Box>
 //             
-//             {/* Added noValidate to fix Select issue */}
 //             <form onSubmit={handleSubmit} noValidate>
 //               
-//               {/* === VIEW: LOGIN or SIGNUP STEP 1 === */}
-//               {(isLogin || signupStep === 1) && (
-//                   <Box>
-//                     <TextField fullWidth required label="Work Email" type="email" margin="normal" value={formData.email} onChange={handleChange('email')} sx={inputSx} InputProps={{ startAdornment: <InputAdornment position="start"><Email sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment> }} />
-//                     <TextField fullWidth required label="Password" type={showPassword ? "text" : "password"} margin="normal" value={formData.password} onChange={handleChange('password')} sx={inputSx} InputProps={{ 
-//                         startAdornment: <InputAdornment position="start"><Lock sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment>,
-//                         endAdornment: (<InputAdornment position="end"><IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{ color: currentColors.textDim }}>{showPassword ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>) 
-//                     }} />
-//                     {isLogin && (<Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}><Link component="button" variant="caption" sx={{ color: currentColors.textDim, textDecoration: 'none', '&:hover': { color: colors.accent } }}>Forgot password?</Link></Box>)}
-//                   </Box>
-//               )}
+//               <Collapse in={isLogin || signupStep === 1}>
+//                   <TextField fullWidth required label="Work Email" type="email" margin="normal" value={formData.email} onChange={handleChange('email')} sx={inputSx} InputProps={{ startAdornment: <InputAdornment position="start"><Email sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment> }} />
+//                   <TextField fullWidth required label="Password" type={showPassword ? "text" : "password"} margin="normal" value={formData.password} onChange={handleChange('password')} sx={inputSx} InputProps={{ 
+//                       startAdornment: <InputAdornment position="start"><Lock sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment>,
+//                       endAdornment: (<InputAdornment position="end"><IconButton onClick={() => setShowPassword(!showPassword)} edge="end" sx={{ color: currentColors.textDim }}>{showPassword ? <VisibilityOff /> : <Visibility />}</IconButton></InputAdornment>) 
+//                   }} />
+//                   {isLogin && (<Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}><Link component="button" variant="caption" sx={{ color: currentColors.textDim, textDecoration: 'none', '&:hover': { color: colors.accent } }}>Forgot password?</Link></Box>)}
+//               </Collapse>
 // 
-//               {/* === VIEW: SIGNUP STEP 2 (DETAILS) === */}
-//               {(!isLogin && signupStep === 2) && (
+//               <Collapse in={!isLogin && signupStep === 2}>
 //                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
 //                    <TextField fullWidth required label="Full Name" value={formData.fullName} onChange={handleChange('fullName')} sx={inputSx} InputProps={{ startAdornment: <InputAdornment position="start"><Person sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment> }} />
 //                    <TextField fullWidth required label="Company Name" value={formData.company} onChange={handleChange('company')} sx={inputSx} InputProps={{ startAdornment: <InputAdornment position="start"><Business sx={{ color: colors.accent, opacity: 0.8 }} fontSize="small" /></InputAdornment> }} />
@@ -253,9 +243,8 @@
 //                        </TextField>
 //                    </Box>
 //                  </Box>
-//               )}
+//               </Collapse>
 //               
-//               {/* BUTTONS */}
 //               <Box sx={{ mt: 4, mb: 3, display: 'flex', gap: 2 }}>
 //                   {!isLogin && signupStep === 2 && (
 //                       <Button fullWidth variant="outlined" onClick={() => setSignupStep(1)} sx={{ borderColor: colors.accent, color: colors.accent, fontWeight: 700, py: 1.5, flex: 1 }}>
@@ -283,11 +272,8 @@
 
 import React, { useState, useContext, useEffect } from "react";
 import { 
-  Box, Container, Paper, Typography, TextField, Button, IconButton, Link, alpha, Alert, MenuItem,
-  // --- FIX: Ensure InputAdornment is imported ---
-  InputAdornment,
-  CircularProgress, // Added CircularProgress, often needed for loading states
-  Collapse 
+  Box, Container, Paper, Typography, TextField, Button, InputAdornment, 
+  CircularProgress, IconButton, Collapse, Link, alpha, Alert, MenuItem 
 } from "@mui/material";
 import { 
   ArrowBack, Email, Lock, Visibility, VisibilityOff, Person, Business, 
@@ -425,13 +411,20 @@ const PartnerLogin = () => {
         await sendEmailVerification(user);
         await signOut(auth);
 
+        // --- FIX A: Re-login user immediately after sending verification email ---
+        // This prevents the "logout on refresh" bug and keeps the session active.
+        await signInWithEmailAndPassword(auth, formData.email, formData.password);
+        // Note: The user is now logged in but still needs to verify their email to access protected routes.
+
+
         setSuccessMsg(`Congratulations! We've received your application. Please check your email to verify your account.`);
-        setFormData({ email: "", password: "", fullName: "", company: "", industry: "", companySize: "" });
         
+        // Clear sensitive info, but keep essential email for display
+        setFormData({ email: user.email, password: "", fullName: "", company: "", industry: "", companySize: "" });
+        
+        // Redirect to Dashboard (they are now logged in)
         setTimeout(() => {
-            setIsLogin(true);
-            setSignupStep(1);
-            setSuccessMsg("");
+            navigate('/dashboard');
         }, 5000);
       }
     } catch (err) {
