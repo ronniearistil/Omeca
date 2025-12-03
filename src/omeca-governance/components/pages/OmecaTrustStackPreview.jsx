@@ -382,6 +382,8 @@ import BackHomeButton from "../../../shared/ui/BackHomeButton.jsx";
 import OmecaGovernancePage from "./OmecaGovernancePage";
 import OmecaOperationalControlPage from "./OmecaCorePage";
 import OmecaReconciliationPage from "./OmecaLedgerPage";
+import { auth } from "../../../lib/firebase.js";
+
 
 // ✅ LIVE ENGINE DASHBOARD
 import LiveEngineDashboard from "../../../omeca-core/components/ui/LiveEngineDashboard";
@@ -541,12 +543,29 @@ const SelectionView = ({ setPage }) => {
       </Box>
 
       {/* TOP SECTION: ENGINE DASHBOARD */}
-      <Box sx={{ mb: 8 }}>
+      {/* <Box sx={{ mb: 8 }}>
         <Typography variant="overline" sx={{ color: palette.textDim, fontWeight: 700, letterSpacing: 2, mb: 2, display: 'block' }}>
           SYSTEM STATUS
         </Typography>
         <LiveEngineDashboard />
-      </Box>
+      </Box> */}
+  {/* TOP SECTION: ENGINE DASHBOARD (Protected) */}
+<Box
+  sx={{ mb: 8 }}
+  onClick={() => {
+    if (!window?.auth?.currentUser) {
+      window.location.href = "/partner-login";
+    }
+  }}
+  style={{ cursor: "pointer" }}
+>
+  <Typography variant="overline" sx={{ color: palette.textDim, fontWeight: 700, letterSpacing: 2, mb: 2, display: 'block' }}>
+    SYSTEM STATUS
+  </Typography>
+
+  <LiveEngineDashboard />
+</Box>
+
 
       {/* BOTTOM SECTION: AVAILABLE MODULES */}
       <Box>
@@ -555,40 +574,107 @@ const SelectionView = ({ setPage }) => {
         </Typography>
         
         {/* Grid Layout for Modules: 3 Columns on Desktop */}
-        <Grid container spacing={4}>
-          {DASHBOARDS.map((d, i) => (
-            <Grid item xs={12} md={4} key={d.id}>
-              <SpotlightCard color={d.color} onClick={() => setPage(d.id)} delay={i * 0.1}>
-                
-                {/* Module Header */}
-                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", mb: 3 }}>
-                  <Box sx={{ p: 1.5, borderRadius: 3, bgcolor: `${d.color}15`, color: d.color }}>
-                    <d.icon fontSize="large" />
-                  </Box>
-                  <Chip label={d.layer} size="small" sx={{ fontWeight: 700, fontSize: "0.6rem", bgcolor: 'transparent', color: d.color, border: `1px solid ${d.color}40` }} />
-                </Box>
+      {/* Grid Layout for Modules: 3 Columns on Desktop */}
+<Grid container spacing={4}>
+  {DASHBOARDS.map((d, i) => (
+    <Grid item xs={12} md={4} key={d.id}>
+      <SpotlightCard
+        color={d.color}
+        delay={i * 0.1}
+        onClick={() => {
+          // Protect module entry
+          if (!window?.auth?.currentUser) {
+            window.location.href = "/partner-login";
+            return;
+          }
+          setPage(d.id);
+        }}
+      >
 
-                <Typography variant="h5" fontWeight={700} sx={{ color: palette.textPrimary, mb: 0.5 }}>
-                  {d.name}
-                </Typography>
-                
-                <Typography variant="caption" sx={{ fontFamily: 'monospace', color: palette.textDim, display: 'block', mb: 2 }}>
-                  {d.tagline}
-                </Typography>
+        {/* Module Header */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-start",
+            mb: 3,
+          }}
+        >
+          <Box
+            sx={{
+              p: 1.5,
+              borderRadius: 3,
+              bgcolor: `${d.color}15`,
+              color: d.color,
+            }}
+          >
+            <d.icon fontSize="large" />
+          </Box>
 
-                <Typography variant="body2" sx={{ color: palette.textDim, mb: 4, minHeight: '3em' }}>
-                  {d.desc}
-                </Typography>
+          <Chip
+            label={d.layer}
+            size="small"
+            sx={{
+              fontWeight: 700,
+              fontSize: "0.6rem",
+              bgcolor: "transparent",
+              color: d.color,
+              border: `1px solid ${d.color}40`,
+            }}
+          />
+        </Box>
 
-                {/* Action Button */}
-                <Box sx={{ display: 'flex', alignItems: 'center', color: d.color, fontWeight: 700, fontSize: '0.9rem' }}>
-                  Enter Module <ArrowForward sx={{ ml: 1, fontSize: 18 }} />
-                </Box>
+        {/* Name */}
+        <Typography
+          variant="h5"
+          fontWeight={700}
+          sx={{ color: palette.textPrimary, mb: 0.5 }}
+        >
+          {d.name}
+        </Typography>
 
-              </SpotlightCard>
-            </Grid>
-          ))}
-        </Grid>
+        {/* Tagline */}
+        <Typography
+          variant="caption"
+          sx={{
+            fontFamily: "monospace",
+            color: palette.textDim,
+            display: "block",
+            mb: 2,
+          }}
+        >
+          {d.tagline}
+        </Typography>
+
+        {/* Description */}
+        <Typography
+          variant="body2"
+          sx={{
+            color: palette.textDim,
+            mb: 4,
+            minHeight: "3em",
+          }}
+        >
+          {d.desc}
+        </Typography>
+
+        {/* Action Button */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            color: d.color,
+            fontWeight: 700,
+            fontSize: "0.9rem",
+          }}
+        >
+          Enter Module <ArrowForward sx={{ ml: 1, fontSize: 18 }} />
+        </Box>
+
+      </SpotlightCard>
+    </Grid>
+  ))}
+</Grid>
       </Box>
 
     </Container>

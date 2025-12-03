@@ -165,12 +165,28 @@ const OmecaCareersPage = () => {
     const isDark = mode === 'dark';
     const currentColors = colors[mode];
 
-    const positions = [
-        { title: "Senior Backend Engineer (Go/Rust)", dept: "Engineering", focus: "Immutable Ledger" },
-        { title: "Financial Data Scientist", dept: "Data & AI", focus: "Risk Models" },
-        { title: "VP of Product Marketing", dept: "Marketing", focus: "GTM Strategy" },
-        { title: "Enterprise Account Executive", dept: "Sales", focus: "Strategic Accounts" }
-    ];
+const positions = [
+  {
+    title: "Founding Engineering Architect",
+    dept: "Engineering",
+    focus: "Own the core system foundation and guide our technical direction"
+  },
+  {
+    title: "Founding GTM Lead (Design Partner Strategy)",
+    dept: "Go-To-Market",
+    focus: "Secure design partners and shape our early customer channels"
+  },
+  {
+    title: "Advisor — Audit & Compliance",
+    dept: "Advisory Council",
+    focus: "Guide our governance and enterprise compliance strategy"
+  },
+  {
+    title: "Advisor — AI & Data Architecture",
+    dept: "Advisory Council",
+    focus: "Provide direction on our AI-native system design"
+  }
+];
 
     return (
         <Box sx={{ 

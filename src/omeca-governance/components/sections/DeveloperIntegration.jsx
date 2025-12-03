@@ -515,86 +515,96 @@ const OmecaSystemMap = () => {
         >
           
           {/* CENTER HUB */}
-          <Box
-            sx={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              zIndex: 20,
-              width: 200,
-              height: 120,
-            }}
-          >
-<motion.div
-  initial={{ scale: 0.8, opacity: 0 }}
-  whileInView={{ scale: 1, opacity: 1 }}
-  viewport={{ once: true }}
-  animate={{ 
-    boxShadow: [
-      "0 0 0 rgba(0,0,0,0.4)", 
-      "0 0 60px rgba(0,0,0,0.2)"
-    ]
+<Box
+  sx={{
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 20,
+
+    // --- TRUE CIRCLE + RESPONSIVE SCALING ---
+    width: { xs: 110, sm: 150, md: 200 },
+    height: { xs: 110, sm: 150, md: 200 },
   }}
-  transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-  style={{ width: '100%', height: '100%' }}
 >
-              <Box
-                sx={{
-                  width: '100%',
-                  height: '100%',
-                  borderRadius: 4,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: hubGradient,
-                  backdropFilter: "blur(14px)",
-                  boxShadow: `0 24px 48px -12px ${mode === 'dark' ? 'rgba(0,0,0,0.7)' : 'rgba(0,0,0,0.3)'}`,
-                  border: "1px solid rgba(255,255,255,0.2)",
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-              >
-                {/* Glossy overlay */}
-                <Box 
-                  sx={{
-                    position: 'absolute',
-                    top: '-50%', left: '-50%', width: '200%', height: '200%',
-                    background: 'linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 60%)',
-                    transform: 'rotate(25deg)',
-                    pointerEvents: 'none'
-                  }}
-                />
-                
-                <Typography
-                  variant="h4"
-                  fontWeight={900}
-                  sx={{
-                    color: colors.logoDark, 
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase",
-                    mb: 0.5,
-                    fontSize: '1.75rem'
-                  }}
-                >
-                  OMECA
-                </Typography>
-                <Typography
-                  sx={{
-                    color: colors.logoDark,
-                    fontSize: "0.65rem",
-                    opacity: 0.85,
-                    fontWeight: 800,
-                    letterSpacing: "0.15em",
-                    textTransform: "uppercase"
-                  }}
-                >
-                  Continuous Truth
-                </Typography>
-              </Box>
-            </motion.div>
-          </Box>
+  <motion.div
+    initial={{ scale: 0.8, opacity: 0 }}
+    whileInView={{ scale: 1, opacity: 1 }}
+    viewport={{ once: true }}
+    animate={{
+      boxShadow: [
+        "0 0 0 rgba(0,0,0,0.4)",
+        "0 0 60px rgba(0,0,0,0.2)"
+      ]
+    }}
+    transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
+    style={{ width: "100%", height: "100%" }}
+  >
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+        borderRadius: "50%",       // <--- REAL CIRCLE
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        background: hubGradient,
+        backdropFilter: "blur(14px)",
+        boxShadow: `0 24px 48px -12px ${
+          mode === "dark" ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.3)"
+        }`,
+        border: "1px solid rgba(255,255,255,0.2)",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
+      {/* glossy overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          top: "-50%",
+          left: "-50%",
+          width: "200%",
+          height: "200%",
+          background:
+            "linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 60%)",
+          transform: "rotate(25deg)",
+          pointerEvents: "none",
+        }}
+      />
+
+      <Typography
+        variant="h5"
+        fontWeight={900}
+        sx={{
+          color: colors.logoDark,
+          letterSpacing: "0.12em",
+          textTransform: "uppercase",
+          mb: 0.3,
+          fontSize: { xs: "1rem", sm: "1.35rem", md: "1.75rem" },
+        }}
+      >
+        OMECA
+      </Typography>
+
+      <Typography
+        sx={{
+          color: colors.logoDark,
+          fontSize: { xs: "0.45rem", sm: "0.55rem", md: "0.65rem" },
+          opacity: 0.85,
+          fontWeight: 800,
+          letterSpacing: "0.18em",
+          textTransform: "uppercase",
+        }}
+      >
+        Continuous Truth
+      </Typography>
+    </Box>
+  </motion.div>
+</Box>
+
 
           {/* BACKGROUND CONNECTOR LINES */}
           <Box sx={{ position: "absolute", inset: 0, zIndex: 0 }}>
