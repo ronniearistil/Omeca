@@ -66,25 +66,27 @@
 
 // src/auth/ProtectedRoute.jsx
 import React, { useEffect, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../lib/firebase";
 
 const ProtectedRoute = ({ children }) => {
   const [user, setUser] = useState(undefined); 
-  // undefined = not loaded yet
-  // null = loaded & no user
-  // object = logged in
+  const location = useLocation();
 
   useEffect(() => {
+    // Stable subscription: fires exactly once
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+
     return () => unsub();
   }, []);
 
-  // 🔥 1. STILL LOADING — DO NOT REDIRECT YET
+  // ------------------------------------------------------------
+  // 1. LOADING STATE — prevent redirect before Firebase resolves
+  // ------------------------------------------------------------
   if (user === undefined) {
     return (
       <Box
@@ -100,12 +102,23 @@ const ProtectedRoute = ({ children }) => {
     );
   }
 
-  // 🔥 2. LOADED & UNAUTHENTICATED → redirect
+  // ------------------------------------------------------------
+  // 2. NOT AUTHENTICATED — redirect to login
+  // We pass state so login can redirect the user back where they came from
+  // ------------------------------------------------------------
   if (user === null) {
-    return <Navigate to="/partner-login" replace />;
+    return (
+      <Navigate 
+        to="/partner-login" 
+        replace 
+        state={{ from: location.pathname }} 
+      />
+    );
   }
 
-  // 🔥 3. AUTHENTICATED
+  // ------------------------------------------------------------
+  // 3. AUTHENTICATED — render protected content
+  // ------------------------------------------------------------
   return children;
 };
 

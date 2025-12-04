@@ -1,5 +1,9 @@
 // import { initializeApp } from "firebase/app";
-// import { getAuth } from "firebase/auth";
+// import { 
+//   getAuth, 
+//   setPersistence, 
+//   browserLocalPersistence 
+// } from "firebase/auth";
 // import { getFirestore } from "firebase/firestore";
 // 
 // // Config from your text paste (Case-sensitive correction applied)
@@ -16,8 +20,13 @@
 // // Initialize Firebase once
 // const app = initializeApp(firebaseConfig);
 // 
-// // Export services to be used across the app
+// // --- AUTH WITH PERSISTENCE FIX ---
 // export const auth = getAuth(app);
+// 
+// // 🔥 This line fixes your redirect loop
+// setPersistence(auth, browserLocalPersistence);
+// 
+// // Firestore
 // export const db = getFirestore(app);
 // 
 // // Consistent App ID for your Firestore paths
@@ -31,7 +40,6 @@ import {
 } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-// Config from your text paste (Case-sensitive correction applied)
 const firebaseConfig = {
   apiKey: "AIzaSyAjSvGKK8X-iRU7i4_Io8Yl7JqSGVIoXm8",
   authDomain: "omeca-mvp-fe349.firebaseapp.com",
@@ -42,17 +50,14 @@ const firebaseConfig = {
   measurementId: "G-S1RZM1FMGS"
 };
 
-// Initialize Firebase once
+// ❗ Absolutely NEVER reuse app instances in Vite/CRA.
+// React Fast Refresh breaks persistence otherwise.
 const app = initializeApp(firebaseConfig);
 
-// --- AUTH WITH PERSISTENCE FIX ---
 export const auth = getAuth(app);
 
-// 🔥 This line fixes your redirect loop
+// 🔥 MUST run on a fresh app every load.
 setPersistence(auth, browserLocalPersistence);
 
-// Firestore
 export const db = getFirestore(app);
-
-// Consistent App ID for your Firestore paths
 export const APP_ID = "omeca-mvp-fe349";
