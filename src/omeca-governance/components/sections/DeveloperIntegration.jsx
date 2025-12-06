@@ -1,205 +1,3 @@
-// import React, { useContext } from 'react';
-// import { Container, Typography, Grid, Paper, Box, Button } from '@mui/material';
-// import { motion } from 'framer-motion';
-// 
-// // --- FIXED THEME PATHS ---
-// import { ColorModeContext } from '../../../shared/layouts/theme/ThemeContext.jsx';
-// import { colors } from '../../../shared/layouts/theme/theme.js';
-// 
-// const OmecaDeveloperIntegration = () => { 
-//     const { mode } = useContext(ColorModeContext);
-//     const currentColors = colors[mode];
-// 
-//     const steps = [
-//         { n: 1, title: 'Install the SDK', body: 'Add our lightweight SDK to your project with a single command.' },
-//         { n: 2, title: 'Replace Core Hooks', body: 'Update your existing finance logic hooks with our simple wrappers.' },
-//         { n: 3, title: 'Start Tracking', body: 'Immediately see usage analytics, costs, and performance metrics in your dashboard.' },
-//     ];
-// 
-//     const codeSnippet = `
-// const omeca = new OmecaSDK({
-//   apiKey: "OMECA_PK_...", // Updated API Key Prefix
-// });
-// 
-// // BEFORE Omeca:
-// // const cost = calculate_usage(data);
-// // update_spreadsheet(cost);
-// 
-// // WITH Omeca:
-// const ledgerEntry = omeca.track({
-//   accountId: "user-123",
-//   event: "model.inference",
-//   units: 4200, // tokens or compute
-//   value: 0.05, // USD per unit
-// });
-// 
-// if (ledgerEntry.marginAlert) {
-//   send_critical_alert(ledgerEntry.marginAlert);
-// }
-//     `.trim();
-// 
-//     return (
-//         <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
-//             <motion.div
-//                 initial={{ opacity: 0, y: 15 }}
-//                 whileInView={{ opacity: 1, y: 0 }}
-//                 transition={{ duration: 0.5 }}
-//                 viewport={{ once: true, amount: 0.5 }}
-//             >
-//                 <Typography
-//                     variant="h4"
-//                     fontWeight={900}
-//                     color={currentColors.textPrimary}
-//                     sx={{ mb: 1, textAlign: 'center' }}
-//                 >
-//                     Drop in the Ledger. <span style={{ color: colors.accent }}>Start Reconciling Profit.</span>
-//                 </Typography>
-// 
-//                 <Typography
-//                     sx={{ color: currentColors.textDim, mb: 6, textAlign: 'center' }}
-//                 >
-//                     Get started in minutes with our straightforward API. Replace your existing calls with minimal code changes.
-//                 </Typography>
-//             </motion.div>
-// 
-//             <Grid container spacing={4}>
-//                 <Grid item xs={12} md={6}>
-//                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-//                         {steps.map((step, index) => (
-//                             <motion.div
-//                                 key={step.n}
-//                                 initial={{ opacity: 0, x: -50 }}
-//                                 whileInView={{ opacity: 1, x: 0 }}
-//                                 transition={{ duration: 0.5, delay: index * 0.1 }}
-//                                 viewport={{ once: true, amount: 0.8 }}
-//                             >
-//                                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-//                                     <Box
-//                                         sx={{
-//                                             width: 28,
-//                                             height: 28,
-//                                             borderRadius: '50%',
-//                                             bgcolor: colors.lucraGold,
-//                                             color: currentColors.card,
-//                                             display: 'grid',
-//                                             placeItems: 'center',
-//                                             fontWeight: 800,
-//                                             mr: 2
-//                                         }}
-//                                     >
-//                                         {step.n}
-//                                     </Box>
-//                                     <Typography
-//                                         variant="h6"
-//                                         fontWeight={800}
-//                                         color={currentColors.textPrimary}
-//                                     >
-//                                         {step.title}
-//                                     </Typography>
-//                                 </Box>
-//                                 <Typography
-//                                     variant="body2"
-//                                     sx={{ ml: 6, color: currentColors.textDim }}
-//                                 >
-//                                     {step.body}
-//                                 </Typography>
-//                             </motion.div>
-//                         ))}
-// 
-//                         <Box sx={{ display: 'flex', gap: 2, mt: 3 }}>
-//                             <Button
-//                                 variant="contained"
-//                                 size="large"
-//                                 sx={{
-//                                     bgcolor: colors.accent,
-//                                     color: currentColors.bgTop,
-//                                     fontWeight: 800,
-//                                     '&:hover': { bgcolor: colors.accentHover }
-//                                 }}
-//                             >
-//                                 Get the SDK →
-//                             </Button>
-//                             <Button
-//                                 variant="outlined"
-//                                 size="large"
-//                                 sx={{
-//                                     borderColor: colors.accent,
-//                                     color: colors.accent,
-//                                     fontWeight: 700,
-//                                     '&:hover': { bgcolor: `${colors.accent}14` }
-//                                 }}
-//                             >
-//                                 View Docs →
-//                             </Button>
-//                         </Box>
-//                     </Box>
-//                 </Grid>
-// 
-//                 {/* Code Block */}
-//                 <Grid item xs={12} md={6}>
-//                     <motion.div
-//                         initial={{ opacity: 0, scale: 0.9 }}
-//                         whileInView={{ opacity: 1, scale: 1 }}
-//                         transition={{ duration: 0.6 }}
-//                         viewport={{ once: true, amount: 0.3 }}
-//                     >
-//                         <Paper
-//                             sx={{
-//                                 bgcolor: colors.dark.bgTop,
-//                                 color: 'white',
-//                                 p: 2,
-//                                 borderRadius: 2,
-//                                 border: `1px solid ${colors.accent}44`,
-//                                 height: '100%'
-//                             }}
-//                         >
-//                             <Box
-//                                 sx={{
-//                                     display: 'flex',
-//                                     justifyContent: 'space-between',
-//                                     alignItems: 'center',
-//                                     mb: 1,
-//                                     borderBottom: '1px solid #333'
-//                                 }}
-//                             >
-//                                 <Typography variant="caption" sx={{ color: colors.accent }}>
-//                                     Code Comparison
-//                                 </Typography>
-//                                 <Button size="small" sx={{ color: colors.accent }}>
-//                                     Copy
-//                                 </Button>
-//                             </Box>
-// 
-//                             <Box
-//                                 component="pre"
-//                                 sx={{
-//                                     overflowX: 'auto',
-//                                     bgcolor: colors.dark.bgTop,
-//                                     borderRadius: 1,
-//                                     p: 1,
-//                                     color: '#C8C8C8'
-//                                 }}
-//                             >
-//                                 <Typography
-//                                     component="code"
-//                                     sx={{
-//                                         fontSize: '0.85rem',
-//                                         lineHeight: 1.5,
-//                                         fontFamily: 'monospace'
-//                                     }}
-//                                 >
-//                                     {codeSnippet}
-//                                 </Typography>
-//                             </Box>
-//                         </Paper>
-//                     </motion.div>
-//                 </Grid>
-//             </Grid>
-//         </Container>
-//     );
-// };
-// 
-// export default OmecaDeveloperIntegration;
 
 import React, { useState, useEffect, createContext, useMemo } from "react";
 import { Container, Typography, Box, Paper, useMediaQuery } from "@mui/material";
@@ -246,15 +44,82 @@ const ColorModeContext = createContext({ mode: "dark" });
 // 2. DATA & CONFIGURATION
 // ==========================================
 
+// const rawNodes = [
+//   {
+//     id: "tax",
+//     label: "Tax",
+//     logos: [
+//       { name: "Avalara", color: "#f97316", bg: "#fff7ed" },
+//       { name: "Vertex", color: "#6366f1", bg: "#eef2ff" },
+//     ],
+//   },
+//   {
+//     id: "crm",
+//     label: "CRM",
+//     logos: [
+//       { name: "Salesforce", color: "#0ea5e9", bg: "#e0f2fe" },
+//       { name: "HubSpot", color: "#f97316", bg: "#ffedd5" },
+//     ],
+//   },
+//   {
+//     id: "warehouse",
+//     label: "Data",
+//     logos: [
+//       { name: "Snowflake", color: "#0ea5e9", bg: "#e0f2fe" },
+//       { name: "BigQuery", color: "#ea4335", bg: "#fee2e2" },
+//     ],
+//   },
+//   {
+//     id: "payroll",
+//     label: "Payroll",
+//     logos: [
+//       { name: "Gusto", color: "#ef4444", bg: "#fee2e2" },
+//       { name: "ADP", color: "#dc2626", bg: "#fecaca" },
+//     ],
+//   },
+//   {
+//     id: "fpa",
+//     label: "FP&A",
+//     logos: [
+//       { name: "Anaplan", color: "#2563eb", bg: "#dbeafe" },
+//       { name: "Cube", color: "#10b981", bg: "#d1fae5" },
+//     ],
+//   },
+//   {
+//     id: "bank",
+//     label: "Banking",
+//     logos: [
+//       { name: "JPMorgan", color: "#334155", bg: "#f1f5f9" },
+//       { name: "Mercury", color: "#3b82f6", bg: "#eff6ff" },
+//     ],
+//   },
+//   {
+//     id: "revenue",
+//     label: "Revenue", // NEW NODE
+//     logos: [
+//               { name: "Zuora", color: "#8b5cf6", bg: "#f5f3ff" },
+//       { name: "Paddle", color: "#8b5cf6", bg: "#f5f3ff" },
+//       { name: "ProfitWell", color: "#10b981", bg: "#ecfdf5" },
+//     ],
+//   },
+//   {
+//     id: "billing",
+//     label: "Billing", // NEW NODE
+//     logos: [
+//       { name: "Stripe", color: "#6366f1", bg: "#eef2ff" },
+//       { name: "Zuora", color: "#0ea5e9", bg: "#f0f9ff" },
+//     ],
+//   },
+//   {
+//     id: "ap",
+//     label: "P2P",
+//     logos: [
+//       { name: "Bill.com", color: "#ff6b35", bg: "#fff0eb" },
+//       { name: "Ramp", color: "#eab308", bg: "#fefce8" },
+//     ],
+//   },
+// ];
 const rawNodes = [
-  {
-    id: "tax",
-    label: "Tax",
-    logos: [
-      { name: "Avalara", color: "#f97316", bg: "#fff7ed" },
-      { name: "Vertex", color: "#6366f1", bg: "#eef2ff" },
-    ],
-  },
   {
     id: "crm",
     label: "CRM",
@@ -264,11 +129,36 @@ const rawNodes = [
     ],
   },
   {
-    id: "warehouse",
-    label: "Data",
+    id: "billing",
+    label: "Billing",
     logos: [
-      { name: "Snowflake", color: "#0ea5e9", bg: "#e0f2fe" },
-      { name: "BigQuery", color: "#ea4335", bg: "#fee2e2" },
+      { name: "Stripe", color: "#6366f1", bg: "#eef2ff" },
+      { name: "Zuora", color: "#0ea5e9", bg: "#f0f9ff" },
+    ],
+  },
+  {
+    id: "revenue",
+    label: "Revenue",
+    logos: [
+      { name: "Paddle", color: "#8b5cf6", bg: "#f5f3ff" },
+      { name: "ProfitWell", color: "#10b981", bg: "#ecfdf5" },
+    ],
+  },
+  {
+    id: "banking",
+    label: "Banking",
+    logos: [
+      { name: "JPMorgan", color: "#334155", bg: "#f1f5f9" },
+      { name: "Mercury", color: "#3b82f6", bg: "#eff6ff" },
+            { name: "Wells Fargo", color: "#f63b6aff", bg: "#eff6ff" },
+    ],
+  },
+  {
+    id: "p2p",
+    label: "P2P",
+    logos: [
+      { name: "Bill.com", color: "#ff6b35", bg: "#fff0eb" },
+      { name: "Ramp", color: "#eab308", bg: "#fefce8" },
     ],
   },
   {
@@ -280,44 +170,27 @@ const rawNodes = [
     ],
   },
   {
-    id: "fpa",
-    label: "FP&A",
+    id: "planning",
+    label: "Planning",
     logos: [
       { name: "Anaplan", color: "#2563eb", bg: "#dbeafe" },
       { name: "Cube", color: "#10b981", bg: "#d1fae5" },
     ],
   },
   {
-    id: "bank",
-    label: "Banking",
+    id: "compliance",
+    label: "Compliance",
     logos: [
-      { name: "JPMorgan", color: "#334155", bg: "#f1f5f9" },
-      { name: "Mercury", color: "#3b82f6", bg: "#eff6ff" },
+      { name: "Avalara", color: "#f97316", bg: "#fff7ed" },
+      { name: "Vertex", color: "#6366f1", bg: "#eef2ff" },
     ],
   },
   {
-    id: "revenue",
-    label: "Revenue", // NEW NODE
+    id: "data",
+    label: "Data",
     logos: [
-              { name: "Zuora", color: "#8b5cf6", bg: "#f5f3ff" },
-      { name: "Paddle", color: "#8b5cf6", bg: "#f5f3ff" },
-      { name: "ProfitWell", color: "#10b981", bg: "#ecfdf5" },
-    ],
-  },
-  {
-    id: "billing",
-    label: "Billing", // NEW NODE
-    logos: [
-      { name: "Stripe", color: "#6366f1", bg: "#eef2ff" },
-      { name: "Zuora", color: "#0ea5e9", bg: "#f0f9ff" },
-    ],
-  },
-  {
-    id: "ap",
-    label: "P2P",
-    logos: [
-      { name: "Bill.com", color: "#ff6b35", bg: "#fff0eb" },
-      { name: "Ramp", color: "#eab308", bg: "#fefce8" },
+      { name: "Snowflake", color: "#0ea5e9", bg: "#e0f2fe" },
+      { name: "BigQuery", color: "#ea4335", bg: "#fee2e2" },
     ],
   },
 ];
@@ -484,7 +357,7 @@ const OmecaSystemMap = () => {
               fontSize: { xs: '2rem', md: '3rem' }
             }}
           >
-            All continuous. <Box component="span" sx={{ color: colors.accent }}>All in one system.</Box>
+            One system. <Box component="span" sx={{ color: colors.accent }}>Trusted by design.</Box>
           </Typography>
 
           <Typography
@@ -497,7 +370,7 @@ const OmecaSystemMap = () => {
               lineHeight: 1.7,
             }}
           >
-            Every financial domain unified around a single continuous truth layer.
+Every agent and system records its activity into a single trusted real time core.            
           </Typography>
         </motion.div>
 

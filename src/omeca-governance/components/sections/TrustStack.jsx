@@ -167,32 +167,60 @@ const OmecaTrustStack = () => {
   // Focus on the "Moat" (The Advantage) rather than the "Machine" (The How).
   // This tells investors/customers WHY they win, without telling competitors HOW we build it.
   
+  // const stackData = [
+  //   {
+  //     layer: "L1 CORE",
+  //     title: "Operational Control",
+  //     subtitle: "The Data Moat",
+  //     body: "Unified financial visibility that legacy ERPs cannot deliver. Omeca becomes the single source of truth for cash and spend, ensuring you steer the business on live data, not last month’s spreadsheets.",
+  //     icon: <Flare />,
+  //     color: colors.successGreen,
+  //   },
+  //   {
+  //     layer: "L2 LEDGER",
+  //     title: "Continuous Close",
+  //     subtitle: "The Logic Moat",
+  //     body: "The books that close themselves. We replace manual reconciliation with an autonomous engine that keeps your subledgers aligned in real-time, eliminating the month-end fire drill forever.",
+  //     icon: <AutorenewRounded />,
+  //     color: colors.accent,
+  //   },
+  //   {
+  //     layer: "L3 GOVERNANCE",
+  //     title: "Verifiable Trust",
+  //     subtitle: "The Credibility Moat",
+  //     body: "Turn compliance into a competitive asset. Every transaction is automatically verified and audit-ready upon creation, creating a level of institutional trust that defines the modern enterprise.",
+  //     icon: <VerifiedRounded />,
+  //     color: colors.lucraGold,
+  //   },
+  // ];
+
   const stackData = [
-    {
-      layer: "L1 CORE",
-      title: "Operational Control",
-      subtitle: "The Data Moat",
-      body: "Unified financial visibility that legacy ERPs cannot deliver. Omeca becomes the single source of truth for cash and spend, ensuring you steer the business on live data, not last month’s spreadsheets.",
-      icon: <Flare />,
-      color: colors.successGreen,
-    },
-    {
-      layer: "L2 LEDGER",
-      title: "Continuous Close",
-      subtitle: "The Logic Moat",
-      body: "The books that close themselves. We replace manual reconciliation with an autonomous engine that keeps your subledgers aligned in real-time, eliminating the month-end fire drill forever.",
-      icon: <AutorenewRounded />,
-      color: colors.accent,
-    },
-    {
-      layer: "L3 GOVERNANCE",
-      title: "Verifiable Trust",
-      subtitle: "The Credibility Moat",
-      body: "Turn compliance into a competitive asset. Every transaction is automatically verified and audit-ready upon creation, creating a level of institutional trust that defines the modern enterprise.",
-      icon: <VerifiedRounded />,
-      color: colors.lucraGold,
-    },
-  ];
+  {
+    layer: "L1 CORE",
+    title: "Operational Integrity",
+    subtitle: "Verified Real Time Inputs",
+    body: "Omeca verifies every financial and operational event the moment it happens. This creates a single, trusted stream of truth that legacy ERP architecture was never designed to maintain.",
+    icon: <Flare />,
+    color: colors.successGreen,
+  },
+  {
+    layer: "L2 LEDGER",
+    title: "Continuous Close",
+    subtitle: "Always Aligned Books",
+    body: "Omeca keeps the ledger correct throughout the month through deterministic accounting logic. Reconciliation becomes automatic, and the month end close becomes a confirmation rather than a chase.",
+    icon: <AutorenewRounded />,
+    color: colors.accent,
+  },
+  {
+    layer: "L3 GOVERNANCE",
+    title: "Autonomous Governance",
+    subtitle: "Enforced Financial Control",
+    body: "Every transaction carries its own explanation and evidence, enabling real time governance that prevents errors before they happen. Controls are enforced automatically, creating complete institutional trust.",
+    icon: <VerifiedRounded />,
+    color: colors.lucraGold,
+  },
+];
+
 
   return (
     <Box sx={{ 
@@ -236,7 +264,7 @@ const OmecaTrustStack = () => {
                         mx: "auto",
                         fontSize: { xs: "1.1rem", md: "1.3rem" }
                     }}>
-                        Omeca creates a defensive moat by unifying data ownership, accounting logic, and regulatory proof.
+                       Three continuous layers that keep every financial event correct by design. 
                     </Typography>
                 </Box>
 
