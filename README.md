@@ -32,6 +32,9 @@ http://127.0.0.1:8000/api/v1/governance/proofs
 # Deployment
 1. npm run build
 2. Fly - flyctl deploy
+3. flyctl deploy --remote-only
+4. flyctl deploy
+
 Gcloud - gcloud run deploy omeca-backend --source .
 
 # New Termial 

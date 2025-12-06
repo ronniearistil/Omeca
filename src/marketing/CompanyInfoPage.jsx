@@ -152,13 +152,15 @@ const CompanyInfoPage = () => {
     
 // STATIC NARRATIVE CONTENT (Aligned with new messaging)
 const staticNarrative = {
-    mission: "We are building the Financial Core for modern enterprises. Our mission is to create a system that captures live operational activity, maintains trusted financial truth, and gives teams continuous control without manual work or reconciliation cycles.",
-    
-    problem: "Legacy systems were designed for manual inputs and periodic reporting. They cannot interpret continuous machine activity or keep pace with live operations, creating a persistent gap between what happens in the business and what finance can verify.",
-    
-    vision: "Omeca establishes one Financial Core that captures every trusted operational signal, keeps the close continuously reconciled, and produces verifiable truth for decisions, agents, and financial processes across the enterprise."
-};
+    mission: 
+        "We are building the Financial Core for modern enterprises. Our mission is to capture live operational activity the moment it happens, maintain trusted financial truth for every transaction, and give teams continuous control without manual work or reconciliation cycles.",
 
+    problem: 
+        "Finance relies on systems that record activity only after the fact. They do not validate events at the moment they occur and cannot keep the ledger aligned with live operations. This creates a persistent gap between what happens in the business and what finance can confirm.",
+
+    vision: 
+        "Omeca provides one Financial Core that captures every trusted operational signal, keeps the ledger continuously reconciled, and produces verifiable truth for decisions, financial processes, and automated activity across the enterprise."
+};
     
     // LIVE METRICS (Locked In)
     const [metricsData, setMetricsData] = useState({

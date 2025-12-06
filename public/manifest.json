@@ -1,6 +1,6 @@
 {
   "short_name": "Omeca",
-  "name": "Omeca — The Autonomous Financial Core",
+  "name": "Omeca The Control Plane for Modern Finance",
   "icons": [
     {
       "src": "/favicon.png",
@@ -18,6 +18,8 @@
   "orientation": "portrait",
   "theme_color": "#00E5BE",
   "background_color": "#111827",
-  "description": "Transforming ERPs from passive record-keeping to continuous, autonomous control. Unify operational truth, real-time close, and verifiable intelligence.",
+  "description": "Omeca is the accounting engine that establishes financial truth for every transaction and enforces correct behavior across high velocity workflows. One financial core that keeps systems aligned by design.",
   "lang": "en"
 }
+
+
