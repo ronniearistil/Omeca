@@ -167,26 +167,27 @@ const OmecaCareersPage = () => {
 
 const positions = [
   {
-    title: "Founding Engineering Architect",
+    title: "Founding Systems Architect",
     dept: "Engineering",
-    focus: "Own the core system foundation and guide our technical direction"
+    focus: "Own the core of the Omeca Control Plane, design the accounting engine, event model, and autonomy layer."
   },
   {
-    title: "Founding GTM Lead (Design Partner Strategy)",
+    title: "Founding GTM Lead",
     dept: "Go-To-Market",
-    focus: "Secure design partners and shape our early customer channels"
+    focus: "Build our design partner motion and shape how enterprises adopt the Control Plane."
   },
   {
-    title: "Advisor — Audit & Compliance",
+    title: "Advisor — Governance & Financial Controls",
     dept: "Advisory Council",
-    focus: "Guide our governance and enterprise compliance strategy"
+    focus: "Guide the architecture of continuous compliance, evidence trails, and verifiable governance."
   },
   {
-    title: "Advisor — AI & Data Architecture",
+    title: "Advisor — AI & Autonomous Systems",
     dept: "Advisory Council",
-    focus: "Provide direction on our AI-native system design"
+    focus: "Help define how agents, workflows, and accounting logic interact in an AI-native system."
   }
 ];
+
 
     return (
         <Box sx={{ 
@@ -236,18 +237,21 @@ const positions = [
                             color: currentColors.textDim, 
                         }} 
                     />
-                    <Typography variant="h2" fontWeight={800} sx={{ 
-                        fontSize: { xs: "2.5rem", md: "3.5rem" }, 
-                        letterSpacing: "-0.03em",
-                        lineHeight: 1.1,
-                        mb: 2,
-                        color: currentColors.textPrimary
-                    }}>
-                        Build the <span style={{ color: colors.accent }}>Future.</span>
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: currentColors.textDim, fontSize: '1.1rem', lineHeight: 1.6 }}>
-                        Join us as we rebuild the foundation of enterprise systems with a self-driving ERP that unifies operational truth.
-                    </Typography>
+<Typography variant="h2" fontWeight={800} sx={{ 
+    fontSize: { xs: "2.5rem", md: "3.5rem" }, 
+    letterSpacing: "-0.03em",
+    lineHeight: 1.1,
+    mb: 2,
+    color: currentColors.textPrimary
+}}>
+    Help Build the <span style={{ color: colors.accent }}>Financial Control Plane.</span>
+</Typography>
+
+<Typography variant="body1" sx={{ color: currentColors.textDim, fontSize: '1.1rem', lineHeight: 1.6 }}>
+    Omeca is building the autonomous accounting engine that keeps every workflow correct by design. 
+    If you want to help define the system layer that future enterprises will run on, we'd love to meet you.
+</Typography>
+
                 </Box>
 
                 {/* JOBS LIST */}

@@ -153,13 +153,13 @@ const CompanyInfoPage = () => {
 // STATIC NARRATIVE CONTENT (Aligned with new messaging)
 const staticNarrative = {
     mission: 
-        "We are building the Financial Core for modern enterprises. Our mission is to capture live operational activity the moment it happens, maintain trusted financial truth for every transaction, and give teams continuous control without manual work or reconciliation cycles.",
+        "We are building the Financial Core for modern enterprises. Our mission is to capture live operational activity as it happens, maintain trusted financial truth for every transaction, and give teams continuous control without manual work or reconciliation cycles.",
 
     problem: 
-        "Finance relies on systems that record activity only after the fact. They do not validate events at the moment they occur and cannot keep the ledger aligned with live operations. This creates a persistent gap between what happens in the business and what finance can confirm.",
+        "Finance relies on systems that record activity after the fact. They do not validate events as they occur and cannot keep the ledger aligned with live operations. This creates a persistent gap between what happens in the business and what finance can confirm.",
 
     vision: 
-        "Omeca provides one Financial Core that captures every trusted operational signal, keeps the ledger continuously reconciled, and produces verifiable truth for decisions, financial processes, and automated activity across the enterprise."
+        "Omeca provides a single Financial Core that captures trusted operational signals, keeps the ledger continuously aligned, and produces verifiable truth for decisions, financial processes, and automated activity across the enterprise."
 };
     
     // LIVE METRICS (Locked In)

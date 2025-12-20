@@ -404,7 +404,7 @@ const OmecaGovernancePage = ({ setPage }) => {
     }}>
       <InspectorModal open={modalOpen} onClose={() => setModalOpen(false)} data={selectedItem} />
 
-      {/* Header */}
+      {/* Header
       <Box sx={{ mb: 6, maxWidth: 800 }}>
         <Typography variant="overline" sx={{ color: colors.lucraGold, fontWeight: 700, letterSpacing: 2 }}>
             LAYER 3: GOVERNANCE
@@ -416,7 +416,23 @@ const OmecaGovernancePage = ({ setPage }) => {
           Immutable attestation for every AI decision. 
           Omeca generates cryptographic proofs for every reconciled event in real-time.
         </Typography>
-      </Box>
+      </Box> */}
+      {/* Header */}
+<Box sx={{ mb: 6, maxWidth: 800 }}>
+  <Typography variant="overline" sx={{ color: colors.lucraGold, fontWeight: 700, letterSpacing: 2 }}>
+      LAYER 3: GOVERNANCE
+  </Typography>
+
+  <Typography variant="h3" fontWeight={800} sx={{ mb: 2, mt: 1 }}>
+    Verifiable <GradientSpan>Trust</GradientSpan>
+  </Typography>
+
+  <Typography variant="h6" sx={{ color: 'grey.500', fontWeight: 400, lineHeight: 1.6 }}>
+    Cryptographic attestation of autonomous financial decisions. 
+    Omeca records immutable, audit-ready proof of <i>why</i> every approved action occurred.
+  </Typography>
+</Box>
+
 
       {/* Nav Tabs */}
       <Paper sx={{ mb: 6, borderRadius: 2, bgcolor: palette.card }}>

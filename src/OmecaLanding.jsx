@@ -529,12 +529,12 @@
 
 import React, { useState, useContext, useEffect, useMemo } from "react";
 import {
-  AppBar, Toolbar, Box, Container, Typography, Button, IconButton, Grid, Chip, Paper, alpha,
-  Drawer, List, ListItem, InputBase, Stack, Link, useMediaQuery
+  AppBar, Toolbar, Box, Container, Typography, Button, IconButton, Grid, Paper, alpha,
+  Drawer, List, ListItem, Stack, Link, useMediaQuery
 } from "@mui/material";
 import {
-  Menu as MenuIcon, Bolt, ArrowForward, VerifiedUser, Close as CloseIcon, Logout, Dashboard,
-  CheckCircleOutlineRounded, CancelRounded, Flare, AutorenewRounded, VerifiedRounded
+  Menu as MenuIcon, Bolt, Close as CloseIcon, Dashboard, ArrowForward, // <--- Fixed Missing Import
+  CheckCircleOutlineRounded, CancelRounded, Flare, AutorenewRounded, VerifiedRounded, VerifiedUser
 } from "@mui/icons-material";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -548,7 +548,7 @@ import ThemeToggleButton from "./shared/layouts/ThemeToggleButton.jsx";
 import OmecaAppFooter from "./shared/ui/AppFooter.jsx";
 import OmecaLogo from "./shared/ui/OmecaLogo.jsx";
 
-// --- EXISTING SECTIONS (Keep these imports) ---
+// --- EXISTING SECTIONS ---
 import OmecaProblemSolutionComparison from "./omeca-governance/components/sections/ProblemSolutionComparison.jsx";
 import OmecaDeveloperIntegration from "./omeca-governance/components/sections/DeveloperIntegration.jsx";
 import OmecaSupportedIntegrations from "./omeca-governance/components/sections/SupportedIntegrations.jsx";
@@ -602,20 +602,44 @@ const SectionWrapper = ({ children, isDark, transparent = true, borderTop = fals
 
 // --- ANNOUNCEMENT BAR ---
 const AnnouncementBar = () => (
-    <Box sx={{ position: 'relative', zIndex: 1201, bgcolor: colors.accent, color: 'black', py: 1, textAlign: 'center' }}>
-      <Container maxWidth={false} sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: 'center' }}>
-        <Typography variant="caption" sx={{ fontWeight: 700, letterSpacing: 0.5 }}>
-          📣 BACKED BY NVIDIA INCEPTION & GOOGLE CLOUD FOR STARTUPS
-        </Typography>
-      </Container>
-    </Box>
+  <Box
+    sx={{
+      position: 'relative',
+      zIndex: 1201,
+      bgcolor: colors.accent,
+      color: 'black',
+      py: { xs: 0.3, md: 0.4 },   // thinner on mobile
+      textAlign: 'center'
+    }}
+  >
+    <Container
+      maxWidth={false}
+      sx={{ 
+        display: 'flex',
+        gap: { xs: 1, md: 1.5 },
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}
+    >
+      <Typography
+        variant="caption"
+        sx={{
+          fontWeight: 700,
+          letterSpacing: 0.5,
+          fontSize: { xs: '0.62rem', md: '0.7rem' }   // controlled for mobile
+        }}
+      >
+        📣 BACKED BY NVIDIA INCEPTION & GOOGLE CLOUD FOR STARTUPS
+      </Typography>
+    </Container>
+  </Box>
 );
 
 /* =========================================
-   2. INLINED COMPONENTS (TrustStack & SystemMap)
+   2. INLINED COMPONENTS
 ========================================= */
 
-// --- TRUST STACK (Background Removed) ---
+// --- TRUST STACK (Updated Grid Syntax) ---
 const StackCard = ({ layer, title, subtitle, body, icon, color }) => {
     const { mode } = useContext(ColorModeContext);
     const isDark = mode === "dark";
@@ -663,7 +687,7 @@ const OmecaTrustStack = () => {
     ];
   
     return (
-      <Box sx={{ width: '100%', bgcolor: 'transparent' }}>
+      <Box sx={{ width: '100%', bgcolor: 'transparent', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <Box sx={{ textAlign: "center", mb: 6, maxWidth: 900, mx: "auto" }}>
             <Typography variant="h2" fontWeight={900} sx={{ color: palette.textPrimary, mb: 3, fontSize: { xs: "2.5rem", md: "3.5rem" }, letterSpacing: "-0.03em" }}>
               The <span style={{ background: `linear-gradient(90deg, ${colors.accent}, ${colors.lucraGold})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Trust Stack</span>
@@ -672,18 +696,21 @@ const OmecaTrustStack = () => {
               Three continuous layers that keep every financial event correct by design.
             </Typography>
           </Box>
-          <Grid container spacing={4} alignItems="stretch">
-            {stackData.map((item, index) => (
-              <Grid item xs={12} md={4} key={index} sx={{ display: "flex" }}>
-                <StackCard {...item} />
-              </Grid>
-            ))}
-          </Grid>
+          <Box sx={{ maxWidth: '1400px', width: '100%' }}>
+            {/* UPDATED GRID SYNTAX: size={{ xs: 12, md: 4 }} */}
+            <Grid container spacing={4} alignItems="stretch" justifyContent="center">
+                {stackData.map((item, index) => (
+                <Grid size={{ xs: 12, md: 4 }} key={index} sx={{ display: "flex" }}>
+                    <StackCard {...item} />
+                </Grid>
+                ))}
+            </Grid>
+          </Box>
       </Box>
     );
 };
 
-// --- SYSTEM MAP (Fixed White Box Issue) ---
+// --- SYSTEM MAP ---
 const SwitchingLogo = ({ logos, mode }) => {
   const [index, setIndex] = useState(0);
   useEffect(() => {
@@ -718,7 +745,6 @@ const SwitchingLogo = ({ logos, mode }) => {
 
 const OmecaSystemMap = () => {
   const { mode } = useContext(ColorModeContext);
-  const currentColors = colors[mode];
   const isMobile = useMediaQuery('(max-width:800px)');
   const hubGradient = `linear-gradient(135deg, ${colors.accent}, ${colors.lucraGold})`;
   const lineStroke = mode === 'dark' ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.15)';
@@ -747,21 +773,14 @@ const OmecaSystemMap = () => {
 
   return (
     <Box sx={{ bgcolor: 'transparent', width: '100%', py: { xs: 8, md: 10 }, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <Container maxWidth="lg" sx={{ textAlign: "center", position: 'relative', zIndex: 1 }}>
-        <Typography variant="h3" fontWeight={900} sx={{ mb: 2, color: currentColors.textPrimary, letterSpacing: '-0.02em', fontSize: { xs: '2rem', md: '3rem' } }}>
-          One system. <Box component="span" sx={{ color: colors.accent }}>Trusted by design.</Box>
-        </Typography>
-        <Typography sx={{ color: currentColors.textDim, maxWidth: 720, mx: "auto", mb: 6, fontSize: "1.1rem", lineHeight: 1.7 }}>
-          Every agent and system records its activity into a single trusted real-time core.
-        </Typography>
-        <Box sx={{ position: "relative", mx: "auto", width: "100%", maxWidth: 1000, aspectRatio: "1/1", maxHeight: 800 }}>
+      <Box sx={{ position: "relative", mx: "auto", width: "100%", maxWidth: 1000, aspectRatio: "1/1", maxHeight: 800 }}>
           {/* CENTER HUB */}
           <Box sx={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", zIndex: 20, width: { xs: 110, sm: 150, md: 200 }, height: { xs: 110, sm: 150, md: 200 } }}>
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }} viewport={{ once: true }}
               animate={{ boxShadow: ["0 0 0 rgba(0,0,0,0.4)", "0 0 60px rgba(0,0,0,0.2)"] }}
               transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
-              style={{ width: "100%", height: "100%", borderRadius: "50%" }} // FIX: borderRadius added here to stop white box
+              style={{ width: "100%", height: "100%", borderRadius: "50%" }}
             >
               <Box sx={{ width: "100%", height: "100%", borderRadius: "50%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", background: hubGradient, backdropFilter: "blur(14px)", boxShadow: `0 24px 48px -12px ${mode === "dark" ? "rgba(0,0,0,0.7)" : "rgba(0,0,0,0.3)"}`, border: "1px solid rgba(255,255,255,0.2)", position: "relative", overflow: "hidden" }}>
                 <Box sx={{ position: "absolute", top: "-50%", left: "-50%", width: "200%", height: "200%", background: "linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 60%)", transform: "rotate(25deg)", pointerEvents: "none" }} />
@@ -788,7 +807,6 @@ const OmecaSystemMap = () => {
             </React.Fragment>
           ))}
         </Box>
-      </Container>
     </Box>
   );
 };
@@ -872,11 +890,11 @@ const LivePreviewPanel = ({ onExplore, isDark }) => {
             </Box>
 
             <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}><MetricCard label="Integrity" sublabel="Inputs Verified" metric={data.control.toFixed(1)} color={colors.accent} isDark={isDark} /></Grid>
-                <Grid item xs={12} sm={6}><MetricCard label="Ledger" sublabel="Reconciled" metric={data.recon.toFixed(1)} color={colors.successGreen} isDark={isDark} /></Grid>
-                <Grid item xs={12}><MetricCard label="Verifiable Trust" sublabel="Audit Proof" metric={data.evidence} color={colors.lucraGold} isDark={isDark} icon={VerifiedUser} /></Grid>
+                <Grid size={{ xs: 12, sm: 6 }}><MetricCard label="Integrity" sublabel="Inputs Verified" metric={data.control.toFixed(1)} color={colors.accent} isDark={isDark} /></Grid>
+                <Grid size={{ xs: 12, sm: 6 }}><MetricCard label="Ledger" sublabel="Reconciled" metric={data.recon.toFixed(1)} color={colors.successGreen} isDark={isDark} /></Grid>
+                <Grid size={{ xs: 12 }}><MetricCard label="Verifiable Trust" sublabel="Audit Proof" metric={data.evidence} color={colors.lucraGold} isDark={isDark} icon={VerifiedUser} /></Grid>
                 
-                <Grid item xs={12}>
+                <Grid size={{ xs: 12 }}>
                     <Paper onClick={onExplore} sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', borderRadius: 3, bgcolor: isDark ? 'rgba(255,255,255,0.05)' : 'white', border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`, transition: 'all 0.2s', '&:hover': { bgcolor: isDark ? 'rgba(255,255,255,0.1)' : '#f8f8f8', borderColor: colors.accent } }}>
                         <Typography variant="subtitle2" fontWeight={700}>Explore the Trust Stack</Typography>
                         <ArrowForward fontSize="small" sx={{ color: colors.accent }} />
@@ -910,20 +928,16 @@ const OmecaLanding = () => {
 
   const handleNavClick = (path) => { navigate(path); setMobileOpen(false); };
 
-// --- MOBILE DRAWER CONTENT ---
+  // --- MOBILE DRAWER CONTENT ---
   const drawer = (
     <Box sx={{ height: '100%', bgcolor: isDark ? '#0B0F17' : '#fff', color: 'text.primary' }}>
-      
-      {/* HEADER ROW: Logo + Theme Toggle + Close Button */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}` }}>
         <OmecaLogo size={40} />
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {/* TOGGLE ADDED HERE */}
             <ThemeToggleButton />
             <IconButton onClick={() => setMobileOpen(false)} sx={{ color: 'text.primary' }}><CloseIcon /></IconButton>
         </Box>
       </Box>
-
       <List sx={{ p: 2 }}>
         {navItems.map((item) => (
           <ListItem key={item.label} disablePadding sx={{ mb: 1 }}>
@@ -963,30 +977,46 @@ const OmecaLanding = () => {
   return (
     <Box sx={{ minHeight: "100vh", overflowX: 'hidden', color: 'text.primary', position: 'relative' }}>
       
-      {/* 1. BACKGROUND */}
+{/* 1. BACKGROUND */}
       <NoiseOverlay />
       <GridBackground isDark={isDark} />
-      <AnnouncementBar />
 
-      {/* 2. NAV */}
-      <AppBar position="sticky" elevation={0} sx={{ bgcolor: isDark ? "rgba(11,15,23,0.85)" : "rgba(255,255,255,0.85)", backdropFilter: "blur(16px)", borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` }}>
-        <Container maxWidth={false} sx={{ maxWidth: '1800px', px: { xs: 3, md: 6 } }}>
-            <Toolbar disableGutters sx={{ justifyContent: "space-between", height: 72 }}>
-                <Box onClick={() => navigate("/")} sx={{ cursor: "pointer", opacity: 0.9, "&:hover": { opacity: 1 } }}><OmecaLogo size={98} /></Box>
-                
-                {/* Desktop Nav */}
-                <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4, alignItems: 'center' }}>
-                    <Link underline="none" onClick={() => navigate('/trust-stack')} sx={{ cursor: 'pointer', fontWeight: 600, color: 'text.primary', '&:hover': { color: colors.accent } }}>Product</Link>
-                    <Link underline="none" onClick={() => navigate('/pricing')} sx={{ cursor: 'pointer', fontWeight: 600, color: 'text.primary', '&:hover': { color: colors.accent } }}>Pricing</Link>
-                    <ThemeToggleButton />
-                    <Button variant={user ? "outlined" : "contained"} onClick={() => user ? signOut(auth) : navigate("/partner-login")} sx={{ borderRadius: 50, px: 3, fontWeight: 700, bgcolor: user ? 'transparent' : colors.accent, color: user ? 'text.primary' : 'black' }}>{user ? "Log Out" : "Partner Login"}</Button>
-                </Box>
-                
-                {/* Mobile Menu Icon */}
-                <IconButton onClick={() => setMobileOpen(true)} sx={{ display: { xs: "flex", md: "none" } }}><MenuIcon /></IconButton>
-            </Toolbar>
-        </Container>
-      </AppBar>
+      {/* 2. FIXED NAV ASSEMBLY (Announcement + AppBar) */}
+      <Box sx={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1200 }}>
+        <AnnouncementBar />
+        <AppBar 
+            position="static" // Changed to static because the parent Box is fixed
+            elevation={0} 
+            sx={{ 
+                bgcolor: isDark ? "rgba(11,15,23,0.85)" : "rgba(255,255,255,0.85)", 
+                backdropFilter: "blur(16px)", 
+                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}` 
+            }}
+        >
+            <Container maxWidth={false} sx={{ maxWidth: '1800px', px: { xs: 3, md: 6 } }}>
+                <Toolbar disableGutters sx={{ justifyContent: "space-between", height: 72 }}>
+                    <Box onClick={() => navigate("/")} sx={{ cursor: "pointer", opacity: 0.9, "&:hover": { opacity: 1 } }}>
+                        <OmecaLogo size={98} />
+                    </Box>
+                    
+                    {/* Desktop Nav */}
+                    <Box sx={{ display: { xs: "none", md: "flex" }, gap: 4, alignItems: 'center' }}>
+                        <Link underline="none" onClick={() => navigate('/trust-stack')} sx={{ cursor: 'pointer', fontWeight: 600, color: 'text.primary', '&:hover': { color: colors.accent } }}>Product</Link>
+                        <Link underline="none" onClick={() => navigate('/pricing')} sx={{ cursor: 'pointer', fontWeight: 600, color: 'text.primary', '&:hover': { color: colors.accent } }}>Pricing</Link>
+                        <ThemeToggleButton />
+                        <Button variant={user ? "outlined" : "contained"} onClick={() => user ? signOut(auth) : navigate("/partner-login")} sx={{ borderRadius: 50, px: 3, fontWeight: 700, bgcolor: user ? 'transparent' : colors.accent, color: user ? 'text.primary' : 'black' }}>{user ? "Log Out" : "Partner Login"}</Button>
+                    </Box>
+                    
+                    {/* Mobile Menu Icon */}
+                    <IconButton onClick={() => setMobileOpen(true)} sx={{ display: { xs: "flex", md: "none" } }}><MenuIcon /></IconButton>
+                </Toolbar>
+            </Container>
+        </AppBar>
+      </Box>
+
+      {/* SPACER: Pushes content down so it doesn't hide behind the fixed header */}
+      {/* Approx Height = Announcement (~40px) + Navbar (72px) */}
+      <Box sx={{ height: 112 }} />
 
       {/* Mobile Drawer */}
       <Drawer
@@ -1005,36 +1035,29 @@ const OmecaLanding = () => {
 
       {/* --- HERO --- */}
       <SectionWrapper isDark={isDark} transparent={true}>
-            <Grid container spacing={8} alignItems="center">
-                <Grid item xs={12} md={6}>
-<Typography 
-  component={motion.h1}
-  // REMOVE: whileHover={{ color: colors.accent }} 
-  // REMOVE: transition={{ duration: 0.3 }}
-  variant="h1" 
-  sx={{ 
-    fontWeight: 800, 
-    fontSize: { xs: "3rem", md: "4.5rem", lg: "5.5rem" }, 
-    lineHeight: 1.1, 
-    mb: 3, 
-    letterSpacing: '-0.02em', 
-    cursor: 'default',
-    
-    // FIX: Use 'text.primary' so it automatically swaps Black/White
-    color: 'text.primary', 
-    transition: 'color 0.2s ease-in-out',
-
-    // FIX: Handle hover directly in CSS
-    '&:hover': {
-      color: colors.accent
-    }
-  }}
->
-  The Control Plane <br />
-  <Box component="span" sx={{ color: colors.accent }}>for Modern Finance</Box>
-</Typography>
+            {/* FIX: UPDATED GRID SYNTAX */}
+            <Grid container spacing={8} alignItems="center" sx={{ mt: { xs: -4, md: -8 } }}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography 
+                        component={motion.h1}
+                        variant="h1" 
+                        sx={{ 
+                            fontWeight: 800, 
+                            fontSize: { xs: "3rem", md: "4.5rem", lg: "5.5rem" }, 
+                            lineHeight: 1.1, 
+                            mb: 3, 
+                            letterSpacing: '-0.02em', 
+                            cursor: 'default', 
+                            color: 'text.primary', 
+                            transition: 'color 0.2s ease-in-out',
+                            '&:hover': { color: colors.accent } 
+                        }}
+                    >
+                        The Control Plane <br />
+                        <Box component="span" sx={{ color: colors.accent }}>for Modern Finance</Box>
+                    </Typography>
                     <Typography variant="h6" sx={{ color: 'text.secondary', mb: 5, maxWidth: '50ch', lineHeight: 1.6, fontSize: '1.2rem' }}>
-                        Omeca is the accounting engine that establishes financial truth for every transaction and enforces correct behavior across high-velocity workflows.
+                      A financial control engine that establishes financial truth and enforces correct behavior across high-velocity workflows.
                     </Typography>
                     
                     <Stack direction="row" spacing={3}>
@@ -1042,7 +1065,7 @@ const OmecaLanding = () => {
                         <SmartCTA label="Book a Demo" subtext="Schedule instantly or email us" onClick={() => window.open('mailto:demo@omeca.co', '_blank')} variant="outlined" />
                     </Stack>
                 </Grid>
-                <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Grid size={{ xs: 12, md: 6 }} sx={{ display: 'flex', justifyContent: 'center' }}>
                     <LivePreviewPanel onExplore={() => navigate("/trust-stack")} isDark={isDark} />
                 </Grid>
             </Grid>
@@ -1078,10 +1101,18 @@ const OmecaLanding = () => {
              <OmecaTrustStack />
       </SectionWrapper>
 
-       {/* --- SYSTEM MAP (Inline) --- */}
-      <SectionWrapper isDark={isDark} transparent={true} borderTop={false}>
+       {/* --- SYSTEM MAP (Inline, Header moved to Page) --- */}
+      {/* <SectionWrapper isDark={isDark} transparent={true} borderTop={false}>
+             <Box sx={{ textAlign: 'center', mb: 6 }}>
+                <Typography variant="h3" fontWeight={900} sx={{ mb: 2, color: 'text.primary', letterSpacing: '-0.02em', fontSize: { xs: '2rem', md: '3rem' } }}>
+                    One system. <Box component="span" sx={{ color: colors.accent }}>Trusted by design.</Box>
+                </Typography>
+                <Typography sx={{ color: 'text.secondary', maxWidth: 720, mx: "auto", fontSize: "1.1rem", lineHeight: 1.7 }}>
+                    Every agent and system records its activity into a single trusted real-time core.
+                </Typography>
+             </Box>
              <OmecaSystemMap />
-      </SectionWrapper>
+      </SectionWrapper> */}
 
       {/* --- DEVELOPER --- */}
       <SectionWrapper isDark={isDark} transparent={false} borderTop={true}>
@@ -1091,7 +1122,7 @@ const OmecaLanding = () => {
       {/* --- FOOTER CTA (UPDATED MESSAGE) --- */}
       <SectionWrapper isDark={isDark} transparent={true} borderTop={true}>
          <Container maxWidth="md" sx={{ textAlign: 'center', mb: 8 }}>
-            <Typography variant="h3" fontWeight={800} sx={{ mb: 3 }}>Run your finance operations on the Control Plane.</Typography>
+            <Typography variant="h3" fontWeight={800} sx={{ mb: 3 }}>Establish financial truth in one Control Plane.</Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
                  <SmartCTA label="Get Started Now" subtext="No credit card required" onClick={() => navigate('/partner-login')} variant="contained" />
             </Stack>

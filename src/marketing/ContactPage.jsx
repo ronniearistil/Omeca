@@ -434,7 +434,7 @@ const OmecaContactPage = () => {
         { name: 'email', label: 'Work Email', type: 'email', grid: 6 },
         { name: 'company', label: 'Company Name', grid: 6 },
         { name: 'industry', label: 'Industry', grid: 12, select: true },
-        { name: 'query', label: 'How can we help?', multiline: true, rows: 4, grid: 12 },
+        { name: 'query', label: 'What would you like to explore?', multiline: true, rows: 4, grid: 12 },
     ];
 
     return (
@@ -477,7 +477,7 @@ const OmecaContactPage = () => {
                     maxWidth: 800 
                 }}>
                     <Chip 
-                        label="CONTACT SALES" 
+                        label="GET IN TOUCH" 
                         size="small"
                         sx={{ 
                             mb: 2, fontWeight: 700, fontSize: "0.65rem", letterSpacing: 1,
@@ -485,19 +485,21 @@ const OmecaContactPage = () => {
                             color: currentColors.textDim, 
                         }} 
                     />
-                    <Typography variant="h2" fontWeight={800} sx={{ 
-                        fontSize: { xs: "2.5rem", md: "3.5rem" }, 
-                        letterSpacing: "-0.03em",
-                        lineHeight: 1.1,
-                        mb: 2,
-                        color: currentColors.textPrimary
-                    }}>
-                        Start the <span style={{ color: colors.accent }}>Revolution.</span>
-                    </Typography>
-                    <Typography variant="body1" sx={{ color: currentColors.textDim, fontSize: '1.1rem', lineHeight: 1.6 }}>
-                        Omeca unifies operational truth and real-time finance. <br/>
-                        Book a demo to see the self-driving ERP in action.
-                    </Typography>
+<Typography variant="h2" fontWeight={800} sx={{ 
+    fontSize: { xs: "2.5rem", md: "3.5rem" }, 
+    letterSpacing: "-0.03em",
+    lineHeight: 1.1,
+    mb: 2,
+    color: currentColors.textPrimary
+}}>
+    Talk to Us About the <span style={{ color: colors.accent }}>Financial Control Plane.</span>
+</Typography>
+
+<Typography variant="body1" sx={{ color: currentColors.textDim, fontSize: '1.1rem', lineHeight: 1.6 }}>
+    Omeca is the autonomous accounting engine that keeps every workflow correct by design.  
+    Reach out to see how continuous integrity, continuous close, and verifiable control work in practice.
+</Typography>
+
                 </Box>
 
                 {/* FORM CARD with Spotlight */}
@@ -538,13 +540,13 @@ const OmecaContactPage = () => {
                                             <CheckCircleOutlineRounded sx={{ fontSize: 80, color: colors.accent, mb: 3 }} />
                                         </motion.div>
 
-                                        <Typography variant="h4" fontWeight={800} color={currentColors.textPrimary} sx={{ mb: 2 }}>
-                                            Request Confirmed.
-                                        </Typography>
+<Typography variant="h4" fontWeight={800} color={currentColors.textPrimary} sx={{ mb: 2 }}>
+    Message Received.
+</Typography>
 
-                                        <Typography variant="body1" color={currentColors.textDim} sx={{ mb: 4 }}>
-                                            We'll be in touch shortly to schedule your live demonstration.
-                                        </Typography>
+<Typography variant="body1" color={currentColors.textDim} sx={{ mb: 4 }}>
+    Thanks for reaching out. We'll contact you shortly to walk through the Control Plane and how the autonomous accounting engine works for your workflows.
+</Typography>
 
                                         <Button
                                             onClick={() => navigate("/")}

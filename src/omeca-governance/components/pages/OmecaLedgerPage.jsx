@@ -734,7 +734,9 @@ const ReconciliationRow = ({ event, onClick }) => {
                 </Grid>
                 <Grid item xs={7}>
                     <Typography variant="body2" fontWeight={600} sx={{ color: palette.textPrimary }}>
-                        {isApproved ? `Posted to ${glCode}` : "Pending Classification"}
+                        {/* {isApproved ? `Posted to ${glCode}` : "Pending Classification"} */}
+                        {isApproved ? `Prepared for ${glCode}` : "Review Required"}
+
                     </Typography>
                     <Typography variant="caption" sx={{ color: 'grey.500', fontFamily: 'monospace' }}>
                         Source: Brex API • ID: {event.id}
@@ -854,10 +856,10 @@ export default function OmecaReconciliationPage() {
                     LAYER 2: LEDGER
                 </Typography>
                 <Typography variant="h3" fontWeight={800} sx={{ mb: 2, mt: 1, color: bgColors.textPrimary }}>
-                    Continuous <GradientSpan>Close</GradientSpan>
+                    Continuous <GradientSpan>Accounting</GradientSpan>
                 </Typography>
                 <Typography variant="h6" sx={{ color: 'grey.500', fontWeight: 400, lineHeight: 1.6 }}>
-                    Automated reconciliation engine. Omeca matches transactions, applies GAAP/IFRS policy, and posts to the GL autonomously.
+                    Omeca interprets approved agent actions, applies accounting policy, and prepares clean, pre-coded entries for ERP ingestion.
                 </Typography>
             </Box>
 
@@ -899,9 +901,9 @@ export default function OmecaReconciliationPage() {
                     <Grid item xs={12} md={3}>
                         <motion.div variants={itemVariants} style={{ height: '100%' }}>
                             <MetricCard
-                                title="Manual Exceptions"
+                                title="Policy Review Required"
                                 value={metrics.exceptions}
-                                subtext={metrics.exceptions > 10 ? "Action Required" : "Within Limits"}
+                                subtext={metrics.exceptions > 10 ? "Low-Confidence Classifications" : "Within Limits"}
                                 icon={PolicyIcon}
                                 color={metrics.exceptions > 10 ? colors.errorRed : colors.lucraGold}
                                 trend={metrics.exceptions > 10 ? "bad" : "good"}
@@ -1012,7 +1014,8 @@ export default function OmecaReconciliationPage() {
                                     LEDGER NOTE
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'grey.500', fontStyle: 'italic' }}>
-                                    "Omeca L2 autonomously creates audit-ready journal entries. Exceptions are routed to human review with AI-suggested resolutions."
+                                    "Omeca L2 autonomously creates audit-ready journal entries. 
+Entries that fall below confidence thresholds are flagged for accounting review, with AI-suggested classifications."
                                 </Typography>
                             </Box>
                         </Paper>

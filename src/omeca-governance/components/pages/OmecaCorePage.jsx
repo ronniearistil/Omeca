@@ -2,7 +2,7 @@
 
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
-    Box, Typography, Paper, Grid, List, ListItemButton, Chip, 
+    Box, Typography, Paper, Grid, List, ListItemButton, Chip,
     Dialog, DialogTitle, DialogContent, Stack, IconButton, Divider,
     LinearProgress, alpha
 } from '@mui/material';
@@ -54,10 +54,10 @@ const InspectorModal = ({ open, onClose, data }) => {
     if (!data) return null;
 
     return (
-        <Dialog 
-            open={open} 
-            onClose={onClose} 
-            maxWidth="sm" 
+        <Dialog
+            open={open}
+            onClose={onClose}
+            maxWidth="sm"
             fullWidth
             PaperProps={{
                 sx: {
@@ -83,12 +83,12 @@ const InspectorModal = ({ open, onClose, data }) => {
                         <Typography variant="body1" fontWeight={700}>{data.id}</Typography>
                         <Typography variant="body2" sx={{ color: 'grey.400', mt: 0.5 }}>{data.desc}</Typography>
                     </Box>
-                    
+
                     <Box>
                         <Typography variant="caption" sx={{ color: 'grey.500', fontWeight: 700, letterSpacing: 1 }}>RAW PAYLOAD / LOGIC</Typography>
-                        <Paper sx={{ 
-                            p: 2, mt: 1, 
-                            bgcolor: isDark ? '#0B1120' : '#F3F4F6', 
+                        <Paper sx={{
+                            p: 2, mt: 1,
+                            bgcolor: isDark ? '#0B1120' : '#F3F4F6',
                             borderRadius: 2,
                             border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
                             fontFamily: 'monospace',
@@ -135,7 +135,7 @@ const MetricCard = ({ title, value, subtext, icon: Icon, color, trend, onClick }
             <Box sx={{ position: 'absolute', top: 0, right: 0, p: 3, opacity: 0.05 }}>
                 <Icon sx={{ fontSize: 100, color: color }} />
             </Box>
-            
+
             <Stack spacing={2} sx={{ position: 'relative', zIndex: 1 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                     <Box sx={{ p: 1, borderRadius: 2, bgcolor: `${color}15`, color: color, display: 'flex' }}>
@@ -165,10 +165,10 @@ const ValidationRule = ({ label, value, color, onClick }) => {
     const isDark = mode === 'dark';
 
     return (
-        <Box 
+        <Box
             onClick={onClick}
-            sx={{ 
-                cursor: 'pointer', 
+            sx={{
+                cursor: 'pointer',
                 '&:hover .MuiTypography-root': { color: color },
                 '&:hover .MuiLinearProgress-bar': { opacity: 0.8 }
             }}
@@ -181,15 +181,15 @@ const ValidationRule = ({ label, value, color, onClick }) => {
                     {value.toFixed(1)}%
                 </Typography>
             </Box>
-            <LinearProgress 
-                variant="determinate" 
-                value={value} 
-                sx={{ 
-                    height: 6, 
-                    borderRadius: 3, 
-                    bgcolor: isDark ? 'grey.800' : 'grey.200', 
-                    '& .MuiLinearProgress-bar': { bgcolor: color, transition: 'transform 0.5s ease-out' } 
-                }} 
+            <LinearProgress
+                variant="determinate"
+                value={value}
+                sx={{
+                    height: 6,
+                    borderRadius: 3,
+                    bgcolor: isDark ? 'grey.800' : 'grey.200',
+                    '& .MuiLinearProgress-bar': { bgcolor: color, transition: 'transform 0.5s ease-out' }
+                }}
             />
         </Box>
     );
@@ -200,7 +200,7 @@ const AlertRow = ({ event, onClick }) => {
     const { mode } = useContext(ColorModeContext);
     const isDark = mode === 'dark';
     const palette = colors[mode];
-    
+
     // Check if it's an anomaly based on the message content
     const isError = event.message.includes("Error") || event.message.includes("Missing") || event.message.includes("Future");
     const color = isError ? colors.errorRed : colors.successGreen;
@@ -208,17 +208,17 @@ const AlertRow = ({ event, onClick }) => {
 
     return (
         <ListItemButton
-            onClick={() => onClick({ 
-                id: event.id, 
+            onClick={() => onClick({
+                id: event.id,
                 desc: "Event Payload Inspection",
                 isError: isError,
-                raw: { 
+                raw: {
                     event_id: event.id,
                     status: isError ? "QUARANTINED" : "VERIFIED",
                     check: event.message,
                     latency: "12ms",
                     timestamp: new Date().toISOString()
-                } 
+                }
             })}
             sx={{
                 p: 2,
@@ -247,15 +247,15 @@ const AlertRow = ({ event, onClick }) => {
                     </Typography>
                 </Grid>
                 <Grid item xs={3} sx={{ textAlign: 'right' }}>
-                    <Chip 
-                        label={isError ? "ANOMALY" : "VERIFIED"} 
-                        size="small" 
-                        sx={{ 
-                            bgcolor: `${color}15`, 
-                            color: color, 
-                            fontWeight: 800, 
-                            fontSize: '0.65rem' 
-                        }} 
+                    <Chip
+                        label={isError ? "ANOMALY" : "VERIFIED"}
+                        size="small"
+                        sx={{
+                            bgcolor: `${color}15`,
+                            color: color,
+                            fontWeight: 800,
+                            fontSize: '0.65rem'
+                        }}
                     />
                 </Grid>
             </Grid>
@@ -285,7 +285,7 @@ export default function OmecaOperationalControlPage() {
         dedup: 100
     });
 
-    const [stream, setStream] = useState([]); 
+    const [stream, setStream] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
 
@@ -297,7 +297,7 @@ export default function OmecaOperationalControlPage() {
                 if (res.ok) {
                     const json = await res.json();
                     const backendIssues = json.metrics.active_issues || [];
-                    
+
                     // We update the issues and connection status from backend
                     setData(prev => ({
                         ...prev,
@@ -320,7 +320,7 @@ export default function OmecaOperationalControlPage() {
             setData(prev => ({
                 ...prev,
                 // Volume ticks up constantly to show throughput
-                scanned: prev.scanned + Math.floor(Math.random() * 5), 
+                scanned: prev.scanned + Math.floor(Math.random() * 5),
                 // Latency jitters between 8ms and 45ms
                 latency: Math.floor(Math.random() * (45 - 8 + 1) + 8),
                 // Score breathes slightly between 99.8 and 100
@@ -343,18 +343,18 @@ export default function OmecaOperationalControlPage() {
     useEffect(() => {
         const generateEvent = () => {
             const id = Math.floor(Math.random() * 9000) + 1000;
-            const isAnomaly = data.issues.length > 0 && Math.random() > 0.7; 
-            
+            const isAnomaly = data.issues.length > 0 && Math.random() > 0.7;
+
             let newEvent;
-            
+
             if (isAnomaly) {
                 const errorMsg = data.issues[Math.floor(Math.random() * data.issues.length)];
                 newEvent = { id: `ERR-${id}`, message: errorMsg, type: 'error' };
             } else {
                 const successMessages = [
-                    "Schema validation passed", 
-                    "Timestamp verified", 
-                    "Currency normalized: USD", 
+                    "Schema validation passed",
+                    "Timestamp verified",
+                    "Currency normalized: USD",
                     "Deduplication check passed",
                     "Vendor ID matched",
                     "API Token Validated"
@@ -376,18 +376,18 @@ export default function OmecaOperationalControlPage() {
     };
 
     return (
-        <Box sx={{ 
-            minHeight: '100vh', 
-            p: { xs: 2, md: 6 }, 
+        <Box sx={{
+            minHeight: '100vh',
+            p: { xs: 2, md: 6 },
             bgcolor: bgColors.bgTop,
             color: bgColors.textPrimary,
             transition: 'background-color 0.3s'
         }}>
-            
-            <InspectorModal 
-                open={modalOpen} 
-                onClose={() => setModalOpen(false)} 
-                data={selectedItem} 
+
+            <InspectorModal
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                data={selectedItem}
             />
 
             {/* HEADER */}
@@ -395,19 +395,22 @@ export default function OmecaOperationalControlPage() {
                 <Typography variant="overline" sx={{ color: colors.accent, fontWeight: 700, letterSpacing: 2 }}>
                     LAYER 1: CORE
                 </Typography>
+
                 <Typography variant="h3" fontWeight={800} sx={{ mb: 2, mt: 1, color: bgColors.textPrimary }}>
                     Operational <GradientSpan>Integrity</GradientSpan>
                 </Typography>
+
                 <Typography variant="h6" sx={{ color: 'grey.500', fontWeight: 400, lineHeight: 1.6 }}>
-                    Real-time validation of the operational data stream. 
-                    Omeca ensures data quality <i>before</i> it hits the ledger.
+                    Validates agent-generated events at the source, before execution.
+                    Omeca intercepts autonomous requests and enforces policy <i>before</i> financial impact occurs.
                 </Typography>
             </Box>
+
 
             {/* METRICS GRID */}
             <motion.div variants={containerVariants} initial="hidden" animate="visible">
                 <Grid container spacing={3} sx={{ mb: 6 }}>
-                    
+
                     <Grid item xs={12} md={4}>
                         <motion.div variants={itemVariants} style={{ height: '100%' }}>
                             <MetricCard
@@ -417,7 +420,7 @@ export default function OmecaOperationalControlPage() {
                                 icon={IntegrityIcon}
                                 color={data.score > 90 ? colors.successGreen : colors.errorRed}
                                 trend={data.score > 90 ? "good" : "bad"}
-                                onClick={() => handleOpenInspector({ id: "SYS-HEALTH", desc: "Live Health Calculation", raw: { score: data.score, rules_passed: 142, active_nodes: 3 }})}
+                                onClick={() => handleOpenInspector({ id: "SYS-HEALTH", desc: "Live Health Calculation", raw: { score: data.score, rules_passed: 142, active_nodes: 3 } })}
                             />
                         </motion.div>
                     </Grid>
@@ -431,7 +434,7 @@ export default function OmecaOperationalControlPage() {
                                 icon={VolumeIcon}
                                 color={colors.accent}
                                 trend="good"
-                                onClick={() => handleOpenInspector({ id: "VOL-METRIC", desc: "Throughput Analysis", raw: { total_events: data.scanned, rate: "124/sec", peak: "11:45 AM" }})}
+                                onClick={() => handleOpenInspector({ id: "VOL-METRIC", desc: "Throughput Analysis", raw: { total_events: data.scanned, rate: "124/sec", peak: "11:45 AM" } })}
                             />
                         </motion.div>
                     </Grid>
@@ -445,7 +448,7 @@ export default function OmecaOperationalControlPage() {
                                 icon={LatencyIcon}
                                 color={colors.lucraGold}
                                 trend="good"
-                                onClick={() => handleOpenInspector({ id: "NET-LATENCY", desc: "Network Statistics", raw: { p95: `${data.latency}ms`, p99: "45ms", region: "us-east-1" }})}
+                                onClick={() => handleOpenInspector({ id: "NET-LATENCY", desc: "Network Statistics", raw: { p95: `${data.latency}ms`, p99: "45ms", region: "us-east-1" } })}
                             />
                         </motion.div>
                     </Grid>
@@ -453,12 +456,12 @@ export default function OmecaOperationalControlPage() {
 
                 {/* DETAIL VIEW */}
                 <Grid container spacing={4}>
-                    
+
                     {/* LEFT: LIVE STREAM */}
                     <Grid item xs={12} md={7}>
-                        <Paper sx={{ 
-                            p: 4, 
-                            borderRadius: 4, 
+                        <Paper sx={{
+                            p: 4,
+                            borderRadius: 4,
                             bgcolor: bgColors.card,
                             border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
                             minHeight: 500
@@ -467,11 +470,11 @@ export default function OmecaOperationalControlPage() {
                                 <Typography variant="h6" fontWeight={700} sx={{ color: bgColors.textPrimary }}>
                                     Live Ingestion Stream
                                 </Typography>
-                                <Chip 
-                                    label="ACTIVE" 
-                                    size="small" 
+                                <Chip
+                                    label="ACTIVE"
+                                    size="small"
                                     icon={<Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: colors.successGreen, boxShadow: `0 0 8px ${colors.successGreen}` }} />}
-                                    sx={{ bgcolor: `${colors.successGreen}15`, color: colors.successGreen, fontWeight: 800, pl: 0.5 }} 
+                                    sx={{ bgcolor: `${colors.successGreen}15`, color: colors.successGreen, fontWeight: 800, pl: 0.5 }}
                                 />
                             </Box>
 
@@ -495,9 +498,9 @@ export default function OmecaOperationalControlPage() {
 
                     {/* RIGHT: HEALTH ANALYSIS (Interactive & Breathing) */}
                     <Grid item xs={12} md={5}>
-                        <Paper sx={{ 
-                            p: 4, 
-                            borderRadius: 4, 
+                        <Paper sx={{
+                            p: 4,
+                            borderRadius: 4,
                             bgcolor: bgColors.card,
                             border: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.08)'}`,
                             height: '100%'
@@ -507,22 +510,22 @@ export default function OmecaOperationalControlPage() {
                             </Typography>
 
                             <Stack spacing={4}>
-                                <ValidationRule 
-                                    label="Schema Compliance" 
-                                    value={rules.schema} 
-                                    color={colors.successGreen} 
+                                <ValidationRule
+                                    label="Schema Compliance"
+                                    value={rules.schema}
+                                    color={colors.successGreen}
                                     onClick={() => handleOpenInspector({ id: "RULE-SCHEMA", desc: "JSON Schema Validation", raw: { strict_mode: true, schema_version: "v2.1", pass_rate: `${rules.schema}%` } })}
                                 />
-                                <ValidationRule 
-                                    label="Timestamp Validity" 
-                                    value={rules.timestamp} 
-                                    color={colors.accent} 
+                                <ValidationRule
+                                    label="Timestamp Validity"
+                                    value={rules.timestamp}
+                                    color={colors.accent}
                                     onClick={() => handleOpenInspector({ id: "RULE-TIME", desc: "Temporal Integrity Check", raw: { window: "500ms", outliers: 2, pass_rate: `${rules.timestamp.toFixed(1)}%` } })}
                                 />
-                                <ValidationRule 
-                                    label="Duplicate Detection" 
-                                    value={rules.dedup} 
-                                    color={colors.lucraGold} 
+                                <ValidationRule
+                                    label="Duplicate Detection"
+                                    value={rules.dedup}
+                                    color={colors.lucraGold}
                                     onClick={() => handleOpenInspector({ id: "RULE-DEDUP", desc: "Idempotency Check", raw: { hash_algo: "SHA-256", collisions: 0, pass_rate: "100%" } })}
                                 />
                             </Stack>

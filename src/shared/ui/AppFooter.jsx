@@ -251,7 +251,7 @@ const AppFooter = () => {
         {
             title: 'Resources',
             links: [
-                { name: 'Investor Brief', route: '/brief' },
+                // { name: 'Investor Brief', route: '/brief' },
                 { name: 'Documentation', route: '/documentation' },
                 { name: 'Security', route: '/security' },
             ]
